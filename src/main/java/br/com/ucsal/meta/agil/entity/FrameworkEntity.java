@@ -1,12 +1,15 @@
-package br.com.ucsal.meta.agil.model;
+package br.com.ucsal.meta.agil.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity(name = "framework")
 public class FrameworkEntity {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long cdFramework;
 	private String nmFramework;
 	private String flFramework;

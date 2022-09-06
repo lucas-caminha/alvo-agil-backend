@@ -1,4 +1,4 @@
-package br.com.ucsal.meta.agil.model;
+package br.com.ucsal.meta.agil.entity;
 
 import java.time.LocalDate;
 
