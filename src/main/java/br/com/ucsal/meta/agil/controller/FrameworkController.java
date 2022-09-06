@@ -33,11 +33,30 @@ public class FrameworkController {
 	@RequestMapping(method = RequestMethod.POST, value = "/add", produces = "application/json")
 	public ResponseEntity<FrameworkEntity> addFramework(@RequestBody FrameworkDTO dto) {	
 		FrameworkEntity entity = dto.toEntity();
+		entity.setCdFramework(null);
 		FrameworkEntity saved = frameworkService.save(entity);
 		if(saved == null) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(saved);
 	}
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "/atualiza", produces = "application/json")
+	public ResponseEntity<FrameworkEntity> atualizaFramework(@RequestBody FrameworkDTO dto) {	
+		FrameworkEntity entity = dto.toEntity();
+		FrameworkEntity saved = frameworkService.atualiza(entity);
+		if(saved == null) {
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(saved);
+	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/deleta", produces = "application/json")
+	public ResponseEntity<FrameworkEntity> deleteFramework(@RequestBody FrameworkDTO dto) {	
+		FrameworkEntity entity = dto.toEntity();
+		frameworkService.deleta(entity);
+		return ResponseEntity.status(HttpStatus.OK).body(entity);
+	}
+	
 	
 }

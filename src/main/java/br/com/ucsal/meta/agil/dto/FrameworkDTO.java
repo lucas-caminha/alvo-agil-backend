@@ -4,6 +4,7 @@ import br.com.ucsal.meta.agil.entity.FrameworkEntity;
 
 public class FrameworkDTO {
 	
+	private Long cdFramework;
 	private String nmFramework;
 	private String flFramework;
 	
@@ -18,6 +19,12 @@ public class FrameworkDTO {
 	}
 	public void setFlFramework(String flFramework) {
 		this.flFramework = flFramework;
+	}
+	public Long getCdFramework() {
+		return cdFramework;
+	}
+	public void setCdFramework(Long id) {
+		this.cdFramework = id;
 	}
 	
 	public FrameworkEntity toEntity() {

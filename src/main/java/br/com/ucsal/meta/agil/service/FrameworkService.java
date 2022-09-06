@@ -21,6 +21,15 @@ public class FrameworkService {
 	public FrameworkEntity save(FrameworkEntity entity) {
 		return frameworkRepository.save(entity);
 	}
+
+	public FrameworkEntity atualiza(FrameworkEntity entity) {
+		return frameworkRepository.save(entity);
+	}
+
+	public void deleta(FrameworkEntity entity) {
+		frameworkRepository.delete(entity);
+	}
+
 	
 	
 }
