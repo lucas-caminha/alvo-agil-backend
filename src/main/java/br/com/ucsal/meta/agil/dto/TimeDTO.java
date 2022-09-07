@@ -1,41 +1,24 @@
-package br.com.ucsal.meta.agil.entity;
+package br.com.ucsal.meta.agil.dto;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
+import br.com.ucsal.meta.agil.entity.FrameworkEntity;
+import br.com.ucsal.meta.agil.entity.PerguntaEntity;
+import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
+import br.com.ucsal.meta.agil.entity.TimeEntity;
 
-@Entity(name = "time")
-public class TimeEntity {
-
-	@Id
+public class TimeDTO {
+	
 	private Long cdTime;
 	private String nmTime;
 	private String flTime;
 	private LocalDate dtInicioTime;
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "timecerimonia", joinColumns = @JoinColumn(name = "cdCerimonia", referencedColumnName = "cdTime"),
-			inverseJoinColumns = @JoinColumn(name = "cdTime", referencedColumnName = "cdCerimonia"))
 	private List<CerimoniaEntity> cerimonias;
-	@ManyToOne
-	@JoinColumn(name = "cdFramework")
 	private FrameworkEntity framework;
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "timetecnologia", joinColumns = @JoinColumn(name = "cdTecnologia", referencedColumnName = "cdTime"), 
-				inverseJoinColumns = @JoinColumn(name = "cdTime", referencedColumnName = "cdTecnologia"))
 	private List<TecnologiaEntity> tecnologias;
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "timepergunta", joinColumns = @JoinColumn(name = "cdPergunta", referencedColumnName = "cdTime"), 
-				inverseJoinColumns = @JoinColumn(name = "cdTime", referencedColumnName = "cdPergunta"))
 	private List<PerguntaEntity> perguntas;
-	
-	public TimeEntity() {}
 	
 	public Long getCdTime() {
 		return cdTime;
@@ -84,6 +67,18 @@ public class TimeEntity {
 	}
 	public void setPerguntas(List<PerguntaEntity> perguntas) {
 		this.perguntas = perguntas;
+	}
+	
+	public TimeEntity toEntity() {
+		TimeEntity time = new TimeEntity();
+		time.setNmTime(this.nmTime);
+		time.setFlTime(this.flTime);
+		time.setDtInicioTime(this.dtInicioTime);
+		time.setCerimonias(this.cerimonias);
+		time.setTecnologias(this.tecnologias);
+		time.setFramework(this.framework);
+		this.setPerguntas(this.perguntas);		
+		return time;
 	}	
-		
+
 }

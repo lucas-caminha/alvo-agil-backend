@@ -11,41 +11,41 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ucsal.meta.agil.dto.FrameworkDTO;
-import br.com.ucsal.meta.agil.entity.FrameworkEntity;
-import br.com.ucsal.meta.agil.service.FrameworkService;
+import br.com.ucsal.meta.agil.dto.TimeDTO;
+import br.com.ucsal.meta.agil.entity.TimeEntity;
+import br.com.ucsal.meta.agil.service.TimeService;
 
 @RestController
-@RequestMapping("/framework")
-public class FrameworkController {
-	
+@RequestMapping("/time")
+public class TimeController {
+
 	@Autowired
-	private FrameworkService frameworkService;
+	private TimeService timeService;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/todos", produces = "application/json")
-	public ResponseEntity<List<FrameworkEntity>> getAllFrameworks() {
-		List<FrameworkEntity> frameworks = frameworkService.getAllFrameworks();
-		if(frameworks.isEmpty()) {
+	public ResponseEntity<List<TimeEntity>> getAllTimes() {
+		List<TimeEntity> Times = timeService.getAllTimes();
+		if(Times.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(frameworks);
+		return ResponseEntity.status(HttpStatus.OK).body(Times);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/add", produces = "application/json")
-	public ResponseEntity<FrameworkEntity> addFramework(@RequestBody FrameworkDTO dto) {	
-		FrameworkEntity entity = dto.toEntity();
-		entity.setCdFramework(null);
-		FrameworkEntity saved = frameworkService.save(entity);
-		if(saved.getCdFramework() == null) {
+	public ResponseEntity<TimeEntity> addTime(@RequestBody TimeDTO dto) {	
+		TimeEntity entity = dto.toEntity();
+		entity.setCdTime(null);
+		TimeEntity saved = timeService.save(entity);
+		if(saved.getCdTime() == null) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(saved);
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/atualiza", produces = "application/json")
-	public ResponseEntity<FrameworkEntity> atualizaFramework(@RequestBody FrameworkDTO dto) {	
-		FrameworkEntity entity = dto.toEntity();
-		FrameworkEntity updated = frameworkService.atualiza(entity);
+	public ResponseEntity<TimeEntity> atualizaTime(@RequestBody TimeDTO dto) {	
+		TimeEntity entity = dto.toEntity();
+		TimeEntity updated = timeService.atualiza(entity);
 		if(updated == null) {
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
 		}
@@ -53,13 +53,11 @@ public class FrameworkController {
 	}
 	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/deleta/{id}", produces = "application/json")
-	public ResponseEntity<FrameworkEntity> deleteFramework(@PathVariable(name = "id") Integer id) {	
-		FrameworkEntity deleted = frameworkService.deleta(id);
+	public ResponseEntity<TimeEntity> deleteTime(@PathVariable(name = "id") Integer id) {	
+		TimeEntity deleted = timeService.deleta(id);
 		if(deleted == null) {
 			return ResponseEntity.noContent().build();
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(deleted);
 	}
-	
-	
 }
