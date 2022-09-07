@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ucsal.meta.agil.dto.FrameworkDTO;
 import br.com.ucsal.meta.agil.entity.FrameworkEntity;
+import br.com.ucsal.meta.agil.exception.NotFoundException;
 import br.com.ucsal.meta.agil.service.FrameworkService;
 
 @RestController
@@ -35,7 +37,7 @@ public class FrameworkController {
 		FrameworkEntity entity = dto.toEntity();
 		entity.setCdFramework(null);
 		FrameworkEntity saved = frameworkService.save(entity);
-		if(saved == null) {
+		if(saved.getCdFramework() == null) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(saved);
@@ -44,18 +46,20 @@ public class FrameworkController {
 	@RequestMapping(method = RequestMethod.PUT, value = "/atualiza", produces = "application/json")
 	public ResponseEntity<FrameworkEntity> atualizaFramework(@RequestBody FrameworkDTO dto) {	
 		FrameworkEntity entity = dto.toEntity();
-		FrameworkEntity saved = frameworkService.atualiza(entity);
-		if(saved == null) {
+		FrameworkEntity updated = frameworkService.atualiza(entity);
+		if(updated == null) {
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(saved);
+		return ResponseEntity.status(HttpStatus.OK).body(updated);
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE, value = "/deleta", produces = "application/json")
-	public ResponseEntity<FrameworkEntity> deleteFramework(@RequestBody FrameworkDTO dto) {	
-		FrameworkEntity entity = dto.toEntity();
-		frameworkService.deleta(entity);
-		return ResponseEntity.status(HttpStatus.OK).body(entity);
+	@RequestMapping(method = RequestMethod.DELETE, value = "/deleta/{id}", produces = "application/json")
+	public ResponseEntity<FrameworkEntity> deleteFramework(@PathVariable(name = "id") Integer id) {	
+		FrameworkEntity deleted = frameworkService.deleta(id);
+		if(deleted == null) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(deleted);
 	}
 	
 	
