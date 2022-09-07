@@ -7,5 +7,8 @@ public class MessageUtil {
 	
 	
 	public static final String FAIL_SAVE = "Falha ao salvar";
+	
+	public static final String TECNOLOGIA_EXISTENTE = "Tecnologia Existente";
+	public static final String TECNOLOGIA_NAO_ENCONTRADA = "Tecnologia não encontrada";
 
 }
