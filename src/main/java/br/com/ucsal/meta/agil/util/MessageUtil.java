@@ -12,6 +12,9 @@ public class MessageUtil {
 	
 	public static final String TECNOLOGIA_EXISTENTE = "Tecnologia Existente";
 	public static final String TECNOLOGIA_NAO_ENCONTRADA = "Tecnologia não encontrada";
+	
+	public static final String PERGUNTA_NAO_ENCONTRADO = "Pergunta não encontrada";
+	public static final String PERGUNTA_EXISTENTE = "Pergunta existente";
 
 
 }
