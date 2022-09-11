@@ -15,6 +15,8 @@ public class MessageUtil {
 	
 	public static final String PERGUNTA_NAO_ENCONTRADO = "Pergunta não encontrada";
 	public static final String PERGUNTA_EXISTENTE = "Pergunta existente";
+	
+	public static final String USUARIO_EXISTENTE = "Usuario existente";
 
 
 }
