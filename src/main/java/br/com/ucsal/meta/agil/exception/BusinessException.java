@@ -1,4 +1,4 @@
-package br.com.ucsal.meta.agil.service;
+package br.com.ucsal.meta.agil.exception;
 
 public class BusinessException extends RuntimeException {
 
