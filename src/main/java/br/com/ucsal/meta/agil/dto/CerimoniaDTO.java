@@ -1,22 +1,11 @@
-package br.com.ucsal.meta.agil.entity;
+package br.com.ucsal.meta.agil.dto;
 
-import java.util.List;
+import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-
-@Entity(name = "cerimonia")
-public class CerimoniaEntity {
-
-	@Id
+public class CerimoniaDTO {
 	private Long cdCerimonia;
 	private String nmCerimonia;
 	private String flCerimonia;
-	@ManyToMany(mappedBy = "cerimonias")
-	private List<TimeEntity> times;
-		
-	public CerimoniaEntity() {}
 	
 	public Long getCdCerimonia() {
 		return cdCerimonia;
@@ -36,10 +25,14 @@ public class CerimoniaEntity {
 	public void setFlCerimonia(String flCerimonia) {
 		this.flCerimonia = flCerimonia;
 	}
-	public List<TimeEntity> getTimes() {
-		return times;
+	
+	public CerimoniaEntity toEntity() {
+		CerimoniaEntity cerimonia = new CerimoniaEntity();
+		cerimonia.setNmCerimonia(this.nmCerimonia);
+		cerimonia.setFlCerimonia(this.flCerimonia);
+		cerimonia.setCdCerimonia(this.cdCerimonia);
+		return cerimonia;
 	}
-	public void setTimes(List<TimeEntity> times) {
-		this.times = times;
-	}
+
 }
+
