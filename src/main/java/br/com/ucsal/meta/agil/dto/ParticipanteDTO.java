@@ -2,15 +2,25 @@ package br.com.ucsal.meta.agil.dto;
 
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import br.com.ucsal.meta.agil.entity.ParticipanteEntity;
 
 public class ParticipanteDTO {
+	
 	private Long cdParticipante;
+	@NotNull
 	private String nmParticipante;
 	private String flParticipante;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDate dtInicioParticipante;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDate dtFimParticipante;
+	@NotNull
 	private String emailParticipante;
+	
 	public Long getCdParticipante() {
 		return cdParticipante;
 	}
@@ -46,7 +56,7 @@ public class ParticipanteDTO {
 	}
 	public void setEmailParticipante(String emailParticipante) {
 		this.emailParticipante = emailParticipante;
-}
+	}
 	
 	public ParticipanteEntity toEntity() {
 		ParticipanteEntity participante = new ParticipanteEntity();
@@ -56,8 +66,6 @@ public class ParticipanteDTO {
 		participante.setDtInicioParticipante(this.dtInicioParticipante);
 		participante.setDtFimParticipante(this.dtFimParticipante);
 		participante.setEmailParticipante(this.emailParticipante);
-
-		
 		return participante;
 	}
 }

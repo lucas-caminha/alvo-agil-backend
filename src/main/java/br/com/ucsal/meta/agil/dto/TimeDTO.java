@@ -3,6 +3,10 @@ package br.com.ucsal.meta.agil.dto;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
 import br.com.ucsal.meta.agil.entity.FrameworkEntity;
 import br.com.ucsal.meta.agil.entity.PerguntaEntity;
@@ -12,8 +16,10 @@ import br.com.ucsal.meta.agil.entity.TimeEntity;
 public class TimeDTO {
 	
 	private Long cdTime;
+	@NotNull
 	private String nmTime;
 	private String flTime;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDate dtInicioTime;
 	private List<CerimoniaEntity> cerimonias;
 	private FrameworkEntity framework;
@@ -77,7 +83,7 @@ public class TimeDTO {
 		time.setCerimonias(this.cerimonias);
 		time.setTecnologias(this.tecnologias);
 		time.setFramework(this.framework);
-		this.setPerguntas(this.perguntas);		
+		time.setPerguntas(this.perguntas);		
 		return time;
 	}	
 
