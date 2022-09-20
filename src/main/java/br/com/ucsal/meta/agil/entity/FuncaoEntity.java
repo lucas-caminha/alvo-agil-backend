@@ -1,12 +1,15 @@
 package br.com.ucsal.meta.agil.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity(name = "funcao")
 public class FuncaoEntity {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long cdFuncao;
 	private String nmFuncao;
 	private String flFuncao;
