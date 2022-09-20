@@ -5,8 +5,9 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class RestServiceCorsApplication {
+public class RestServiceCorsApplication implements WebMvcConfigurer {
 
+	/**
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
 			@Override
@@ -15,16 +16,17 @@ public class RestServiceCorsApplication {
 			}
 		};
 	}
+	**/
 
-	/**
+	
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-		.allowedOrigins("http://localhost:3000", "https://asense-ficha-tecnica.netlify.app/", "http://localhost:3000")
+		.allowedOrigins("http://localhost:3000")
 		.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT");
 
 	}
-	**/
+	
 
 
 }
