@@ -1,25 +1,16 @@
-package br.com.ucsal.meta.agil.entity;
+package br.com.ucsal.meta.agil.dto;
 
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import br.com.ucsal.meta.agil.entity.PerguntaEntity;
+import br.com.ucsal.meta.agil.entity.TimeEntity;
 
-@Entity(name = "pergunta")
-public class PerguntaEntity {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PerguntaDTO {
+	
 	private Long cdPergunta;
 	private String descPergunta;
 	private String flPergunta;
-	@ManyToMany(mappedBy = "perguntas")
 	private List<TimeEntity> times;
-	
-	public PerguntaEntity() {}
 	
 	public Long getCdPergunta() {
 		return cdPergunta;
@@ -45,5 +36,14 @@ public class PerguntaEntity {
 	public void setTimes(List<TimeEntity> times) {
 		this.times = times;
 	}
-	
+
+	public PerguntaEntity toEntity() {
+		PerguntaEntity pergunta = new PerguntaEntity();
+		pergunta.setCdPergunta(this.cdPergunta);
+		pergunta.setDescPergunta(this.descPergunta);
+		pergunta.setFlPergunta(this.flPergunta);
+		pergunta.setTimes(this.times);
+		return null;
+	}
+
 }

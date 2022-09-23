@@ -1,10 +1,13 @@
 package br.com.ucsal.meta.agil.dto;
 
+import javax.validation.constraints.NotNull;
+
 import br.com.ucsal.meta.agil.entity.FrameworkEntity;
 
 public class FrameworkDTO {
 	
 	private Long cdFramework;
+	@NotNull
 	private String nmFramework;
 	private String flFramework;
 	
@@ -29,6 +32,7 @@ public class FrameworkDTO {
 	
 	public FrameworkEntity toEntity() {
 		FrameworkEntity framework = new FrameworkEntity();
+		framework.setCdFramework(this.cdFramework);
 		framework.setNmFramework(this.nmFramework);
 		framework.setFlFramework(this.flFramework);
 		return framework;
