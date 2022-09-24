@@ -1,9 +1,13 @@
 package br.com.ucsal.meta.agil.dto;
 
+import javax.validation.constraints.NotNull;
+
 import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
 
 public class CerimoniaDTO {
+	
 	private Long cdCerimonia;
+	@NotNull
 	private String nmCerimonia;
 	private String flCerimonia;
 	
