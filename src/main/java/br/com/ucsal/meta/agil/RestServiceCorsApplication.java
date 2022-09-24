@@ -5,7 +5,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class RestServiceCorsApplication {
+public class RestServiceCorsApplication implements WebMvcConfigurer {
 
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
@@ -16,7 +16,7 @@ public class RestServiceCorsApplication {
 		};
 	}
 
-	/**
+	
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
@@ -24,7 +24,7 @@ public class RestServiceCorsApplication {
 		.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT");
 
 	}
-	**/
+	
 
 
 }
