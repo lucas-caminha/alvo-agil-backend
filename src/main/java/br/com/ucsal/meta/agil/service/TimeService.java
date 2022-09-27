@@ -1,11 +1,16 @@
 package br.com.ucsal.meta.agil.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
+import br.com.ucsal.meta.agil.entity.FrameworkEntity;
+import br.com.ucsal.meta.agil.entity.PerguntaEntity;
+import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
 import br.com.ucsal.meta.agil.entity.TimeEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
 import br.com.ucsal.meta.agil.exception.NotFoundException;
@@ -17,6 +22,15 @@ public class TimeService {
 	
 	@Autowired
 	private TimeRepository timeRepository;
+	@Autowired
+	private FrameworkService frameworkService;
+	@Autowired
+	private TecnologiaService tecnologiaService;
+	@Autowired
+	private PerguntaService perguntaService;
+	@Autowired
+	private CerimoniaService cerimoniaService;
+	
 	
 	public List<TimeEntity> getAllTimes() {
 		return timeRepository.findAll();
@@ -27,6 +41,12 @@ public class TimeService {
 		if(find.isPresent()) {
 			throw new BusinessException(MessageUtil.FAIL_SAVE + MessageUtil.TIME_EXISTENTE);
 		}
+		
+		time.setTecnologias(getTecnologias(time));
+		time.setPerguntas(getPerguntas(time));
+		time.setCerimonias(getCerimonias(time));
+		time.setFramework(getFramework(time));
+		
 		return timeRepository.save(time);
 	}
 
@@ -61,6 +81,37 @@ public class TimeService {
 		throw new NotFoundException(MessageUtil.TIME_NAO_ENCONTRADO);
 	}
 
+	private List<TecnologiaEntity> getTecnologias(TimeEntity time) {
+		List<TecnologiaEntity> tecnologias = new ArrayList<>();
+		for(TecnologiaEntity tec : time.getTecnologias()) {
+			TecnologiaEntity tecnologia = tecnologiaService.getTecnologia(tec.getCdTecnologia());
+			tecnologias.add(tecnologia);
+		}
+		return tecnologias;
+	}
 	
-
+	private List<PerguntaEntity> getPerguntas(TimeEntity time) {
+		List<PerguntaEntity> perguntas = new ArrayList<>();
+		if(time.getPerguntas() != null) {
+			for(PerguntaEntity perg : time.getPerguntas()) {
+				PerguntaEntity pergunta = perguntaService.getPergunta(perg.getCdPergunta());
+				perguntas.add(pergunta);
+			}
+		}
+		return perguntas;
+	}
+	
+	private List<CerimoniaEntity> getCerimonias(TimeEntity time) {
+		List<CerimoniaEntity> cerimonias = new ArrayList<>();
+		for(CerimoniaEntity ceri : time.getCerimonias()) {
+			CerimoniaEntity cerimonia = cerimoniaService.getCerimonia(ceri.getCdCerimonia());
+			cerimonias.add(cerimonia);
+		}
+		return cerimonias;
+	}
+	
+	private FrameworkEntity getFramework(TimeEntity time) {
+		FrameworkEntity framework = frameworkService.getFramework(time.getFramework().getCdFramework());
+		return framework;
+	}
 }

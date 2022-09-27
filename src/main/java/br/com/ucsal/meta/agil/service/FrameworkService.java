@@ -55,6 +55,14 @@ public class FrameworkService {
 		throw new NotFoundException(MessageUtil.FRAMEWORK_NAO_ENCONTRADO);
 	}
 
+	public FrameworkEntity getFramework(Long cdFramework) {
+		Optional<FrameworkEntity> framework = frameworkRepository.findById(cdFramework);
+		if(framework.isEmpty()) {
+			return null;
+		}
+		return framework.get();
+	}
+
 	
 	
 }

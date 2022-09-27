@@ -6,11 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.ucsal.meta.agil.entity.FrameworkEntity;
 import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
 import br.com.ucsal.meta.agil.exception.NotFoundException;
-import br.com.ucsal.meta.agil.repository.FrameworkRepository;
 import br.com.ucsal.meta.agil.repository.TecnologiaRepository;
 import br.com.ucsal.meta.agil.util.MessageUtil;
 
@@ -57,5 +55,14 @@ public class TecnologiaService {
 		
 		throw new NotFoundException(MessageUtil.TECNOLOGIA_NAO_ENCONTRADA);
 	}
+
+	public TecnologiaEntity getTecnologia(Long cdTecnologia) {
+		Optional<TecnologiaEntity> tecnologia = tecnologiaRepository.findById(cdTecnologia);
+		if(tecnologia.isEmpty()) {
+			return null;
+		}
+		return tecnologia.get();
+	}
+
 
 }

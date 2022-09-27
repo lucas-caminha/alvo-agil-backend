@@ -77,6 +77,7 @@ public class TimeDTO {
 	
 	public TimeEntity toEntity() {
 		TimeEntity time = new TimeEntity();
+		time.setCdTime(this.cdTime);
 		time.setNmTime(this.nmTime);
 		time.setFlTime(this.flTime);
 		time.setDtInicioTime(this.dtInicioTime);

@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity(name = "pergunta")
 public class PerguntaEntity {
 
@@ -16,6 +18,7 @@ public class PerguntaEntity {
 	private Long cdPergunta;
 	private String descPergunta;
 	private String flPergunta;
+	@JsonIgnore
 	@ManyToMany(mappedBy = "perguntas")
 	private List<TimeEntity> times;
 	
