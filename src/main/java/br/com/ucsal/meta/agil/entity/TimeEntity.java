@@ -13,6 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity(name = "time")
 public class TimeEntity {
 
@@ -22,18 +24,18 @@ public class TimeEntity {
 	private String nmTime;
 	private String flTime;
 	private LocalDate dtInicioTime;
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.MERGE)
 	@JoinTable(name = "timecerimonia", joinColumns = @JoinColumn(name = "cdCerimonia", referencedColumnName = "cdTime"),
 			inverseJoinColumns = @JoinColumn(name = "cdTime", referencedColumnName = "cdCerimonia"))
 	private List<CerimoniaEntity> cerimonias;
 	@ManyToOne
 	@JoinColumn(name = "cdFramework")
 	private FrameworkEntity framework;
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.MERGE)
 	@JoinTable(name = "timetecnologia", joinColumns = @JoinColumn(name = "cdTecnologia", referencedColumnName = "cdTime"), 
 				inverseJoinColumns = @JoinColumn(name = "cdTime", referencedColumnName = "cdTecnologia"))
 	private List<TecnologiaEntity> tecnologias;
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.MERGE)
 	@JoinTable(name = "timepergunta", joinColumns = @JoinColumn(name = "cdPergunta", referencedColumnName = "cdTime"), 
 				inverseJoinColumns = @JoinColumn(name = "cdTime", referencedColumnName = "cdPergunta"))
 	private List<PerguntaEntity> perguntas;

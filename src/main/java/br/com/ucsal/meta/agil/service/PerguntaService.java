@@ -53,5 +53,13 @@ public class PerguntaService {
 		throw new NotFoundException(MessageUtil.PERGUNTA_NAO_ENCONTRADO);
 	}
 
+	public PerguntaEntity getPergunta(Long cdPergunta) {
+		Optional<PerguntaEntity> pergunta = perguntaRepository.findById(cdPergunta);
+		if(pergunta.isEmpty()) {
+			return null;
+		}
+		return pergunta.get();
+	}
+
 
 }
