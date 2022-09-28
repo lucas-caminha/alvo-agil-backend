@@ -1,0 +1,3 @@
+INSERT INTO pergunta (fl_pergunta, desc_pergunta) VALUES('S', 'O cuidado em identificar pontos críticos no consenso sobre a necessidade de qualificação nos obriga à análise das direções preferenciais no sentido do progresso?');
+INSERT INTO pergunta (fl_pergunta, desc_pergunta) VALUES('S', 'Assim mesmo, a determinação clara de objetivos prepara-nos para enfrentar situações atípicas decorrentes das formas de ação?');
+INSERT INTO pergunta (fl_pergunta, desc_pergunta) VALUES('S', 'Do mesmo modo, o desenvolvimento contínuo de distintas formas de atuação agrega valor ao estabelecimento dos relacionamentos verticais entre as hierarquias?');

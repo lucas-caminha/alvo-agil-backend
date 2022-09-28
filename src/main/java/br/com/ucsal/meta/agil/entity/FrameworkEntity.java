@@ -14,8 +14,7 @@ public class FrameworkEntity {
 	private String nmFramework;
 	private String flFramework;
 
-	public FrameworkEntity() {
-	}
+	public FrameworkEntity() {}
 
 	public Long getCdFramework() {
 		return cdFramework;

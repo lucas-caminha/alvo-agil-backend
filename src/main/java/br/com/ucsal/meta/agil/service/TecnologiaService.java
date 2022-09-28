@@ -23,8 +23,8 @@ public class TecnologiaService {
 	}
 
 	public TecnologiaEntity save(TecnologiaEntity tecnologia) {
-		Optional<TecnologiaEntity> find = tecnologiaRepository.findByNmTecnologia(tecnologia.getNmTecnologia());	
-		if(find.isPresent()) {
+		Optional<List<TecnologiaEntity>> find = tecnologiaRepository.findByNmTecnologia(tecnologia.getNmTecnologia());	
+		if(!find.get().isEmpty()) {
 			throw new BusinessException(MessageUtil.FAIL_SAVE + MessageUtil.TECNOLOGIA_EXISTENTE);
 		}
 		return tecnologiaRepository.save(tecnologia);
