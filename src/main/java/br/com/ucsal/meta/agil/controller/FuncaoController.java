@@ -11,53 +11,50 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ucsal.meta.agil.dto.TecnologiaDTO;
-import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
-import br.com.ucsal.meta.agil.service.TecnologiaService;
+import br.com.ucsal.meta.agil.dto.FuncaoDTO;
+import br.com.ucsal.meta.agil.entity.FuncaoEntity;
+import br.com.ucsal.meta.agil.service.FuncaoService;
 
 @RestController
-@RequestMapping("/tecnologia")
-public class TecnologiaController {
+@RequestMapping("/funcao")
+public class FuncaoController {
 	
 	@Autowired
-	private TecnologiaService tecnologiaService;
+	private FuncaoService funcaoService;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/todos", produces = "application/json")
-	public ResponseEntity<List<TecnologiaEntity>> getAllTecnologias() {
-		List<TecnologiaEntity> tecnologias = tecnologiaService.getAllTecnologias();
-		if(tecnologias.isEmpty()) {
+	public ResponseEntity<List<FuncaoEntity>> getAllFuncoes() {
+		List<FuncaoEntity> funcoes = funcaoService.getAllFuncoes();
+		if(funcoes.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(tecnologias);
+		return ResponseEntity.status(HttpStatus.OK).body(funcoes);
 	}
 	
-	
 	@RequestMapping(method = RequestMethod.POST, value = "/add", produces = "application/json")
-	public ResponseEntity<TecnologiaEntity> addTecnologia(@RequestBody TecnologiaDTO dto) {	
-		TecnologiaEntity entity = dto.toEntity();
-		entity.setCdTecnologia(null);
-		TecnologiaEntity saved = tecnologiaService.save(entity);
-		if(saved.getCdTecnologia() == null) {
+	public ResponseEntity<FuncaoEntity> addFuncao(@RequestBody FuncaoDTO dto) {	
+		FuncaoEntity entity = dto.toEntity();
+		entity.setCdFuncao(null);
+		FuncaoEntity saved = funcaoService.save(entity);
+		if(saved.getCdFuncao() == null) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(saved);
 	}
 	
-	
 	@RequestMapping(method = RequestMethod.PUT, value = "/atualiza", produces = "application/json")
-	public ResponseEntity<TecnologiaEntity> atualizaTecnologia(@RequestBody TecnologiaDTO dto) {	
-		TecnologiaEntity entity = dto.toEntity();
-		TecnologiaEntity updated = tecnologiaService.atualiza(entity);
+	public ResponseEntity<FuncaoEntity> atualizaFuncao(@RequestBody FuncaoDTO dto) {	
+		FuncaoEntity entity = dto.toEntity();
+		FuncaoEntity updated = funcaoService.atualiza(entity);
 		if(updated == null) {
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(updated);
 	}
 	
-	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/deleta/{id}", produces = "application/json")
-	public ResponseEntity<TecnologiaEntity> deleteTecnologia(@PathVariable(name = "id") Integer id) {	
-		TecnologiaEntity deleted = tecnologiaService.deleta(id);
+	public ResponseEntity<FuncaoEntity> deleteFuncao(@PathVariable(name = "id") Integer id) {	
+		FuncaoEntity deleted = funcaoService.deleta(id);
 		if(deleted == null) {
 			return ResponseEntity.noContent().build();
 		}
@@ -65,12 +62,4 @@ public class TecnologiaController {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-
 }

@@ -18,6 +18,7 @@ public class PerguntaEntity {
 	private Long cdPergunta;
 	private String descPergunta;
 	private String flPergunta;
+	private Double peso;
 	@JsonIgnore
 	@ManyToMany(mappedBy = "perguntas")
 	private List<TimeEntity> times;
@@ -47,6 +48,12 @@ public class PerguntaEntity {
 	}
 	public void setTimes(List<TimeEntity> times) {
 		this.times = times;
+	}
+	public Double getPeso() {
+		return peso;
+	}
+	public void setPeso(Double peso) {
+		this.peso = peso;
 	}
 	
 }
