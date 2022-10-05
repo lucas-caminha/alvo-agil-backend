@@ -37,6 +37,7 @@ public class TecnologiaDTO {
 	
 	public TecnologiaEntity toEntity() {		
 		TecnologiaEntity tecnologia = new TecnologiaEntity();
+		tecnologia.setCdTecnologia(this.cdTecnologia);
 		tecnologia.setNmTecnologia(this.nmTecnologia);
 		tecnologia.setFlTecnologia(this.flTecnologia);
 		return tecnologia;

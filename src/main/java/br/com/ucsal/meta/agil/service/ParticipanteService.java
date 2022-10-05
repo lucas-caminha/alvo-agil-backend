@@ -13,6 +13,7 @@ import br.com.ucsal.meta.agil.util.MessageUtil;
 
 @Service
 public class ParticipanteService {
+	
 	@Autowired
 	private ParticipanteRepository participanteRepository;
 

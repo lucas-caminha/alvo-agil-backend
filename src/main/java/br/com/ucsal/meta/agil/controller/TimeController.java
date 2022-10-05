@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ucsal.meta.agil.dto.TimeDTO;
+import br.com.ucsal.meta.agil.dto.TimeSimpleDTO;
 import br.com.ucsal.meta.agil.entity.TimeEntity;
 import br.com.ucsal.meta.agil.service.TimeService;
 
@@ -24,11 +25,11 @@ public class TimeController {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/todos", produces = "application/json")
 	public ResponseEntity<List<TimeEntity>> getAllTimes() {
-		List<TimeEntity> Times = timeService.getAllTimes();
-		if(Times.isEmpty()) {
+		List<TimeEntity> times = timeService.getAllTimes();
+		if(times.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(Times);
+		return ResponseEntity.status(HttpStatus.OK).body(times);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/add", produces = "application/json")
@@ -41,6 +42,18 @@ public class TimeController {
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(saved);
 	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/v2/add", produces = "application/json")
+	public ResponseEntity<TimeEntity> addTimeSimple(@RequestBody TimeSimpleDTO dto) {	
+		TimeEntity entity = dto.toEntity();
+		entity.setCdTime(null);
+		TimeEntity saved = timeService.save(entity);
+		if(saved.getCdTime() == null) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
+		return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+	}
+	
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/atualiza", produces = "application/json")
 	public ResponseEntity<TimeEntity> atualizaTime(@RequestBody TimeDTO dto) {	

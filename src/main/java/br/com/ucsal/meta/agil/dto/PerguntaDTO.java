@@ -1,16 +1,15 @@
 package br.com.ucsal.meta.agil.dto;
 
-import java.util.List;
-
 import br.com.ucsal.meta.agil.entity.PerguntaEntity;
-import br.com.ucsal.meta.agil.entity.TimeEntity;
 
 public class PerguntaDTO {
 	
 	private Long cdPergunta;
 	private String descPergunta;
 	private String flPergunta;
-	private List<TimeEntity> times;
+	private Double peso;
+	
+	public PerguntaDTO() {}
 	
 	public Long getCdPergunta() {
 		return cdPergunta;
@@ -29,12 +28,12 @@ public class PerguntaDTO {
 	}
 	public void setFlPergunta(String flPergunta) {
 		this.flPergunta = flPergunta;
+	}	
+	public Double getPeso() {
+		return peso;
 	}
-	public List<TimeEntity> getTimes() {
-		return times;
-	}
-	public void setTimes(List<TimeEntity> times) {
-		this.times = times;
+	public void setPeso(Double peso) {
+		this.peso = peso;
 	}
 
 	public PerguntaEntity toEntity() {
@@ -42,8 +41,7 @@ public class PerguntaDTO {
 		pergunta.setCdPergunta(this.cdPergunta);
 		pergunta.setDescPergunta(this.descPergunta);
 		pergunta.setFlPergunta(this.flPergunta);
-		pergunta.setTimes(this.times);
-		return null;
+		return pergunta;
 	}
 
 }
