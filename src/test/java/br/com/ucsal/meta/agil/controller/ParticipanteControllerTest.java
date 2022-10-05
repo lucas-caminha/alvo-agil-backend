@@ -8,7 +8,6 @@ import org.springframework.test.context.jdbc.Sql;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@Sql({"/scripts/participante-data.sql"})
 // TODO
 class ParticipanteControllerTest {
 

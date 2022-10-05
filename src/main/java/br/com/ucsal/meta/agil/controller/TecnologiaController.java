@@ -11,11 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ucsal.meta.agil.dto.FrameworkDTO;
 import br.com.ucsal.meta.agil.dto.TecnologiaDTO;
-import br.com.ucsal.meta.agil.entity.FrameworkEntity;
 import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
-import br.com.ucsal.meta.agil.service.FrameworkService;
 import br.com.ucsal.meta.agil.service.TecnologiaService;
 
 @RestController

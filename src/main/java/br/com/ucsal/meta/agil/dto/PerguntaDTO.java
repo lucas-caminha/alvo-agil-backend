@@ -7,6 +7,7 @@ public class PerguntaDTO {
 	private Long cdPergunta;
 	private String descPergunta;
 	private String flPergunta;
+	private Double peso;
 	
 	public PerguntaDTO() {}
 	
@@ -27,6 +28,12 @@ public class PerguntaDTO {
 	}
 	public void setFlPergunta(String flPergunta) {
 		this.flPergunta = flPergunta;
+	}	
+	public Double getPeso() {
+		return peso;
+	}
+	public void setPeso(Double peso) {
+		this.peso = peso;
 	}
 
 	public PerguntaEntity toEntity() {
