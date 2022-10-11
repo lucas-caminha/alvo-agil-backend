@@ -22,8 +22,7 @@ public class ParticipanteService {
 	}
 
 	public ParticipanteEntity save(ParticipanteEntity participante) {
-		Optional<ParticipanteEntity> find = ParticipanteRepository
-				.findByNmParticipante(participante.getNmParticipante());
+		Optional<ParticipanteEntity> find = participanteRepository.findByNmParticipante(participante.getNmParticipante());
 		if (find.isPresent()) {
 			throw new BusinessException(MessageUtil.FAIL_SAVE + MessageUtil.PARTICIPANTE_EXISTENTE);
 		}
