@@ -8,9 +8,6 @@ import br.com.ucsal.meta.agil.entity.ParticipanteEntity;
 
 public interface ParticipanteRepository extends JpaRepository<ParticipanteEntity, Long>{
 
-	static Optional<ParticipanteEntity> findByNmParticipante(String nmParticipante) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	Optional<ParticipanteEntity> findByNmParticipante(String nmParticipante);
 
 }
