@@ -1,12 +1,11 @@
 package br.com.ucsal.meta.agil.dto;
 
-import java.time.LocalDate;
-
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.ucsal.meta.agil.entity.ParticipanteEntity;
+import br.com.ucsal.meta.agil.util.DataUtils;
 
 public class ParticipanteDTO {
 	
@@ -15,11 +14,12 @@ public class ParticipanteDTO {
 	private String nmParticipante;
 	private String flParticipante;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-	private LocalDate dtInicioParticipante;
+	private String dtInicioParticipante;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-	private LocalDate dtFimParticipante;
+	private String dtFimParticipante;
 	@NotNull
 	private String emailParticipante;
+	private FuncaoDTO funcao;
 	
 	public Long getCdParticipante() {
 		return cdParticipante;
@@ -39,16 +39,16 @@ public class ParticipanteDTO {
 	public void setFlParticipante(String flParticipante) {
 		this.flParticipante = flParticipante;
 	}
-	public LocalDate getDtInicioParticipante() {
+	public String getDtInicioParticipante() {
 		return dtInicioParticipante;
 	}
-	public void setDtInicioParticipante(LocalDate dtInicioParticipante) {
+	public void setDtInicioParticipante(String dtInicioParticipante) {
 		this.dtInicioParticipante = dtInicioParticipante;
 	}
-	public LocalDate getDtFimParticipante() {
+	public String getDtFimParticipante() {
 		return dtFimParticipante;
 	}
-	public void setDtFimParticipante(LocalDate dtFimParticipante) {
+	public void setDtFimParticipante(String dtFimParticipante) {
 		this.dtFimParticipante = dtFimParticipante;
 	}
 	public String getEmailParticipante() {
@@ -57,15 +57,22 @@ public class ParticipanteDTO {
 	public void setEmailParticipante(String emailParticipante) {
 		this.emailParticipante = emailParticipante;
 	}
+	public FuncaoDTO getFuncao() {
+		return funcao;
+	}
+	public void setFuncao(FuncaoDTO funcao) {
+		this.funcao = funcao;
+	}
 	
 	public ParticipanteEntity toEntity() {
 		ParticipanteEntity participante = new ParticipanteEntity();
 		participante.setCdParticipante(this.cdParticipante);
 		participante.setNmParticipante(this.nmParticipante);
 		participante.setFlParticipante(this.flParticipante);
-		participante.setDtInicioParticipante(this.dtInicioParticipante);
-		participante.setDtFimParticipante(this.dtFimParticipante);
+		participante.setDtInicioParticipante(DataUtils.stringToLocalDate(this.dtInicioParticipante));
+		participante.setDtFimParticipante(DataUtils.stringToLocalDate(this.dtFimParticipante));
 		participante.setEmailParticipante(this.emailParticipante);
+		participante.setFuncao(this.funcao.toEntity());
 		return participante;
 	}
 }
