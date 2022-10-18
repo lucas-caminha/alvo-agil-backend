@@ -19,7 +19,7 @@ public class ParticipanteDTO {
 	private String dtFimParticipante;
 	@NotNull
 	private String emailParticipante;
-	private FuncaoDTO funcao;
+	private Integer cdFuncao;
 	
 	public Long getCdParticipante() {
 		return cdParticipante;
@@ -57,11 +57,11 @@ public class ParticipanteDTO {
 	public void setEmailParticipante(String emailParticipante) {
 		this.emailParticipante = emailParticipante;
 	}
-	public FuncaoDTO getFuncao() {
-		return funcao;
+	public Integer getCdFuncao() {
+		return cdFuncao;
 	}
-	public void setFuncao(FuncaoDTO funcao) {
-		this.funcao = funcao;
+	public void setCdFuncao(Integer cdFuncao) {
+		this.cdFuncao = cdFuncao;
 	}
 	
 	public ParticipanteEntity toEntity() {
@@ -72,7 +72,9 @@ public class ParticipanteDTO {
 		participante.setDtInicioParticipante(DataUtils.stringToLocalDate(this.dtInicioParticipante));
 		participante.setDtFimParticipante(DataUtils.stringToLocalDate(this.dtFimParticipante));
 		participante.setEmailParticipante(this.emailParticipante);
-		participante.setFuncao(this.funcao.toEntity());
+		FuncaoDTO funcaoDTO = new FuncaoDTO();
+		funcaoDTO.setCdFuncao(this.cdFuncao.longValue());
+		participante.setFuncao(funcaoDTO.toEntity());
 		return participante;
 	}
 }

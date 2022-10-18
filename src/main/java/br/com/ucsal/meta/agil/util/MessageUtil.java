@@ -27,6 +27,9 @@ public class MessageUtil {
 	
 	public static final String FUNCAO_EXISTENTE = "Função existente";
 	public static final String FUNCAO_NAO_ENCONTRADA = "Função não encontrada";
+	
+	public static final String QUADRANTEAGIL_NAO_ENCONTRADO = "Quadrante não encontrado";
+	public static final String QUADRANTEAGIL_EXISTENTE = "Quadrante Existente";
 
 
 
