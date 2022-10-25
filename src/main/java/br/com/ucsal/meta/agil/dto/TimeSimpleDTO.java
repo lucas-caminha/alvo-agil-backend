@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
 import br.com.ucsal.meta.agil.entity.FrameworkEntity;
-import br.com.ucsal.meta.agil.entity.PerguntaEntity;
 import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
 import br.com.ucsal.meta.agil.entity.TimeEntity;
 import br.com.ucsal.meta.agil.util.DataUtils;
@@ -25,7 +24,6 @@ public class TimeSimpleDTO {
 	private List<String> cerimonias;
 	private String framework;
 	private List<String> tecnologias;
-	private List<String> perguntas;
 	
 	public Long getCdTime() {
 		return cdTime;
@@ -69,12 +67,6 @@ public class TimeSimpleDTO {
 	public void setTecnologias(List<String> tecnologias) {
 		this.tecnologias = tecnologias;
 	}
-	public List<String> getPerguntas() {
-		return perguntas;
-	}
-	public void setPerguntas(List<String> perguntas) {
-		this.perguntas = perguntas;
-	}
 	
 	public TimeEntity toEntity() {
 		TimeEntity time = new TimeEntity();
@@ -84,8 +76,7 @@ public class TimeSimpleDTO {
 		time.setDtInicioTime(DataUtils.stringToLocalDate(this.dtInicioTime));
 		time.setCerimonias(StringToCerimonias());
 		time.setTecnologias(StringToTecnologias());
-		time.setFramework(stringToFramework());
-		time.setPerguntas(StringToPerguntas());		
+		time.setFramework(stringToFramework());	
 		return time;
 	}	
 	
@@ -113,16 +104,6 @@ public class TimeSimpleDTO {
 			tecnologias.add(entity);
 		}
 		return tecnologias;
-	}
-	
-	private List<PerguntaEntity> StringToPerguntas() { 
-		List<PerguntaEntity> perguntas = new ArrayList<PerguntaEntity>();
-		for(String cdPergunta : this.perguntas) {
-			PerguntaEntity entity = new PerguntaEntity();
-			entity.setCdPergunta(converteStringParaLong(cdPergunta));
-			perguntas.add(entity);
-		}
-		return perguntas;
 	}
 	
 	private Long converteStringParaLong(String id) {
