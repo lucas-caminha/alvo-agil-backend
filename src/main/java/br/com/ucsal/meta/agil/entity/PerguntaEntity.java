@@ -1,12 +1,11 @@
 package br.com.ucsal.meta.agil.entity;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity(name = "pergunta")
 public class PerguntaEntity {
@@ -16,8 +15,10 @@ public class PerguntaEntity {
 	private Long cdPergunta;
 	private String descPergunta;
 	private String flPergunta;
-	@ManyToMany(mappedBy = "perguntas")
-	private List<TimeEntity> times;
+	private Double peso;
+	@ManyToOne
+	@JoinColumn(name = "cdTema")
+	private TemaEntity tema;
 	
 	public PerguntaEntity() {}
 	
@@ -39,11 +40,17 @@ public class PerguntaEntity {
 	public void setFlPergunta(String flPergunta) {
 		this.flPergunta = flPergunta;
 	}
-	public List<TimeEntity> getTimes() {
-		return times;
+	public Double getPeso() {
+		return peso;
 	}
-	public void setTimes(List<TimeEntity> times) {
-		this.times = times;
+	public void setPeso(Double peso) {
+		this.peso = peso;
+	}
+	public TemaEntity getTema() {
+		return tema;
+	}
+	public void setTema(TemaEntity tema) {
+		this.tema = tema;
 	}
 	
 }

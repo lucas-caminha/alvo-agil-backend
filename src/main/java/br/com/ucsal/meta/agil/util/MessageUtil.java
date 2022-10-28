@@ -8,7 +8,7 @@ public class MessageUtil {
 	public static final String TIME_EXISTENTE = "Time Existente";
 	public static final String TIME_NAO_ENCONTRADO = "Time não encontrado";
 	
-	public static final String FAIL_SAVE = "Falha ao salvar";
+	public static final String FAIL_SAVE = "Falha ao salvar ";
 
 	public static final String PARTICIPANTE_EXISTENTE = "Participante Existente";
 	public static final String PARTICIPANTE_NAO_ENCONTRADO = "Participante não encontrado";
@@ -24,7 +24,12 @@ public class MessageUtil {
 	public static final String PERGUNTA_EXISTENTE = "Pergunta existente";
 	
 	public static final String USUARIO_EXISTENTE = "Usuario existente";
-
+	
+	public static final String FUNCAO_EXISTENTE = "Função existente";
+	public static final String FUNCAO_NAO_ENCONTRADA = "Função não encontrada";
+	
+	public static final String CAMADA_EXISTENTE = "Camada existente";
+	public static final String CAMADA_NAO_ENCONTRADA = "Camada não encontrada";
 
 
 }

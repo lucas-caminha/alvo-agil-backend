@@ -3,6 +3,7 @@ package br.com.ucsal.meta.agil.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ucsal.meta.agil.entity.PerguntaEntity;
@@ -14,6 +15,7 @@ import br.com.ucsal.meta.agil.util.MessageUtil;
 @Service
 public class PerguntaService {
 	
+	@Autowired
 	private PerguntaRepository perguntaRepository;
 
 	public List<PerguntaEntity> getAllPerguntas() {
@@ -21,8 +23,8 @@ public class PerguntaService {
 	}
 
 	public PerguntaEntity save(PerguntaEntity pergunta) {
-		Optional<PerguntaEntity> find = perguntaRepository.findByDescPergunta(pergunta.getDescPergunta());	
-		if(find.isPresent()) {
+		Optional<List<PerguntaEntity>> find = perguntaRepository.findByDescPergunta(pergunta.getDescPergunta());	
+		if(!find.get().isEmpty()) {
 			throw new BusinessException(MessageUtil.FAIL_SAVE + MessageUtil.PERGUNTA_EXISTENTE);
 		}
 		return perguntaRepository.save(pergunta);
@@ -51,6 +53,14 @@ public class PerguntaService {
 		}
 		
 		throw new NotFoundException(MessageUtil.PERGUNTA_NAO_ENCONTRADO);
+	}
+
+	public PerguntaEntity getPergunta(Long cdPergunta) {
+		Optional<PerguntaEntity> pergunta = perguntaRepository.findById(cdPergunta);
+		if(pergunta.isEmpty()) {
+			return null;
+		}
+		return pergunta.get();
 	}
 
 

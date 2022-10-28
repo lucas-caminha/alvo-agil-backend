@@ -52,4 +52,12 @@ public class CerimoniaService {
 
 		throw new NotFoundException(MessageUtil.CERIMONIA_NAO_ENCONTRADO);
 	}
+
+	public CerimoniaEntity getCerimonia(Long cdCerimonia) {
+		Optional<CerimoniaEntity> cerimonia = cerimoniaRepository.findById(cdCerimonia);
+		if(cerimonia.isEmpty()) {
+			return null;
+		}
+		return cerimonia.get();
+	}
 }

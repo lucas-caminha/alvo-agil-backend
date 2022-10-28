@@ -22,21 +22,17 @@ public class TimeEntity {
 	private String nmTime;
 	private String flTime;
 	private LocalDate dtInicioTime;
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.MERGE)
 	@JoinTable(name = "timecerimonia", joinColumns = @JoinColumn(name = "cdCerimonia", referencedColumnName = "cdTime"),
 			inverseJoinColumns = @JoinColumn(name = "cdTime", referencedColumnName = "cdCerimonia"))
 	private List<CerimoniaEntity> cerimonias;
 	@ManyToOne
 	@JoinColumn(name = "cdFramework")
 	private FrameworkEntity framework;
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.MERGE)
 	@JoinTable(name = "timetecnologia", joinColumns = @JoinColumn(name = "cdTecnologia", referencedColumnName = "cdTime"), 
 				inverseJoinColumns = @JoinColumn(name = "cdTime", referencedColumnName = "cdTecnologia"))
 	private List<TecnologiaEntity> tecnologias;
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "timepergunta", joinColumns = @JoinColumn(name = "cdPergunta", referencedColumnName = "cdTime"), 
-				inverseJoinColumns = @JoinColumn(name = "cdTime", referencedColumnName = "cdPergunta"))
-	private List<PerguntaEntity> perguntas;
 	
 	public TimeEntity() {}
 	
@@ -82,11 +78,5 @@ public class TimeEntity {
 	public void setTecnologias(List<TecnologiaEntity> tecnologias) {
 		this.tecnologias = tecnologias;
 	}
-	public List<PerguntaEntity> getPerguntas() {
-		return perguntas;
-	}
-	public void setPerguntas(List<PerguntaEntity> perguntas) {
-		this.perguntas = perguntas;
-	}	
 		
 }
