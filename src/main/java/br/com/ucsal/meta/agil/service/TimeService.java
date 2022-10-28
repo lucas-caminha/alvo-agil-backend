@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
 import br.com.ucsal.meta.agil.entity.FrameworkEntity;
-import br.com.ucsal.meta.agil.entity.PerguntaEntity;
 import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
 import br.com.ucsal.meta.agil.entity.TimeEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
@@ -27,8 +26,6 @@ public class TimeService {
 	@Autowired
 	private TecnologiaService tecnologiaService;
 	@Autowired
-	private PerguntaService perguntaService;
-	@Autowired
 	private CerimoniaService cerimoniaService;
 	
 	
@@ -43,7 +40,6 @@ public class TimeService {
 		}
 		
 		time.setTecnologias(getTecnologias(time));
-		time.setPerguntas(getPerguntas(time));
 		time.setCerimonias(getCerimonias(time));
 		time.setFramework(getFramework(time));
 		
@@ -61,7 +57,6 @@ public class TimeService {
 			find.get().setCerimonias(time.getCerimonias());
 			find.get().setFramework(time.getFramework());
 			find.get().setTecnologias(time.getTecnologias());
-			find.get().setPerguntas(time.getPerguntas());
 			TimeEntity updated = timeRepository.save(find.get());
 			return updated;
 		}
@@ -89,18 +84,7 @@ public class TimeService {
 		}
 		return tecnologias;
 	}
-	
-	private List<PerguntaEntity> getPerguntas(TimeEntity time) {
-		List<PerguntaEntity> perguntas = new ArrayList<>();
-		if(time.getPerguntas() != null) {
-			for(PerguntaEntity perg : time.getPerguntas()) {
-				PerguntaEntity pergunta = perguntaService.getPergunta(perg.getCdPergunta());
-				perguntas.add(pergunta);
-			}
-		}
-		return perguntas;
-	}
-	
+		
 	private List<CerimoniaEntity> getCerimonias(TimeEntity time) {
 		List<CerimoniaEntity> cerimonias = new ArrayList<>();
 		for(CerimoniaEntity ceri : time.getCerimonias()) {

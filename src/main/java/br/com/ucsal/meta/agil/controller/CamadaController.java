@@ -10,41 +10,41 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import br.com.ucsal.meta.agil.dto.QuadranteAgilDTO;
-import br.com.ucsal.meta.agil.entity.QuadranteAgilEntity;
-import br.com.ucsal.meta.agil.service.QuadranteAgilService;
+import br.com.ucsal.meta.agil.dto.CamadaDTO;
+import br.com.ucsal.meta.agil.entity.CamadaEntity;
+import br.com.ucsal.meta.agil.service.CamadaService;
 
 @RestController
-@RequestMapping("/quadrante")
-public class QuadranteAgilController {
+@RequestMapping("/camada")
+public class CamadaController {
 
 	@Autowired
-	private QuadranteAgilService quadranteAgilService;
+	private CamadaService camadaService;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/todos", produces = "application/json")
-	public ResponseEntity<List<QuadranteAgilEntity>> getAllQuadranteAgeis() {
-		List<QuadranteAgilEntity> quadranteAgeis = quadranteAgilService.getAllQuadranteAgeis();
-		if (quadranteAgeis.isEmpty()) {
+	public ResponseEntity<List<CamadaEntity>> getAllQuadranteAgeis() {
+		List<CamadaEntity> camadas = camadaService.getAllCamadas();
+		if (camadas.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(quadranteAgeis);
+		return ResponseEntity.status(HttpStatus.OK).body(camadas);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/add", produces = "application/json")
-	public ResponseEntity<QuadranteAgilEntity> addQuadranteAgil(@RequestBody QuadranteAgilDTO dto) {
-		QuadranteAgilEntity entity = dto.toEntity();
-		entity.setCdQuadrante(null);
-		QuadranteAgilEntity saved = quadranteAgilService.save(entity);
-		if (saved.getCdQuadrante() == null) {
+	public ResponseEntity<CamadaEntity> addCamada(@RequestBody CamadaDTO dto) {
+		CamadaEntity entity = dto.toEntity();
+		entity.setCdCamada(null);
+		CamadaEntity saved = camadaService.save(entity);
+		if (saved.getCdCamada() == null) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(saved);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/atualiza", produces = "application/json")
-	public ResponseEntity<QuadranteAgilEntity> atualizaQuadranteAgil(@RequestBody QuadranteAgilDTO dto) {
-		QuadranteAgilEntity entity = dto.toEntity();
-		QuadranteAgilEntity updated = quadranteAgilService.atualiza(entity);
+	public ResponseEntity<CamadaEntity> atualizaCamada(@RequestBody CamadaDTO dto) {
+		CamadaEntity entity = dto.toEntity();
+		CamadaEntity updated = camadaService.atualiza(entity);
 		if (updated == null) {
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
 		}
@@ -52,8 +52,8 @@ public class QuadranteAgilController {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/deleta/{id}", produces = "application/json")
-	public ResponseEntity<QuadranteAgilEntity> deleteQuadranteAgil(@PathVariable(name = "id") Integer id) {
-		QuadranteAgilEntity deleted = quadranteAgilService.deleta(id);
+	public ResponseEntity<CamadaEntity> deleteCamada(@PathVariable(name = "id") Integer id) {
+		CamadaEntity deleted = camadaService.deleta(id);
 		if (deleted == null) {
 			return ResponseEntity.noContent().build();
 		}

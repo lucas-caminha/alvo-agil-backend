@@ -12,7 +12,6 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
-import br.com.ucsal.meta.agil.entity.PerguntaEntity;
 import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
 import br.com.ucsal.meta.agil.entity.TimeEntity;
 
@@ -29,7 +28,6 @@ public class TimeDTO {
 	private List<CerimoniaDTO> cerimonias;
 	private FrameworkDTO framework;
 	private List<TecnologiaDTO> tecnologias;
-	private List<PerguntaDTO> perguntas;
 	
 	public Long getCdTime() {
 		return cdTime;
@@ -73,12 +71,6 @@ public class TimeDTO {
 	public void setTecnologias(List<TecnologiaDTO> tecnologias) {
 		this.tecnologias = tecnologias;
 	}
-	public List<PerguntaDTO> getPerguntas() {
-		return perguntas;
-	}
-	public void setPerguntas(List<PerguntaDTO> perguntas) {
-		this.perguntas = perguntas;
-	}
 	public TimeEntity toEntity() {
 		TimeEntity time = new TimeEntity();
 		time.setCdTime(this.cdTime);
@@ -87,8 +79,7 @@ public class TimeDTO {
 		//time.setDtInicioTime(this.dtInicioTime);
 		time.setCerimonias(dtoToCerimonias());
 		time.setTecnologias(dtoToTecnologias());
-		time.setFramework(this.framework.toEntity());
-		time.setPerguntas(dtoToPerguntas());		
+		time.setFramework(this.framework.toEntity());		
 		return time;
 	}	
 	
@@ -108,11 +99,4 @@ public class TimeDTO {
 		return tecnologias;
 	}
 	
-	private List<PerguntaEntity> dtoToPerguntas() { 
-		List<PerguntaEntity> perguntas = new ArrayList<PerguntaEntity>();
-		for(PerguntaDTO dto : this.perguntas) {
-			perguntas.add(dto.toEntity());
-		}
-		return perguntas;
-	}
 }
