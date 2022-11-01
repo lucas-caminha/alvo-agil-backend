@@ -17,7 +17,7 @@ public class ParticipanteService {
 	@Autowired
 	private ParticipanteRepository participanteRepository;
 
-	public List<ParticipanteEntity> getAllPartcipante() {
+	public List<ParticipanteEntity> getAllParticipantes() {
 		return participanteRepository.findAll();
 	}
 
@@ -51,6 +51,16 @@ public class ParticipanteService {
 			return participante.get();
 		}
 
+		throw new NotFoundException(MessageUtil.PARTICIPANTE_NAO_ENCONTRADO);
+	}
+	
+	public List<ParticipanteEntity> getParticipantesPorTime(Integer timeId){ 
+		Long cdTime = Long.parseLong(timeId.toString());
+		Optional<List<ParticipanteEntity>> participantes = participanteRepository.findByTime(cdTime);
+		if (participantes.isPresent()) {
+			return participantes.get();
+		}
+		
 		throw new NotFoundException(MessageUtil.PARTICIPANTE_NAO_ENCONTRADO);
 	}
 }
