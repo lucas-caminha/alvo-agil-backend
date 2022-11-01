@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
 import br.com.ucsal.meta.agil.entity.FrameworkEntity;
+import br.com.ucsal.meta.agil.entity.ParticipanteEntity;
 import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
 import br.com.ucsal.meta.agil.entity.TimeEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
@@ -67,10 +68,10 @@ public class TimeService {
 	public TimeEntity deleta(Integer id)  {
 		
 		Long cdTime = Long.parseLong(id.toString());
-		Optional<TimeEntity> Time = timeRepository.findById(cdTime);
-		if(Time.isPresent()) {
-			timeRepository.delete(Time.get());
-			return Time.get();
+		Optional<TimeEntity> time = timeRepository.findById(cdTime);
+		if(time.isPresent()) {
+			timeRepository.delete(time.get());
+			return time.get();
 		}
 		
 		throw new NotFoundException(MessageUtil.TIME_NAO_ENCONTRADO);
@@ -98,4 +99,14 @@ public class TimeService {
 		FrameworkEntity framework = frameworkService.getFramework(time.getFramework().getCdFramework());
 		return framework;
 	}
+
+	public TimeEntity buscaTimePorId(Long cdTime) {
+		Optional<TimeEntity> time = timeRepository.findById(cdTime);
+		if(time.isPresent()) {
+			return time.get();
+		}
+		throw new NotFoundException(MessageUtil.TIME_NAO_ENCONTRADO);
+	}
+	
+
 }

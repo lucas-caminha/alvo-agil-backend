@@ -12,32 +12,33 @@ import br.com.ucsal.meta.agil.util.MessageUtil;
 
 @Service
 public class TemaService {
-	
 
 	@Autowired
 	private TemaRepository temaRepository;
-	
+
 	public List<TemaEntity>getAllTemas(){
 		return temaRepository.findAll();
 	}
+	
 	public TemaEntity save (TemaEntity tema) {
 		Optional<TemaEntity> find= temaRepository.findByNmTema(tema.getNmTema());
 		if(find.isPresent()) {
 			throw new BusinessException(MessageUtil.FAIL_SAVE + MessageUtil.TEMA_EXISTENTE);
 		}
+
+		return temaRepository.save(tema);
+	}
 	
-	return temaRepository.save(tema);
-}
 	public TemaEntity atualiza (TemaEntity tema) {
-	Optional<TemaEntity> find= temaRepository.findByNmTema(tema.getNmTema());
-	if(find.isPresent()) {
-		find.get().setNmTema(tema.getNmTema());
-		find.get().setFlTema(tema.getFlTema());
-		find.get().setCdTema(tema.getCdTema());
-		TemaEntity update = temaRepository.save(find.get());
-		return update ;
-}
-	throw new NotFoundException (MessageUtil.TEMA_NAO_ENCONTRADO);
+		Optional<TemaEntity> find= temaRepository.findByNmTema(tema.getNmTema());
+		if(find.isPresent()) {
+			find.get().setNmTema(tema.getNmTema());
+			find.get().setFlTema(tema.getFlTema());
+			find.get().setCdTema(tema.getCdTema());
+			TemaEntity update = temaRepository.save(find.get());
+			return update ;
+		}
+		throw new NotFoundException (MessageUtil.TEMA_NAO_ENCONTRADO);
 	}
 
 	public TemaEntity delete(Integer id) {
@@ -59,6 +60,7 @@ public class TemaService {
 		}
 		return tema.get();
 	}
+	
 }
 
 

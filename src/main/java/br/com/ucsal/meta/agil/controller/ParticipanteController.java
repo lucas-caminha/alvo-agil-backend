@@ -22,7 +22,7 @@ public class ParticipanteController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/todos", produces = "application/json")
 	public ResponseEntity<List<ParticipanteEntity>> getAllParticipante() {
-		List<ParticipanteEntity> participantes = participanteService.getAllPartcipante();
+		List<ParticipanteEntity> participantes = participanteService.getAllParticipantes();
 
 		if (participantes.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

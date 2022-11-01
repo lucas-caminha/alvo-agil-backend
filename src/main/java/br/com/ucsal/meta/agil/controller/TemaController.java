@@ -17,6 +17,7 @@ import br.com.ucsal.meta.agil.service.TemaService;
 @RestController
 @RequestMapping("/tema")
 public class TemaController {
+	
 	@Autowired
 	private TemaService TemaService;
 
@@ -29,32 +30,35 @@ public class TemaController {
 		return ResponseEntity.status(HttpStatus.OK).body(Temas);
 	}
 
-@RequestMapping(method = RequestMethod.POST, value = "/add", produces = "application/json")
-public ResponseEntity<TemaEntity> addTema(@RequestBody TemaDTO dto) {
-	TemaEntity entity = dto.toEntity();
-	entity.setCdTema(null);
-	TemaEntity saved = TemaService.save(entity);
-	if (saved.getCdTema() == null) {
-		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+	@RequestMapping(method = RequestMethod.POST, value = "/add", produces = "application/json")
+	public ResponseEntity<TemaEntity> addTema(@RequestBody TemaDTO dto) {
+		TemaEntity entity = dto.toEntity();
+		entity.setCdTema(null);
+		TemaEntity saved = TemaService.save(entity);
+		if (saved.getCdTema() == null) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
+		return ResponseEntity.status(HttpStatus.CREATED).body(saved);
 	}
-	return ResponseEntity.status(HttpStatus.CREATED).body(saved);
-}
-@RequestMapping(method = RequestMethod.PUT, value = "/atualiza", produces = "application/json")
-public ResponseEntity<TemaEntity> atualizaTema(@RequestBody TemaDTO dto) {
-	TemaEntity entity = dto.toEntity();
-	TemaEntity updated = TemaService.atualiza(entity);
-	if (updated == null) {
-		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "/atualiza", produces = "application/json")
+	public ResponseEntity<TemaEntity> atualizaTema(@RequestBody TemaDTO dto) {
+		TemaEntity entity = dto.toEntity();
+		TemaEntity updated = TemaService.atualiza(entity);
+		if (updated == null) {
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(updated);
 	}
-	return ResponseEntity.status(HttpStatus.OK).body(updated);
-}
-@RequestMapping(method = RequestMethod.DELETE, value = "/deleta/{id}", produces = "application/json")
-public ResponseEntity<TemaEntity> deleteTema(@PathVariable(name = "id") Integer id) {
-	TemaEntity deleted = TemaService.delete(id);
-	if (deleted == null) {
-		return ResponseEntity.noContent().build();
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/deleta/{id}", produces = "application/json")
+	public ResponseEntity<TemaEntity> deleteTema(@PathVariable(name = "id") Integer id) {
+		TemaEntity deleted = TemaService.delete(id);
+		if (deleted == null) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(deleted);
 	}
-	return ResponseEntity.status(HttpStatus.OK).body(deleted);
-}
+	
 }
 
