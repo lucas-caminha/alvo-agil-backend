@@ -1,14 +1,11 @@
 package br.com.ucsal.meta.agil.entity;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity(name = "pergunta")
 public class PerguntaEntity {
@@ -19,9 +16,9 @@ public class PerguntaEntity {
 	private String descPergunta;
 	private String flPergunta;
 	private Double peso;
-	@JsonIgnore
-	@ManyToMany(mappedBy = "perguntas")
-	private List<TimeEntity> times;
+	@ManyToOne
+	@JoinColumn(name = "cdTema")
+	private TemaEntity tema;
 	
 	public PerguntaEntity() {}
 	
@@ -43,17 +40,17 @@ public class PerguntaEntity {
 	public void setFlPergunta(String flPergunta) {
 		this.flPergunta = flPergunta;
 	}
-	public List<TimeEntity> getTimes() {
-		return times;
-	}
-	public void setTimes(List<TimeEntity> times) {
-		this.times = times;
-	}
 	public Double getPeso() {
 		return peso;
 	}
 	public void setPeso(Double peso) {
 		this.peso = peso;
+	}
+	public TemaEntity getTema() {
+		return tema;
+	}
+	public void setTema(TemaEntity tema) {
+		this.tema = tema;
 	}
 	
 }

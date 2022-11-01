@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ucsal.meta.agil.dto.TimeDTO;
 import br.com.ucsal.meta.agil.dto.TimeSimpleDTO;
+import br.com.ucsal.meta.agil.entity.ParticipanteEntity;
 import br.com.ucsal.meta.agil.entity.TimeEntity;
+import br.com.ucsal.meta.agil.service.ParticipanteService;
 import br.com.ucsal.meta.agil.service.TimeService;
 
 @RestController
@@ -22,6 +24,8 @@ public class TimeController {
 
 	@Autowired
 	private TimeService timeService;
+	@Autowired
+	private ParticipanteService participanteService;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/todos", produces = "application/json")
 	public ResponseEntity<List<TimeEntity>> getAllTimes() {
@@ -73,4 +77,14 @@ public class TimeController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(deleted);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/participantes/{id}", produces = "application/json")
+	public ResponseEntity<List<ParticipanteEntity>> getParticipantesDoTime(@PathVariable(name = "id") Integer timeId) {	
+		List<ParticipanteEntity> participantesPorTime = participanteService.getParticipantesPorTime(timeId);
+		if(participantesPorTime == null) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(participantesPorTime);
+	}
+
 }

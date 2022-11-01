@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
 import br.com.ucsal.meta.agil.entity.FrameworkEntity;
-import br.com.ucsal.meta.agil.entity.PerguntaEntity;
+import br.com.ucsal.meta.agil.entity.ParticipanteEntity;
 import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
 import br.com.ucsal.meta.agil.entity.TimeEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
@@ -27,8 +27,6 @@ public class TimeService {
 	@Autowired
 	private TecnologiaService tecnologiaService;
 	@Autowired
-	private PerguntaService perguntaService;
-	@Autowired
 	private CerimoniaService cerimoniaService;
 	
 	
@@ -43,7 +41,6 @@ public class TimeService {
 		}
 		
 		time.setTecnologias(getTecnologias(time));
-		time.setPerguntas(getPerguntas(time));
 		time.setCerimonias(getCerimonias(time));
 		time.setFramework(getFramework(time));
 		
@@ -61,7 +58,6 @@ public class TimeService {
 			find.get().setCerimonias(time.getCerimonias());
 			find.get().setFramework(time.getFramework());
 			find.get().setTecnologias(time.getTecnologias());
-			find.get().setPerguntas(time.getPerguntas());
 			TimeEntity updated = timeRepository.save(find.get());
 			return updated;
 		}
@@ -72,10 +68,10 @@ public class TimeService {
 	public TimeEntity deleta(Integer id)  {
 		
 		Long cdTime = Long.parseLong(id.toString());
-		Optional<TimeEntity> Time = timeRepository.findById(cdTime);
-		if(Time.isPresent()) {
-			timeRepository.delete(Time.get());
-			return Time.get();
+		Optional<TimeEntity> time = timeRepository.findById(cdTime);
+		if(time.isPresent()) {
+			timeRepository.delete(time.get());
+			return time.get();
 		}
 		
 		throw new NotFoundException(MessageUtil.TIME_NAO_ENCONTRADO);
@@ -89,18 +85,7 @@ public class TimeService {
 		}
 		return tecnologias;
 	}
-	
-	private List<PerguntaEntity> getPerguntas(TimeEntity time) {
-		List<PerguntaEntity> perguntas = new ArrayList<>();
-		if(time.getPerguntas() != null) {
-			for(PerguntaEntity perg : time.getPerguntas()) {
-				PerguntaEntity pergunta = perguntaService.getPergunta(perg.getCdPergunta());
-				perguntas.add(pergunta);
-			}
-		}
-		return perguntas;
-	}
-	
+		
 	private List<CerimoniaEntity> getCerimonias(TimeEntity time) {
 		List<CerimoniaEntity> cerimonias = new ArrayList<>();
 		for(CerimoniaEntity ceri : time.getCerimonias()) {
@@ -114,4 +99,14 @@ public class TimeService {
 		FrameworkEntity framework = frameworkService.getFramework(time.getFramework().getCdFramework());
 		return framework;
 	}
+
+	public TimeEntity buscaTimePorId(Long cdTime) {
+		Optional<TimeEntity> time = timeRepository.findById(cdTime);
+		if(time.isPresent()) {
+			return time.get();
+		}
+		throw new NotFoundException(MessageUtil.TIME_NAO_ENCONTRADO);
+	}
+	
+
 }
