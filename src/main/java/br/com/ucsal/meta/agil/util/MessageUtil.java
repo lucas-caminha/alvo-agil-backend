@@ -30,6 +30,8 @@ public class MessageUtil {
 	
 	public static final String CAMADA_EXISTENTE = "Camada existente";
 	public static final String CAMADA_NAO_ENCONTRADA = "Camada não encontrada";
+	public static final String APLICACAO_EXISTENTE = "Aplicacao existente";
+	public static final String APLICACAO_NAO_ENCONTRADA = "Aplicacao não encontrada";
 
 
 }

@@ -1,6 +1,6 @@
 package br.com.ucsal.meta.agil.entity;
 
-import java.time.LocalDate;
+
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -17,7 +17,6 @@ public class AplicacaoEntity {
 	private Long cdAplicacao;
 	private String nmAplicacao;
 	private String flAplicacao;
-	private LocalDate dtAplicacao;
 	@OneToMany(mappedBy = "aplicacao")
 	private List<CamadaEntity> camadas;
 	
@@ -39,12 +38,7 @@ public class AplicacaoEntity {
 	public void setFlAplicacao(String flAplicacao) {
 		this.flAplicacao = flAplicacao;
 	}
-	public LocalDate getDtAplicacao() {
-		return dtAplicacao;
-	}
-	public void setDtAplicacao(LocalDate dtAplicacao) {
-		this.dtAplicacao = dtAplicacao;
-	}
+
 	public List<CamadaEntity> getCamadas() {
 		return camadas;
 	}
