@@ -29,7 +29,6 @@ public class CamadaService {
 	}
 
 	public CamadaEntity atualiza(CamadaEntity camada) {
-
 		Optional<CamadaEntity> find = camadaRepository.findById(camada.getCdCamada());
 		if (find.isPresent()) {
 			find.get().setNmCamada(camada.getNmCamada());
@@ -38,19 +37,16 @@ public class CamadaService {
 			CamadaEntity updated = camadaRepository.save(find.get());
 			return updated;
 		}
-
 		throw new NotFoundException(MessageUtil.CAMADA_NAO_ENCONTRADA);
 	}
 
 	public CamadaEntity deleta(Integer id) {
-
 		Long cdCamada = Long.parseLong(id.toString());
 		Optional<CamadaEntity> camada = camadaRepository.findById(cdCamada);
 		if (camada.isPresent()) {
 			camadaRepository.delete(camada.get());
 			return camada.get();
 		}
-
 		throw new NotFoundException(MessageUtil.CAMADA_NAO_ENCONTRADA);
 	}
 
