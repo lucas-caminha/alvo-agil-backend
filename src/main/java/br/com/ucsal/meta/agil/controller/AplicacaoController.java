@@ -63,9 +63,16 @@ public class AplicacaoController {
 		return ResponseEntity.status(HttpStatus.OK).body(deleted);
 	}
 	
-	
-	
-	
+	/**
+	@RequestMapping(method = RequestMethod.GET, value = "/time/{id}", produces = "application/json")
+	public ResponseEntity<List<AplicacaoEntity>> getAplicacoesPorTime(@PathVariable(name = "id") Integer timeId) {
+		List<AplicacaoEntity> aplicacaoPorTime = aplicacaoService.getAplicacaoPorTime(timeId);
+		if(aplicacaoPorTime == null) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(aplicacaoPorTime);
+	}
+	**/
 	
 	
 	

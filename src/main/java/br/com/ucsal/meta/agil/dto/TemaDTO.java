@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ucsal.meta.agil.entity.PerguntaEntity;
-import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
 import br.com.ucsal.meta.agil.entity.TemaEntity;
 
 public class TemaDTO {
