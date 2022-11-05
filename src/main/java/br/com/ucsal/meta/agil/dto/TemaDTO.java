@@ -1,8 +1,10 @@
 package br.com.ucsal.meta.agil.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ucsal.meta.agil.entity.PerguntaEntity;
+import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
 import br.com.ucsal.meta.agil.entity.TemaEntity;
 
 public class TemaDTO {
@@ -10,7 +12,7 @@ public class TemaDTO {
 	private Long cdTema;
 	private String nmTema;
 	private String flTema;
-	private List<PerguntaEntity> perguntas;
+	private List<PerguntaDTO> perguntas;
 	
 	public TemaDTO() {}
 	
@@ -32,10 +34,10 @@ public class TemaDTO {
 	public void setFlTema(String flTema) {
 		this.flTema = flTema;
 	}
-	public List<PerguntaEntity> getPerguntas() {
+	public List<PerguntaDTO> getPerguntas() {
 		return perguntas;
 	}
-	public void setPerguntas(List<PerguntaEntity> perguntas) {
+	public void setPerguntas(List<PerguntaDTO> perguntas) {
 		this.perguntas = perguntas;
 	}
 
@@ -49,8 +51,11 @@ public class TemaDTO {
 	}
 
 	private List<PerguntaEntity> dtoToPerguntas() {
-
-		return null;
+		List<PerguntaEntity> perguntas = new ArrayList<PerguntaEntity>();
+		for(PerguntaDTO dto : this.perguntas) {
+			perguntas.add(dto.toEntity());
+		}
+		return perguntas;
 	}
 
 }
