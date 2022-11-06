@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
 import br.com.ucsal.meta.agil.entity.FrameworkEntity;
@@ -65,6 +66,7 @@ public class TimeService {
 		throw new NotFoundException(MessageUtil.TIME_NAO_ENCONTRADO);
 	}
 
+	@Transactional
 	public TimeEntity deleta(Integer id)  {
 		
 		Long cdTime = Long.parseLong(id.toString());
