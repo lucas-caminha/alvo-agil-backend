@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ucsal.meta.agil.dto.AplicacaoDTO;
 import br.com.ucsal.meta.agil.entity.AplicacaoEntity;
+import br.com.ucsal.meta.agil.entity.AvaliacaoEntity;
 import br.com.ucsal.meta.agil.service.AplicacaoService;
 
 @RestController
@@ -74,7 +75,14 @@ public class AplicacaoController {
 	}
 	**/
 	
-	
+	@RequestMapping(method = RequestMethod.GET, value = "/busca/{id}", produces = "application/json")
+	public ResponseEntity<AplicacaoEntity> getAplicacaoById(@PathVariable(name = "id") Integer aplicacaoId) {	
+		AplicacaoEntity entity = aplicacaoService.buscaAplicacaoPorId(aplicacaoId);
+		if(entity == null) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(entity);
+	}
 	
 
 }

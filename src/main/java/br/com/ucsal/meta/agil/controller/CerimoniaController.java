@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.ucsal.meta.agil.dto.CerimoniaDTO;
 import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
+import br.com.ucsal.meta.agil.entity.FrameworkEntity;
 import br.com.ucsal.meta.agil.service.CerimoniaService;
 
 @RestController
@@ -59,4 +60,15 @@ public class CerimoniaController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(deleted);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/busca/{id}", produces = "application/json")
+	public ResponseEntity<CerimoniaEntity> getCerimoniaById(@PathVariable(name = "id") Integer cerimoniaId) {	
+		CerimoniaEntity entity = cerimoniaService.buscaCerimoniaPorId(cerimoniaId);
+		if(entity == null) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(entity);
+	}
+	
+	
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ucsal.meta.agil.dto.AvaliacaoDTO;
 import br.com.ucsal.meta.agil.entity.AvaliacaoEntity;
+import br.com.ucsal.meta.agil.entity.CamadaEntity;
 import br.com.ucsal.meta.agil.service.AvaliacaoService;
 
 @RestController
@@ -49,5 +50,14 @@ public class AvaliacaoController {
 			return ResponseEntity.noContent().build();
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(deleted);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/busca/{id}", produces = "application/json")
+	public ResponseEntity<AvaliacaoEntity> getAvaliacaoById(@PathVariable(name = "id") Integer avaliacaoId) {	
+		AvaliacaoEntity entity = avaliacaoService.buscaAvaliacaoPorId(avaliacaoId);
+		if(entity == null) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(entity);
 	}
 }

@@ -11,5 +11,6 @@ import br.com.ucsal.meta.agil.entity.AplicacaoEntity;
 public interface AplicacaoRepository extends JpaRepository<AplicacaoEntity, Long> {
 	
 	Optional<AplicacaoEntity> findByNmAplicacao(String nmAplicacao);
-	
+		
+	Optional<AplicacaoEntity> findById(Long id);
 }

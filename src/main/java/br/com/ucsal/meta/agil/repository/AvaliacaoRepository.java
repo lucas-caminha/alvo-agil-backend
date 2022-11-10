@@ -12,4 +12,5 @@ public interface AvaliacaoRepository extends JpaRepository<AvaliacaoEntity, Long
 
 	Optional<AvaliacaoEntity> findByNmAvaliacao(String nmAvaliacao);
 	
+	Optional<AvaliacaoEntity> findById(Long id);
 }

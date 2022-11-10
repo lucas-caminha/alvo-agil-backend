@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.ucsal.meta.agil.entity.ParticipanteEntity;
+import br.com.ucsal.meta.agil.entity.PerguntaEntity;
 import br.com.ucsal.meta.agil.entity.TimeEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
 import br.com.ucsal.meta.agil.exception.NotFoundException;
@@ -58,15 +59,22 @@ public class ParticipanteService {
 	}
 	
 	public List<ParticipanteEntity> getParticipantesPorTime(Integer timeId){ 
-		Long cdTime = Long.parseLong(timeId.toString());
-		
-		TimeEntity time = timeService.buscaTimePorId(cdTime);
+		TimeEntity time = timeService.buscaTimePorId(timeId);
 
 		Optional<List<ParticipanteEntity>> participantes = participanteRepository.findByTime(time);
 		if (participantes.isPresent()) {
 			return participantes.get();
 		}
 		
+		throw new NotFoundException(MessageUtil.PARTICIPANTE_NAO_ENCONTRADO);
+	}
+	
+	public ParticipanteEntity buscaParticipantePorId(Integer cdParticipante) {
+		Long cdParticipanteL = Long.parseLong(cdParticipante.toString());
+		Optional<ParticipanteEntity> participante = participanteRepository.findById(cdParticipanteL);
+		if(participante.isPresent()) {
+			return participante.get();
+		}
 		throw new NotFoundException(MessageUtil.PARTICIPANTE_NAO_ENCONTRADO);
 	}
 	

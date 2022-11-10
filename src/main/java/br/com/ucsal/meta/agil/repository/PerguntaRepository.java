@@ -11,4 +11,6 @@ public interface PerguntaRepository extends JpaRepository<PerguntaEntity, Long>{
 
 	Optional<List<PerguntaEntity>> findByDescPergunta(String descPergunta);
 
+	Optional<PerguntaEntity> findById(Long id);
+	
 }

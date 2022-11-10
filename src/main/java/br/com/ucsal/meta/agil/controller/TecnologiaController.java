@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ucsal.meta.agil.dto.TecnologiaDTO;
 import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
+import br.com.ucsal.meta.agil.entity.TemaEntity;
 import br.com.ucsal.meta.agil.service.TecnologiaService;
 
 @RestController
@@ -63,14 +64,14 @@ public class TecnologiaController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(deleted);
 	}
+		
+	@RequestMapping(method = RequestMethod.GET, value = "/busca/{id}", produces = "application/json")
+	public ResponseEntity<TecnologiaEntity> getTecnologiaById(@PathVariable(name = "id") Integer tecnologiaId) {	
+		TecnologiaEntity tecnologia = tecnologiaService.buscaTecnologiaPorId(tecnologiaId);
+		if(tecnologia == null) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(tecnologia);
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }

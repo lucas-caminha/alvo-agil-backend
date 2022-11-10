@@ -14,6 +14,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
 import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
 import br.com.ucsal.meta.agil.entity.TimeEntity;
+import br.com.ucsal.meta.agil.util.DataUtils;
 
 public class TimeDTO {
 	
@@ -25,6 +26,8 @@ public class TimeDTO {
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private String dtInicioTime;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	private String dtFinalizacaoTime;
 	private List<CerimoniaDTO> cerimonias;
 	private FrameworkDTO framework;
 	private List<TecnologiaDTO> tecnologias;
@@ -53,6 +56,12 @@ public class TimeDTO {
 	public void setDtInicioTime(String dtInicioTime) {
 		this.dtInicioTime = dtInicioTime;
 	}
+	public String getDtFinalizacaoTime() {
+		return dtFinalizacaoTime;
+	}
+	public void setDtFinalizacaoTime(String dtFinalizacaoTime) {
+		this.dtFinalizacaoTime = dtFinalizacaoTime;
+	}
 	public FrameworkDTO getFramework() {
 		return framework;
 	}
@@ -71,12 +80,14 @@ public class TimeDTO {
 	public void setTecnologias(List<TecnologiaDTO> tecnologias) {
 		this.tecnologias = tecnologias;
 	}
+	
 	public TimeEntity toEntity() {
 		TimeEntity time = new TimeEntity();
 		time.setCdTime(this.cdTime);
 		time.setNmTime(this.nmTime);
 		time.setFlTime(this.flTime);
-		//time.setDtInicioTime(this.dtInicioTime);
+		time.setDtInicioTime(DataUtils.stringToLocalDate(this.dtInicioTime));
+		time.setDtFinalizacaoTime(DataUtils.stringToLocalDate(this.dtFinalizacaoTime));
 		time.setCerimonias(dtoToCerimonias());
 		time.setTecnologias(dtoToTecnologias());
 		time.setFramework(this.framework.toEntity());		
