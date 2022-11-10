@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,6 +25,7 @@ public class TimeEntity {
 	private String nmTime;
 	private String flTime;
 	private LocalDate dtInicioTime;
+	private LocalDate dtFinalizacaoTime;
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@ManyToMany(cascade = CascadeType.MERGE)
 	@JoinTable(name = "timecerimonia", joinColumns = @JoinColumn(name = "cdCerimonia", referencedColumnName = "cdTime"),
@@ -65,6 +65,12 @@ public class TimeEntity {
 	}
 	public void setDtInicioTime(LocalDate dtInicioTime) {
 		this.dtInicioTime = dtInicioTime;
+	}	
+	public LocalDate getDtFinalizacaoTime() {
+		return dtFinalizacaoTime;
+	}
+	public void setDtFinalizacaoTime(LocalDate dtFinalizacaoTime) {
+		this.dtFinalizacaoTime = dtFinalizacaoTime;
 	}
 	public List<CerimoniaEntity> getCerimonias() {
 		return cerimonias;

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ucsal.meta.agil.entity.AvaliacaoEntity;
+import br.com.ucsal.meta.agil.entity.CamadaEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
 import br.com.ucsal.meta.agil.exception.NotFoundException;
 import br.com.ucsal.meta.agil.repository.AvaliacaoRepository;
@@ -64,4 +65,14 @@ public class AvaliacaoService {
 		}
 		return avaliacao.get();
 	}
+	
+	public AvaliacaoEntity buscaAvaliacaoPorId(Integer cdAvaliacao) {
+		Long cdAvaliacaoL = Long.parseLong(cdAvaliacao.toString());
+		Optional<AvaliacaoEntity> avaliacao = avaliacaoRepository.findById(cdAvaliacaoL);
+		if(avaliacao.isPresent()) {
+			return avaliacao.get();
+		}
+		throw new NotFoundException(MessageUtil.AVALIACAO_NAO_ENCONTRADA);
+	}
+	
 }

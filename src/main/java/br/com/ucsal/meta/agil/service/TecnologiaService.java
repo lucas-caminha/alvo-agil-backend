@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
+import br.com.ucsal.meta.agil.entity.TemaEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
 import br.com.ucsal.meta.agil.exception.NotFoundException;
 import br.com.ucsal.meta.agil.repository.TecnologiaRepository;
@@ -62,6 +63,15 @@ public class TecnologiaService {
 			return null;
 		}
 		return tecnologia.get();
+	}
+	
+	public TecnologiaEntity buscaTecnologiaPorId(Integer cdTecnologia) {
+		Long cdTecnologiaL = Long.parseLong(cdTecnologia.toString());
+		Optional<TecnologiaEntity> tecnologia = tecnologiaRepository.findById(cdTecnologiaL);
+		if(tecnologia.isPresent()) {
+			return tecnologia.get();
+		}
+		throw new NotFoundException(MessageUtil.TECNOLOGIA_NAO_ENCONTRADA);
 	}
 
 

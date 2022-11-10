@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ucsal.meta.agil.entity.FrameworkEntity;
+import br.com.ucsal.meta.agil.entity.FuncaoEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
 import br.com.ucsal.meta.agil.exception.NotFoundException;
 import br.com.ucsal.meta.agil.repository.FrameworkRepository;
@@ -63,6 +64,13 @@ public class FrameworkService {
 		return framework.get();
 	}
 
-	
+	public FrameworkEntity buscaFrameworkPorId(Integer cdFramework) {
+		Long cdFrameworkL = Long.parseLong(cdFramework.toString());
+		Optional<FrameworkEntity> framework = frameworkRepository.findById(cdFrameworkL);
+		if(framework.isPresent()) {
+			return framework.get();
+		}
+		throw new NotFoundException(MessageUtil.FRAMEWORK_NAO_ENCONTRADO);
+	}
 	
 }

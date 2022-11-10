@@ -86,5 +86,14 @@ public class TimeController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(participantesPorTime);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/busca/{id}", produces = "application/json")
+	public ResponseEntity<TimeEntity> getTimeById(@PathVariable(name = "id") Integer timeId) {	
+		TimeEntity time = timeService.buscaTimePorId(timeId);
+		if(time == null) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(time);
+	}
 
 }

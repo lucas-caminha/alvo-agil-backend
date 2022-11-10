@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
+import br.com.ucsal.meta.agil.entity.FrameworkEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
 import br.com.ucsal.meta.agil.exception.NotFoundException;
 import br.com.ucsal.meta.agil.repository.CerimoniaRepository;
@@ -60,4 +61,14 @@ public class CerimoniaService {
 		}
 		return cerimonia.get();
 	}
+	
+	public CerimoniaEntity buscaCerimoniaPorId(Integer cdCerimonia) {
+		Long cdCerimoniaL = Long.parseLong(cdCerimonia.toString());
+		Optional<CerimoniaEntity> cerimonia = cerimoniaRepository.findById(cdCerimoniaL);
+		if(cerimonia.isPresent()) {
+			return cerimonia.get();
+		}
+		throw new NotFoundException(MessageUtil.CERIMONIA_NAO_ENCONTRADO);
+	}
+	
 }

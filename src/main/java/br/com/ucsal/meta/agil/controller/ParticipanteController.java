@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.ucsal.meta.agil.dto.ParticipanteDTO;
 import br.com.ucsal.meta.agil.entity.ParticipanteEntity;
+import br.com.ucsal.meta.agil.entity.PerguntaEntity;
 import br.com.ucsal.meta.agil.service.ParticipanteService;
 
 @RestController
@@ -61,4 +62,14 @@ public class ParticipanteController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(deleted);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/busca/{id}", produces = "application/json")
+	public ResponseEntity<ParticipanteEntity> getParticipanteById(@PathVariable(name = "id") Integer participanteId) {	
+		ParticipanteEntity entity = participanteService.buscaParticipantePorId(participanteId);
+		if(entity == null) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(entity);
+	}
+	
 }

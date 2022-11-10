@@ -21,6 +21,8 @@ public class TimeSimpleDTO {
 	private String flTime;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private String dtInicioTime;	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	private String dtFinalizacaoTime;
 	private List<String> cerimonias;
 	private String framework;
 	private List<String> tecnologias;
@@ -49,6 +51,12 @@ public class TimeSimpleDTO {
 	public void setDtInicioTime(String dtInicioTime) {
 		this.dtInicioTime = dtInicioTime;
 	}
+	public String getDtFinalizacaoTime() {
+		return dtFinalizacaoTime;
+	}
+	public void setDtFinalizacaoTime(String dtFinalizacaoTime) {
+		this.dtFinalizacaoTime = dtFinalizacaoTime;
+	}
 	public List<String> getCerimonias() {
 		return cerimonias;
 	}
@@ -74,6 +82,7 @@ public class TimeSimpleDTO {
 		time.setNmTime(this.nmTime);
 		time.setFlTime(this.flTime);
 		time.setDtInicioTime(DataUtils.stringToLocalDate(this.dtInicioTime));
+		time.setDtFinalizacaoTime(DataUtils.stringToLocalDate(this.dtFinalizacaoTime));
 		time.setCerimonias(StringToCerimonias());
 		time.setTecnologias(StringToTecnologias());
 		time.setFramework(stringToFramework());	

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ucsal.meta.agil.dto.FuncaoDTO;
 import br.com.ucsal.meta.agil.entity.FuncaoEntity;
+import br.com.ucsal.meta.agil.entity.ParticipanteEntity;
 import br.com.ucsal.meta.agil.service.FuncaoService;
 
 @RestController
@@ -61,5 +62,13 @@ public class FuncaoController {
 		return ResponseEntity.status(HttpStatus.OK).body(deleted);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/busca/{id}", produces = "application/json")
+	public ResponseEntity<FuncaoEntity> getFuncaoById(@PathVariable(name = "id") Integer funcaoId) {	
+		FuncaoEntity entity = funcaoService.buscaFuncaoPorId(funcaoId);
+		if(entity == null) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(entity);
+	}
 	
 }

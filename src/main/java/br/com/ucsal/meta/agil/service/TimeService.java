@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
 import br.com.ucsal.meta.agil.entity.FrameworkEntity;
-import br.com.ucsal.meta.agil.entity.ParticipanteEntity;
 import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
 import br.com.ucsal.meta.agil.entity.TimeEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
@@ -102,8 +101,9 @@ public class TimeService {
 		return framework;
 	}
 
-	public TimeEntity buscaTimePorId(Long cdTime) {
-		Optional<TimeEntity> time = timeRepository.findById(cdTime);
+	public TimeEntity buscaTimePorId(Integer cdTime) {
+		Long cdTimeL = Long.parseLong(cdTime.toString());
+		Optional<TimeEntity> time = timeRepository.findById(cdTimeL);
 		if(time.isPresent()) {
 			return time.get();
 		}

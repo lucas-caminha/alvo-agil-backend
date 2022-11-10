@@ -9,5 +9,7 @@ import br.com.ucsal.meta.agil.entity.TimeEntity;
 public interface TimeRepository extends JpaRepository<TimeEntity, Long>{
 
 	Optional<TimeEntity> findByNmTime(String nmTime);
+	
+	Optional<TimeEntity> findById(Long id);
 
 }

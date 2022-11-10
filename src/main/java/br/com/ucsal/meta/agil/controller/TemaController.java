@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.ucsal.meta.agil.dto.TemaDTO;
 import br.com.ucsal.meta.agil.entity.TemaEntity;
+import br.com.ucsal.meta.agil.entity.TimeEntity;
 import br.com.ucsal.meta.agil.service.TemaService;
 
 @RestController
@@ -19,11 +20,11 @@ import br.com.ucsal.meta.agil.service.TemaService;
 public class TemaController {
 	
 	@Autowired
-	private TemaService TemaService;
+	private TemaService temaService;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/todos", produces = "application/json")
 	public ResponseEntity<List<TemaEntity>> getAllTemas() {
-		List<TemaEntity> Temas = TemaService.getAllTemas();
+		List<TemaEntity> Temas = temaService.getAllTemas();
 		if (Temas.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
@@ -34,7 +35,7 @@ public class TemaController {
 	public ResponseEntity<TemaEntity> addTema(@RequestBody TemaDTO dto) {
 		TemaEntity entity = dto.toEntity();
 		entity.setCdTema(null);
-		TemaEntity saved = TemaService.save(entity);
+		TemaEntity saved = temaService.save(entity);
 		if (saved.getCdTema() == null) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
@@ -44,7 +45,7 @@ public class TemaController {
 	@RequestMapping(method = RequestMethod.PUT, value = "/atualiza", produces = "application/json")
 	public ResponseEntity<TemaEntity> atualizaTema(@RequestBody TemaDTO dto) {
 		TemaEntity entity = dto.toEntity();
-		TemaEntity updated = TemaService.atualiza(entity);
+		TemaEntity updated = temaService.atualiza(entity);
 		if (updated == null) {
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
 		}
@@ -53,11 +54,20 @@ public class TemaController {
 	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/deleta/{id}", produces = "application/json")
 	public ResponseEntity<TemaEntity> deleteTema(@PathVariable(name = "id") Integer id) {
-		TemaEntity deleted = TemaService.delete(id);
+		TemaEntity deleted = temaService.delete(id);
 		if (deleted == null) {
 			return ResponseEntity.noContent().build();
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(deleted);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/busca/{id}", produces = "application/json")
+	public ResponseEntity<TemaEntity> getTemaById(@PathVariable(name = "id") Integer temaId) {	
+		TemaEntity tema = temaService.buscaTemaPorId(temaId);
+		if(tema == null) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(tema);
 	}
 	
 }

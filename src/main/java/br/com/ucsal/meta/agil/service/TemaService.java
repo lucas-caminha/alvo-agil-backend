@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.ucsal.meta.agil.entity.TemaEntity;
+import br.com.ucsal.meta.agil.entity.TimeEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
 import br.com.ucsal.meta.agil.exception.NotFoundException;
 import br.com.ucsal.meta.agil.repository.TemaRepository;
@@ -59,6 +60,15 @@ public class TemaService {
 			return null;
 		}
 		return tema.get();
+	}
+	
+	public TemaEntity buscaTemaPorId(Integer cdTema) {
+		Long cdTemaL = Long.parseLong(cdTema.toString());
+		Optional<TemaEntity> tema = temaRepository.findById(cdTemaL);
+		if(tema.isPresent()) {
+			return tema.get();
+		}
+		throw new NotFoundException(MessageUtil.TEMA_NAO_ENCONTRADO);
 	}
 	
 }

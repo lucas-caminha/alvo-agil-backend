@@ -13,5 +13,7 @@ public interface ParticipanteRepository extends JpaRepository<ParticipanteEntity
 	Optional<ParticipanteEntity> findByNmParticipante(String nmParticipante);
 
 	Optional<List<ParticipanteEntity>> findByTime(TimeEntity time);
+	
+	Optional<ParticipanteEntity> findById(Long id);
 
 }
