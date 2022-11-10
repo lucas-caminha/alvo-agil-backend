@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ucsal.meta.agil.entity.PerguntaEntity;
+import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
 import br.com.ucsal.meta.agil.exception.NotFoundException;
 import br.com.ucsal.meta.agil.repository.PerguntaRepository;
@@ -62,6 +63,16 @@ public class PerguntaService {
 		}
 		return pergunta.get();
 	}
+	
+	public PerguntaEntity buscaPerguntaPorId(Integer cdPergunta) {
+		Long cdPerguntaL = Long.parseLong(cdPergunta.toString());
+		Optional<PerguntaEntity> pergunta = perguntaRepository.findById(cdPerguntaL);
+		if(pergunta.isPresent()) {
+			return pergunta.get();
+		}
+		throw new NotFoundException(MessageUtil.PERGUNTA_NAO_ENCONTRADO);
+	}
+
 
 
 }

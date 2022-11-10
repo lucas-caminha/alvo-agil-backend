@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ucsal.meta.agil.entity.FuncaoEntity;
+import br.com.ucsal.meta.agil.entity.ParticipanteEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
 import br.com.ucsal.meta.agil.exception.NotFoundException;
 import br.com.ucsal.meta.agil.repository.FuncaoRepository;
@@ -54,6 +55,14 @@ public class FuncaoService {
 		throw new NotFoundException(MessageUtil.FUNCAO_NAO_ENCONTRADA);
 	}
 
+	public FuncaoEntity buscaFuncaoPorId(Integer cdFuncao) {
+		Long cdFuncaoL = Long.parseLong(cdFuncao.toString());
+		Optional<FuncaoEntity> funcao = funcaoRepository.findById(cdFuncaoL);
+		if(funcao.isPresent()) {
+			return funcao.get();
+		}
+		throw new NotFoundException(MessageUtil.FUNCAO_NAO_ENCONTRADA);
+	}
 
 
 }

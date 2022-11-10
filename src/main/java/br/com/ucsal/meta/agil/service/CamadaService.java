@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.ucsal.meta.agil.entity.CamadaEntity;
+import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
 import br.com.ucsal.meta.agil.exception.NotFoundException;
 import br.com.ucsal.meta.agil.repository.CamadaRepository;
@@ -56,5 +57,14 @@ public class CamadaService {
 			return null;
 		}
 		return camada.get();
+	}
+	
+	public CamadaEntity buscaCamadaPorId(Integer cdCamada) {
+		Long cdCamadaL = Long.parseLong(cdCamada.toString());
+		Optional<CamadaEntity> camada = camadaRepository.findById(cdCamadaL);
+		if(camada.isPresent()) {
+			return camada.get();
+		}
+		throw new NotFoundException(MessageUtil.CAMADA_NAO_ENCONTRADA);
 	}
 }

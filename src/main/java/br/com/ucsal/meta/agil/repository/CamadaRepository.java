@@ -11,5 +11,7 @@ import br.com.ucsal.meta.agil.entity.CamadaEntity;
 public interface CamadaRepository extends JpaRepository<CamadaEntity, Long> {
 	
 	Optional<CamadaEntity> findByNmCamada(String nmCerimonia);
+	
+	Optional<CamadaEntity> findById(Long id);
 
 }

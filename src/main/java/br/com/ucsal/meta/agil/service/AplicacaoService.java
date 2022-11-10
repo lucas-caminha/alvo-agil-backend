@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ucsal.meta.agil.entity.AplicacaoEntity;
-import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
-import br.com.ucsal.meta.agil.entity.ParticipanteEntity;
-import br.com.ucsal.meta.agil.entity.TimeEntity;
+import br.com.ucsal.meta.agil.entity.AvaliacaoEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
 import br.com.ucsal.meta.agil.exception.NotFoundException;
 import br.com.ucsal.meta.agil.repository.AplicacaoRepository;
@@ -20,8 +18,6 @@ public class AplicacaoService {
 	
 	@Autowired
 	private AplicacaoRepository aplicacaoRepository;
-	@Autowired
-	private TimeService timeService;
 	
 	public List<AplicacaoEntity> getAllAplicacao() {
 		return aplicacaoRepository.findAll();
@@ -83,4 +79,14 @@ public class AplicacaoService {
 		throw new NotFoundException(MessageUtil.APLICACAO_NAO_ENCONTRADA);
 	}
 	 **/
+	
+	public AplicacaoEntity buscaAplicacaoPorId(Integer cdAplicacao) {
+		Long cdAplicacaoL = Long.parseLong(cdAplicacao.toString());
+		Optional<AplicacaoEntity> aplicacao = aplicacaoRepository.findById(cdAplicacaoL);
+		if(aplicacao.isPresent()) {
+			return aplicacao.get();
+		}
+		throw new NotFoundException(MessageUtil.APLICACAO_NAO_ENCONTRADA);
+	}
+	
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.ucsal.meta.agil.dto.FrameworkDTO;
 import br.com.ucsal.meta.agil.entity.FrameworkEntity;
+import br.com.ucsal.meta.agil.entity.FuncaoEntity;
 import br.com.ucsal.meta.agil.service.FrameworkService;
 
 @RestController
@@ -59,5 +60,13 @@ public class FrameworkController {
 		return ResponseEntity.status(HttpStatus.OK).body(deleted);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/busca/{id}", produces = "application/json")
+	public ResponseEntity<FrameworkEntity> getFrameworkById(@PathVariable(name = "id") Integer frameworkId) {	
+		FrameworkEntity entity = frameworkService.buscaFrameworkPorId(frameworkId);
+		if(entity == null) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(entity);
+	}
 	
 }

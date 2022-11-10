@@ -9,5 +9,5 @@ import br.com.ucsal.meta.agil.entity.UsuarioEntity;
 public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Long>{
 
 	Optional<UsuarioEntity> findByUsername(String username);
-
+	
 }

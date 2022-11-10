@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.ucsal.meta.agil.dto.CamadaDTO;
 import br.com.ucsal.meta.agil.entity.CamadaEntity;
+import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
 import br.com.ucsal.meta.agil.service.CamadaService;
 
 @RestController
@@ -59,4 +60,14 @@ public class CamadaController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(deleted);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/busca/{id}", produces = "application/json")
+	public ResponseEntity<CamadaEntity> getCamadaById(@PathVariable(name = "id") Integer camadaId) {	
+		CamadaEntity entity = camadaService.buscaCamadaPorId(camadaId);
+		if(entity == null) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(entity);
+	}
+	
 }
