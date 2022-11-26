@@ -5,10 +5,9 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
 import br.com.ucsal.meta.agil.entity.FrameworkEntity;
+import br.com.ucsal.meta.agil.entity.ParticipanteEntity;
 import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
 import br.com.ucsal.meta.agil.entity.TimeEntity;
 import br.com.ucsal.meta.agil.util.DataUtils;
@@ -19,13 +18,12 @@ public class TimeSimpleDTO {
 	@NotNull
 	private String nmTime;
 	private String flTime;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private String dtInicioTime;	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private String dtFinalizacaoTime;
 	private List<String> cerimonias;
 	private String framework;
 	private List<String> tecnologias;
+	private List<String> participantes;
 	
 	public Long getCdTime() {
 		return cdTime;
@@ -75,7 +73,12 @@ public class TimeSimpleDTO {
 	public void setTecnologias(List<String> tecnologias) {
 		this.tecnologias = tecnologias;
 	}
-	
+	public List<String> getParticipantes() {
+		return participantes;
+	}
+	public void setParticipantes(List<String> participantes) {
+		this.participantes = participantes;
+	}
 	public TimeEntity toEntity() {
 		TimeEntity time = new TimeEntity();
 		time.setCdTime(this.cdTime);
@@ -86,9 +89,20 @@ public class TimeSimpleDTO {
 		time.setCerimonias(StringToCerimonias());
 		time.setTecnologias(StringToTecnologias());
 		time.setFramework(stringToFramework());	
+		time.setParticipantes(stringToParticipantes());
 		return time;
 	}	
 	
+	private List<ParticipanteEntity> stringToParticipantes() { 
+		List<ParticipanteEntity> participantes = new ArrayList<ParticipanteEntity>();
+		for(String cdParticipante : this.participantes) {
+			ParticipanteEntity entity = new ParticipanteEntity();
+			entity.setCdParticipante(converteStringParaLong(cdParticipante));
+			participantes.add(entity);
+		}
+		return participantes;
+	}
+
 	private FrameworkEntity stringToFramework() {
 		FrameworkEntity entity = new FrameworkEntity();
 		entity.setCdFramework(converteStringParaLong(framework));
@@ -117,11 +131,13 @@ public class TimeSimpleDTO {
 	
 	private Long converteStringParaLong(String id) {
 		try {
-			return Long.parseLong(id);
+			if(id != null && !id.isEmpty()) {
+				return Long.parseLong(id);
+			}		
 		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+			e.printStackTrace();			
 		}
+		return null;
 	}
 	
 }

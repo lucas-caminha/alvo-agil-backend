@@ -2,12 +2,15 @@ package br.com.ucsal.meta.agil.entity;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity(name = "participante")
 public class ParticipanteEntity {
@@ -20,7 +23,7 @@ public class ParticipanteEntity {
 	private LocalDate dtInicioParticipante;
 	private LocalDate dtFimParticipante;
 	private String emailParticipante;
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "cdTime")
 	private TimeEntity time;
 	@ManyToOne
@@ -78,6 +81,7 @@ public class ParticipanteEntity {
 		this.emailParticipante = emailParticipante;
 	}
 
+	@JsonBackReference
 	public TimeEntity getTime() {
 		return time;
 	}
@@ -93,5 +97,7 @@ public class ParticipanteEntity {
 	public void setFuncao(FuncaoEntity funcao) {
 		this.funcao = funcao;
 	}
+	
+	
 
 }

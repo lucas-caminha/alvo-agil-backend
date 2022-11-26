@@ -11,11 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ucsal.meta.agil.dto.TimeDTO;
 import br.com.ucsal.meta.agil.dto.TimeSimpleDTO;
-import br.com.ucsal.meta.agil.entity.ParticipanteEntity;
 import br.com.ucsal.meta.agil.entity.TimeEntity;
-import br.com.ucsal.meta.agil.service.ParticipanteService;
 import br.com.ucsal.meta.agil.service.TimeService;
 
 @RestController
@@ -24,8 +21,6 @@ public class TimeController {
 
 	@Autowired
 	private TimeService timeService;
-	@Autowired
-	private ParticipanteService participanteService;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/todos", produces = "application/json")
 	public ResponseEntity<List<TimeEntity>> getAllTimes() {
@@ -36,6 +31,7 @@ public class TimeController {
 		return ResponseEntity.status(HttpStatus.OK).body(times);
 	}
 	
+	/**
 	@RequestMapping(method = RequestMethod.POST, value = "/add", produces = "application/json")
 	public ResponseEntity<TimeEntity> addTime(@RequestBody TimeDTO dto) {	
 		TimeEntity entity = dto.toEntity();
@@ -46,6 +42,7 @@ public class TimeController {
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(saved);
 	}
+	**/
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/v2/add", produces = "application/json")
 	public ResponseEntity<TimeEntity> addTimeSimple(@RequestBody TimeSimpleDTO dto) {	
@@ -60,7 +57,7 @@ public class TimeController {
 	
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/atualiza", produces = "application/json")
-	public ResponseEntity<TimeEntity> atualizaTime(@RequestBody TimeDTO dto) {	
+	public ResponseEntity<TimeEntity> atualizaTime(@RequestBody TimeSimpleDTO dto) {	
 		TimeEntity entity = dto.toEntity();
 		TimeEntity updated = timeService.atualiza(entity);
 		if(updated == null) {
@@ -75,9 +72,14 @@ public class TimeController {
 		if(deleted == null) {
 			return ResponseEntity.noContent().build();
 		}
+		deleted.setFramework(null);
+		deleted.setCerimonias(null);
+		deleted.setTecnologias(null);
+		deleted.setParticipantes(null);
 		return ResponseEntity.status(HttpStatus.OK).body(deleted);
 	}
 	
+	/**
 	@RequestMapping(method = RequestMethod.GET, value = "/participantes/{id}", produces = "application/json")
 	public ResponseEntity<List<ParticipanteEntity>> getParticipantesDoTime(@PathVariable(name = "id") Integer timeId) {	
 		List<ParticipanteEntity> participantesPorTime = participanteService.getParticipantesPorTime(timeId);
@@ -85,7 +87,7 @@ public class TimeController {
 			return ResponseEntity.noContent().build();
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(participantesPorTime);
-	}
+	} **/
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/busca/{id}", produces = "application/json")
 	public ResponseEntity<TimeEntity> getTimeById(@PathVariable(name = "id") Integer timeId) {	
