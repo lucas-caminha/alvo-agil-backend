@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ucsal.meta.agil.dto.AvaliacaoDTO;
 import br.com.ucsal.meta.agil.entity.AvaliacaoEntity;
-import br.com.ucsal.meta.agil.entity.CamadaEntity;
 import br.com.ucsal.meta.agil.service.AvaliacaoService;
 
 @RestController

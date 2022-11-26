@@ -5,9 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import br.com.ucsal.meta.agil.entity.ParticipanteEntity;
-import br.com.ucsal.meta.agil.entity.PerguntaEntity;
-import br.com.ucsal.meta.agil.entity.TimeEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
 import br.com.ucsal.meta.agil.exception.NotFoundException;
 import br.com.ucsal.meta.agil.repository.ParticipanteRepository;
@@ -18,8 +17,8 @@ public class ParticipanteService {
 	
 	@Autowired
 	private ParticipanteRepository participanteRepository;
-	@Autowired
-	private TimeService timeService;
+
+	//private TimeService timeService;
 
 	public List<ParticipanteEntity> getAllParticipantes() {
 		return participanteRepository.findAll();
@@ -39,6 +38,9 @@ public class ParticipanteService {
 		if (find.isPresent()) {
 			find.get().setNmParticipante(participante.getNmParticipante());
 			find.get().setFlParticipante(participante.getFlParticipante());
+			if(participante.getTime() != null) {
+				find.get().setTime(participante.getTime());
+			}			
 			ParticipanteEntity updated = participanteRepository.save(find.get());
 			return updated;
 		}
@@ -58,20 +60,9 @@ public class ParticipanteService {
 		throw new NotFoundException(MessageUtil.PARTICIPANTE_NAO_ENCONTRADO);
 	}
 	
-	public List<ParticipanteEntity> getParticipantesPorTime(Integer timeId){ 
-		TimeEntity time = timeService.buscaTimePorId(timeId);
-
-		Optional<List<ParticipanteEntity>> participantes = participanteRepository.findByTime(time);
-		if (participantes.isPresent()) {
-			return participantes.get();
-		}
-		
-		throw new NotFoundException(MessageUtil.PARTICIPANTE_NAO_ENCONTRADO);
-	}
-	
 	public ParticipanteEntity buscaParticipantePorId(Integer cdParticipante) {
 		Long cdParticipanteL = Long.parseLong(cdParticipante.toString());
-		Optional<ParticipanteEntity> participante = participanteRepository.findById(cdParticipanteL);
+		Optional<ParticipanteEntity> participante = participanteRepository.findByCdParticipante(cdParticipanteL);
 		if(participante.isPresent()) {
 			return participante.get();
 		}

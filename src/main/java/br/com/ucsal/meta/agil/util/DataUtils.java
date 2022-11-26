@@ -7,7 +7,7 @@ public class DataUtils {
 	public static LocalDate stringToLocalDate(String data) {
 		LocalDate lc;
 		try { 
-			if(!data.isEmpty() || data != null) {
+			if(data != null && !data.isEmpty()) {
 				 lc = LocalDate.parse(data);
 				return lc;
 			}

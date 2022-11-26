@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,6 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -27,7 +31,7 @@ public class TimeEntity {
 	private LocalDate dtInicioTime;
 	private LocalDate dtFinalizacaoTime;
 	@LazyCollection(LazyCollectionOption.FALSE)
-	@ManyToMany(cascade = CascadeType.MERGE)
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "timecerimonia", joinColumns = @JoinColumn(name = "cdCerimonia", referencedColumnName = "cdTime"),
 			inverseJoinColumns = @JoinColumn(name = "cdTime", referencedColumnName = "cdCerimonia"))
 	private List<CerimoniaEntity> cerimonias;
@@ -38,7 +42,10 @@ public class TimeEntity {
 	@ManyToMany(cascade = CascadeType.MERGE)
 	@JoinTable(name = "timetecnologia", joinColumns = @JoinColumn(name = "cdTecnologia", referencedColumnName = "cdTime"), 
 				inverseJoinColumns = @JoinColumn(name = "cdTime", referencedColumnName = "cdTecnologia"))
-	private List<TecnologiaEntity> tecnologias;
+	private List<TecnologiaEntity> tecnologias;	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "time", fetch = FetchType.EAGER)
+	private List<ParticipanteEntity> participantes;
 	
 	public TimeEntity() {}
 	
@@ -89,6 +96,12 @@ public class TimeEntity {
 	}
 	public void setTecnologias(List<TecnologiaEntity> tecnologias) {
 		this.tecnologias = tecnologias;
+	}
+	public List<ParticipanteEntity> getParticipantes() {
+		return participantes;
+	}
+	public void setParticipantes(List<ParticipanteEntity> participantes) {
+		this.participantes = participantes;
 	}
 		
 }
