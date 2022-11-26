@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
 import br.com.ucsal.meta.agil.entity.FrameworkEntity;
+import br.com.ucsal.meta.agil.entity.ParticipanteEntity;
 import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
 import br.com.ucsal.meta.agil.entity.TimeEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
@@ -28,6 +29,8 @@ public class TimeService {
 	private TecnologiaService tecnologiaService;
 	@Autowired
 	private CerimoniaService cerimoniaService;
+	@Autowired
+	private ParticipanteService participanteService;
 	
 	
 	public List<TimeEntity> getAllTimes() {
@@ -43,22 +46,27 @@ public class TimeService {
 		time.setTecnologias(getTecnologias(time));
 		time.setCerimonias(getCerimonias(time));
 		time.setFramework(getFramework(time));
+		time.setParticipantes(getParticipantes(time));
 		
 		return timeRepository.save(time);
 	}
 
-	public TimeEntity atualiza(TimeEntity time) {
-		
+	public TimeEntity atualiza(TimeEntity time) {	
 		Optional<TimeEntity> find = timeRepository.findById(time.getCdTime());	
-		if(find.isPresent()) {
 		
+		if(find.isPresent()) {	
 			find.get().setNmTime(time.getNmTime());
 			find.get().setFlTime(time.getFlTime());
 			find.get().setDtInicioTime(time.getDtInicioTime());
-			find.get().setCerimonias(time.getCerimonias());
-			find.get().setFramework(time.getFramework());
-			find.get().setTecnologias(time.getTecnologias());
+			find.get().setDtFinalizacaoTime(time.getDtFinalizacaoTime());
+			find.get().setCerimonias(getCerimonias(time));
+			find.get().setFramework(getFramework(time));
+			find.get().setTecnologias(getTecnologias(time));
+			time.setCerimonias(find.get().getCerimonias());
+			time.setTecnologias(find.get().getTecnologias());
+			find.get().setParticipantes(getParticipantes(time));
 			TimeEntity updated = timeRepository.save(find.get());
+			
 			return updated;
 		}
 		
@@ -66,16 +74,37 @@ public class TimeService {
 	}
 
 	@Transactional
-	public TimeEntity deleta(Integer id)  {
-		
+	public TimeEntity deleta(Integer id)  {		
 		Long cdTime = Long.parseLong(id.toString());
 		Optional<TimeEntity> time = timeRepository.findById(cdTime);
 		if(time.isPresent()) {
+			removeTimeDeParticipante(time.get());
 			timeRepository.delete(time.get());
 			return time.get();
 		}
 		
 		throw new NotFoundException(MessageUtil.TIME_NAO_ENCONTRADO);
+	}
+	
+	private List<ParticipanteEntity> removeTimeDeParticipante(TimeEntity time) {
+		List<ParticipanteEntity> participantes = getParticipantes(time);
+		for(ParticipanteEntity e : participantes) {
+			e.setTime(null);
+			participanteService.atualiza(e);
+		}
+		return participantes;
+	}
+	
+	
+	private List<ParticipanteEntity> getParticipantes(TimeEntity time) {
+		List<ParticipanteEntity> participantes = new ArrayList<>();
+		for(ParticipanteEntity pt : time.getParticipantes()) {
+			ParticipanteEntity participante = participanteService.buscaParticipantePorId(pt.getCdParticipante().intValue());
+			participante.setTime(time);
+			participanteService.atualiza(participante);
+			participantes.add(participante);
+		}
+		return participantes;
 	}
 
 	private List<TecnologiaEntity> getTecnologias(TimeEntity time) {
@@ -97,8 +126,11 @@ public class TimeService {
 	}
 	
 	private FrameworkEntity getFramework(TimeEntity time) {
-		FrameworkEntity framework = frameworkService.getFramework(time.getFramework().getCdFramework());
-		return framework;
+		if(time.getFramework().getCdFramework() != null) {
+			FrameworkEntity framework = frameworkService.getFramework(time.getFramework().getCdFramework());
+			return framework;
+		}
+		return null;
 	}
 
 	public TimeEntity buscaTimePorId(Integer cdTime) {

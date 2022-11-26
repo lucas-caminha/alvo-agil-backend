@@ -6,12 +6,9 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
+import br.com.ucsal.meta.agil.entity.FrameworkEntity;
 import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
 import br.com.ucsal.meta.agil.entity.TimeEntity;
 import br.com.ucsal.meta.agil.util.DataUtils;
@@ -22,15 +19,17 @@ public class TimeDTO {
 	@NotNull
 	private String nmTime;
 	private String flTime;
-	@JsonDeserialize(using = LocalDateDeserializer.class)
-	@JsonSerialize(using = LocalDateSerializer.class)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
 	private String dtInicioTime;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
 	private String dtFinalizacaoTime;
 	private List<CerimoniaDTO> cerimonias;
 	private FrameworkDTO framework;
 	private List<TecnologiaDTO> tecnologias;
+	
+	public TimeDTO() {
+		framework = new FrameworkDTO();
+	}
 	
 	public Long getCdTime() {
 		return cdTime;
@@ -90,7 +89,7 @@ public class TimeDTO {
 		time.setDtFinalizacaoTime(DataUtils.stringToLocalDate(this.dtFinalizacaoTime));
 		time.setCerimonias(dtoToCerimonias());
 		time.setTecnologias(dtoToTecnologias());
-		time.setFramework(this.framework.toEntity());		
+		time.setFramework(dtoToFramework());		
 		return time;
 	}	
 	
@@ -108,6 +107,13 @@ public class TimeDTO {
 			tecnologias.add(dto.toEntity());
 		}
 		return tecnologias;
+	}
+	
+	private FrameworkEntity dtoToFramework() {
+		if(this.framework != null) {
+			return this.framework.toEntity();
+		}	
+		return null;	
 	}
 	
 }

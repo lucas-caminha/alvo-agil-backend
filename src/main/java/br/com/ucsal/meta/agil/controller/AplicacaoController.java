@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ucsal.meta.agil.dto.AplicacaoDTO;
 import br.com.ucsal.meta.agil.entity.AplicacaoEntity;
-import br.com.ucsal.meta.agil.entity.AvaliacaoEntity;
 import br.com.ucsal.meta.agil.service.AplicacaoService;
 
 @RestController
