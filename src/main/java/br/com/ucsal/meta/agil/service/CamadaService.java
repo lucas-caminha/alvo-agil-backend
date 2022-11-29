@@ -1,11 +1,14 @@
 package br.com.ucsal.meta.agil.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import br.com.ucsal.meta.agil.entity.AplicacaoEntity;
 import br.com.ucsal.meta.agil.entity.CamadaEntity;
-import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
 import br.com.ucsal.meta.agil.exception.NotFoundException;
 import br.com.ucsal.meta.agil.repository.CamadaRepository;
@@ -16,28 +19,58 @@ public class CamadaService {
 
 	@Autowired
 	private CamadaRepository camadaRepository;
+	@Autowired
+	private AplicacaoService aplicacaoService;
+	/**
+	@Autowired
+	private TemaService temaService;
+**/
 
 	public List<CamadaEntity> getAllCamadas() {
-		return camadaRepository.findAll();
+		List<CamadaEntity> camadas = camadaRepository.findAll();
+		for(CamadaEntity c : camadas) {
+			c.getAplicacao().setCamadas(new ArrayList<>());
+		}
+		return camadas;
 	}
 
 	public CamadaEntity save(CamadaEntity camada) {
+		
 		Optional<CamadaEntity> find = camadaRepository.findByNmCamada(camada.getNmCamada());
+		
 		if (find.isPresent()) {
 			throw new BusinessException(MessageUtil.FAIL_SAVE + MessageUtil.CAMADA_EXISTENTE);
 		}
+		
+		AplicacaoEntity aplicacao = aplicacaoService.buscaAplicacaoPorId(camada.getAplicacao().getCdAplicacao().intValue());	
+		camada.setAplicacao(aplicacao);
+		/**
+		for(TemaEntity tema : camada.getTemas()) {
+			tema.setCamada(camada);
+			temaService.save(tema);
+		}
+		**/
+		
 		return camadaRepository.save(camada);
 	}
 
 	public CamadaEntity atualiza(CamadaEntity camada) {
-		Optional<CamadaEntity> find = camadaRepository.findById(camada.getCdCamada());
-		if (find.isPresent()) {
-			find.get().setNmCamada(camada.getNmCamada());
-			find.get().setFlCamada(camada.getFlCamada());
-			find.get().setTemas(camada.getTemas());
-			CamadaEntity updated = camadaRepository.save(find.get());
+		CamadaEntity find = buscaCamadaPorId(camada.getCdCamada().intValue());
+		
+		AplicacaoEntity aplicacao = aplicacaoService.buscaAplicacaoPorId(camada.getAplicacao().getCdAplicacao().intValue());	
+		
+		if(aplicacao != null) {
+			find.setAplicacao(aplicacao);
+		}
+				
+		if (find != null) {
+			find.setNmCamada(camada.getNmCamada());
+			find.setFlCamada(camada.getFlCamada());
+			//find.setTemas(camada.getTemas());
+			CamadaEntity updated = camadaRepository.save(find);
 			return updated;
 		}
+		
 		throw new NotFoundException(MessageUtil.CAMADA_NAO_ENCONTRADA);
 	}
 
