@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class RodaDTO {
 	
-	private String idAvaliacao;
+	private String cdAvaliacao;
 	/** Nome da Avaliação **/
 	private String label;
 	/** Camada **/
@@ -16,11 +16,11 @@ public class RodaDTO {
 		this.children = new ArrayList<>();
 	}
 	
-	public String getIdAvaliacao() {
-		return idAvaliacao;
+	public String getCdAvaliacao() {
+		return cdAvaliacao;
 	}
-	public void setIdAvaliacao(String idAvaliacao) {
-		this.idAvaliacao = idAvaliacao;
+	public void setCdAvaliacao(String idAvaliacao) {
+		this.cdAvaliacao = idAvaliacao;
 	}
 	public String getLabel() {
 		return label;

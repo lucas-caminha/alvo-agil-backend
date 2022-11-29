@@ -8,6 +8,7 @@ public class PerguntaDTO {
 	private String descPergunta;
 	private String flPergunta;
 	private Double peso;
+	private Integer pontuacao;
 	
 	public PerguntaDTO() {}
 	
@@ -41,6 +42,7 @@ public class PerguntaDTO {
 		pergunta.setCdPergunta(this.cdPergunta);
 		pergunta.setDescPergunta(this.descPergunta);
 		pergunta.setFlPergunta(this.flPergunta);
+		pergunta.setPontuacao(this.pontuacao);
 		return pergunta;
 	}
 

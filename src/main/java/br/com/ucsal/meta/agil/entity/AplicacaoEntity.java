@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity(name = "aplicacao")
 public class AplicacaoEntity {
 	
@@ -17,6 +19,7 @@ public class AplicacaoEntity {
 	private Long cdAplicacao;
 	private String nmAplicacao;
 	private String flAplicacao;
+	@JsonManagedReference
 	@OneToMany(mappedBy = "aplicacao")
 	private List<CamadaEntity> camadas;
 	
@@ -38,7 +41,6 @@ public class AplicacaoEntity {
 	public void setFlAplicacao(String flAplicacao) {
 		this.flAplicacao = flAplicacao;
 	}
-
 	public List<CamadaEntity> getCamadas() {
 		return camadas;
 	}

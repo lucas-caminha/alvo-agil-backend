@@ -1,11 +1,14 @@
 package br.com.ucsal.meta.agil.entity;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity(name = "pergunta")
 public class PerguntaEntity {
@@ -16,9 +19,10 @@ public class PerguntaEntity {
 	private String descPergunta;
 	private String flPergunta;
 	private Double peso;
-	@ManyToOne
-	@JoinColumn(name = "cdTema")
-	private TemaEntity tema;
+	private Integer pontuacao;
+	@ManyToMany(mappedBy = "perguntas")
+	private List<TemaEntity> temas;
+
 	
 	public PerguntaEntity() {}
 	
@@ -46,11 +50,18 @@ public class PerguntaEntity {
 	public void setPeso(Double peso) {
 		this.peso = peso;
 	}
-	public TemaEntity getTema() {
-		return tema;
+	@JsonBackReference
+	public List<TemaEntity> getTemas() {
+		return temas;
 	}
-	public void setTema(TemaEntity tema) {
-		this.tema = tema;
+	public void setTemas(List<TemaEntity> temas) {
+		this.temas = temas;
+	}
+	public Integer getPontuacao() {
+		return pontuacao;
+	}
+	public void setPontuacao(Integer pontuacao) {
+		this.pontuacao = pontuacao;
 	}
 	
 }

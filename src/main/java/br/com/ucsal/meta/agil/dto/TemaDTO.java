@@ -11,9 +11,12 @@ public class TemaDTO {
 	private Long cdTema;
 	private String nmTema;
 	private String flTema;
+	private Integer cdCamada;
 	private List<PerguntaDTO> perguntas;
 	
-	public TemaDTO() {}
+	public TemaDTO() {
+		this.perguntas = new ArrayList<PerguntaDTO>();
+	}
 	
 	public Long getCdTema() {
 		return cdTema;
@@ -39,12 +42,19 @@ public class TemaDTO {
 	public void setPerguntas(List<PerguntaDTO> perguntas) {
 		this.perguntas = perguntas;
 	}
+	public Integer getCdCamada() {
+		return cdCamada;
+	}
+	public void setCdCamada(Integer cdCamada) {
+		this.cdCamada = cdCamada;
+	}
 
 	public TemaEntity toEntity() {
 		TemaEntity tema = new TemaEntity();
 		tema.setCdTema(this.cdTema);
 		tema.setNmTema(this.nmTema);
 		tema.setFlTema(this.flTema);
+		tema.getCamada().setCdCamada(this.cdCamada.longValue());
 		tema.setPerguntas(dtoToPerguntas());
 		return tema;
 	}
