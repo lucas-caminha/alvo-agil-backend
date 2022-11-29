@@ -2,13 +2,21 @@ package br.com.ucsal.meta.agil.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity(name = "tema")
 public class TemaEntity {
@@ -18,13 +26,19 @@ public class TemaEntity {
 	private Long cdTema;
 	private String nmTema;
 	private String flTema;
-	@OneToMany(mappedBy = "tema")
+	@JsonManagedReference
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@ManyToMany(cascade = CascadeType.MERGE)
+	@JoinTable(name = "temapergunta", joinColumns = @JoinColumn(name = "cdPergunta", referencedColumnName = "cdTema"), 
+	inverseJoinColumns = @JoinColumn(name = "cdTema", referencedColumnName = "cdPergunta"))
 	private List<PerguntaEntity> perguntas;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "cdCamada")
 	private CamadaEntity camada;
 	
-	public TemaEntity() {}
+	public TemaEntity() {
+		camada = new CamadaEntity();
+	}
 	
 	public Long getCdTema() {
 		return cdTema;
@@ -49,6 +63,13 @@ public class TemaEntity {
 	}
 	public void setPerguntas(List<PerguntaEntity> perguntas) {
 		this.perguntas = perguntas;
+	}
+	@JsonBackReference
+	public CamadaEntity getCamada() {
+		return camada;
+	}
+	public void setCamada(CamadaEntity camada) {
+		this.camada = camada;
 	}
 	
 }

@@ -11,7 +11,9 @@ public class CamadaDTO {
 	private Long cdCamada;
 	private String nmCamada;
 	private String flCamada;
+	private Integer cdAplicacao;
 	private List<TemaDTO> temas;
+
 	
 	public CamadaDTO() {}
 	
@@ -39,12 +41,19 @@ public class CamadaDTO {
 	public void setTemas(List<TemaDTO> perguntas) {
 		this.temas = perguntas;
 	}
-	
+	public Integer getCdAplicacao() {
+		return cdAplicacao;
+	}
+	public void setCdAplicacao(Integer cdAplicacao) {
+		this.cdAplicacao = cdAplicacao;
+	}
+
 	public CamadaEntity toEntity() {
 		CamadaEntity entity = new CamadaEntity();
 		entity.setCdCamada(this.cdCamada);
 		entity.setNmCamada(this.nmCamada);
 		entity.setFlCamada(this.flCamada);
+		entity.getAplicacao().setCdAplicacao(this.cdAplicacao.longValue());
 		entity.setTemas(dtoToTemas());
 		return entity;
 	}

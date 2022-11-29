@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity(name = "camada")
 public class CamadaEntity {
 	
@@ -18,13 +21,16 @@ public class CamadaEntity {
 	private Long cdCamada;
 	private String nmCamada;
 	private String flCamada;
+	@JsonManagedReference
 	@OneToMany(mappedBy = "camada")
 	private List<TemaEntity> temas;
 	@ManyToOne
 	@JoinColumn(name = "cdAplicacao")
 	private AplicacaoEntity aplicacao;
 	
-	public CamadaEntity() {}
+	public CamadaEntity() {
+		aplicacao = new AplicacaoEntity();
+	}
 
 	public Long getCdCamada() {
 		return cdCamada;
@@ -49,6 +55,13 @@ public class CamadaEntity {
 	}
 	public void setTemas(List<TemaEntity> temas) {
 		this.temas = temas;
+	}
+	@JsonBackReference
+	public AplicacaoEntity getAplicacao() {
+		return aplicacao;
+	}
+	public void setAplicacao(AplicacaoEntity aplicacao) {
+		this.aplicacao = aplicacao;
 	}
 	
 }
