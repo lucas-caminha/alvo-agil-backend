@@ -59,4 +59,13 @@ public class AvaliacaoController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(entity);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/time/{id}", produces = "application/json")
+	public ResponseEntity<List<AvaliacaoEntity>> getAvaliacaoByTime(@PathVariable(name = "id") Integer cdTime) {	
+		List<AvaliacaoEntity> avaliacoes = avaliacaoService.buscaAvaliacaoPorTime(cdTime);
+		if(avaliacoes == null) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(avaliacoes);
+	}
 }
