@@ -10,8 +10,8 @@ public class AvaliacaoDTO {
 	private String nmAvaliacao;
 	private String flAvaliacao;
 	private Double notaAvaliacao;
-	private AplicacaoEntity aplicacao;
-	private TimeEntity time;
+	private Integer cdAplicacao;
+	private Integer cdTime;
 	
 	public AvaliacaoDTO() {}
 
@@ -39,17 +39,17 @@ public class AvaliacaoDTO {
 	public void setNotaAvaliacao(Double notaAvaliacao) {
 		this.notaAvaliacao = notaAvaliacao;
 	}
-	public AplicacaoEntity getAplicacao() {
-		return aplicacao;
+	public Integer getCdAplicacao() {
+		return cdAplicacao;
 	}
-	public void setAplicacao(AplicacaoEntity aplicacao) {
-		this.aplicacao = aplicacao;
+	public void setCdAplicacao(Integer cdAplicacao) {
+		this.cdAplicacao = cdAplicacao;
 	}
-	public TimeEntity getTime() {
-		return time;
+	public Integer getCdTime() {
+		return cdTime;
 	}
-	public void setTime(TimeEntity time) {
-		this.time = time;
+	public void setCdTime(Integer cdTime) {
+		this.cdTime = cdTime;
 	}
 
 	public AvaliacaoEntity toEntity() {
@@ -58,8 +58,12 @@ public class AvaliacaoDTO {
 		entity.setFlAvaliacao(this.flAvaliacao);
 		entity.setNmAvaliacao(this.nmAvaliacao);
 		entity.setNotaAvaliacao(this.notaAvaliacao);
-		entity.setTime(this.time);
-		entity.setAplicacao(this.aplicacao);
+		TimeEntity time = new TimeEntity();
+		time.setCdTime(this.cdTime.longValue());	
+		entity.setTime(time);
+		AplicacaoEntity aplicacao = new AplicacaoEntity();
+		aplicacao.setCdAplicacao(this.cdAplicacao.longValue());
+		entity.setAplicacao(aplicacao);
 		return entity;
 	}
 

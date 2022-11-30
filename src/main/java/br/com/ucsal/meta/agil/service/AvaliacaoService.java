@@ -6,8 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.ucsal.meta.agil.entity.AplicacaoEntity;
 import br.com.ucsal.meta.agil.entity.AvaliacaoEntity;
-import br.com.ucsal.meta.agil.entity.CamadaEntity;
+import br.com.ucsal.meta.agil.entity.TimeEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
 import br.com.ucsal.meta.agil.exception.NotFoundException;
 import br.com.ucsal.meta.agil.repository.AvaliacaoRepository;
@@ -18,7 +19,11 @@ public class AvaliacaoService {
 	
 	@Autowired
 	private AvaliacaoRepository avaliacaoRepository;
-
+	@Autowired
+	private TimeService timeService;
+	@Autowired
+	private AplicacaoService aplicacaoService;;
+	
 	public List<AvaliacaoEntity> getAllAvaliacoes() {
 		return avaliacaoRepository.findAll();
 	}
@@ -28,6 +33,13 @@ public class AvaliacaoService {
 		if (find.isPresent()) {
 			throw new BusinessException(MessageUtil.FAIL_SAVE + MessageUtil.AVALIACAO_EXISTENTE);
 		}
+		
+		TimeEntity time = timeService.buscaTimePorId(avaliacao.getTime().getCdTime().intValue());
+		avaliacao.setTime(time);
+		
+		AplicacaoEntity aplicacao = aplicacaoService.buscaAplicacaoPorId(avaliacao.getAplicacao().getCdAplicacao().intValue());
+		avaliacao.setAplicacao(aplicacao);
+		
 		return avaliacaoRepository.save(avaliacao);
 	}
 	
@@ -72,6 +84,19 @@ public class AvaliacaoService {
 		if(avaliacao.isPresent()) {
 			return avaliacao.get();
 		}
+		throw new NotFoundException(MessageUtil.AVALIACAO_NAO_ENCONTRADA);
+	}
+
+	public List<AvaliacaoEntity> buscaAvaliacaoPorTime(Integer cdTime) {
+		
+		TimeEntity time = new TimeEntity();
+		time.setCdTime(cdTime.longValue());
+		
+		Optional<List<AvaliacaoEntity>> avaliacoesPorTime = avaliacaoRepository.findByTime(time);		
+		if(avaliacoesPorTime.isPresent()) {
+			return avaliacoesPorTime.get();
+		}
+		
 		throw new NotFoundException(MessageUtil.AVALIACAO_NAO_ENCONTRADA);
 	}
 	
