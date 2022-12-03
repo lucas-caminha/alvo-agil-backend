@@ -1,15 +1,15 @@
-package br.com.ucsal.meta.agil.dto;
+package br.com.ucsal.meta.agil.dto.alvo;
 
 import java.util.ArrayList;
 
-public class RodaCamadaDTO {
+public class AlvoCamadaDTO {
 	
 	/** Nome da Camada **/
 	private String label;
 	/** Temas **/ 
-	private ArrayList <RodaTemaDTO> children;
+	private ArrayList <AlvoTemaDTO> children;
 	
-	public RodaCamadaDTO() {
+	public AlvoCamadaDTO() {
 		this.children = new ArrayList<>();
 	}
 
@@ -19,10 +19,10 @@ public class RodaCamadaDTO {
 	public void setLabel(String label) {
 		this.label = label;
 	}
-	public ArrayList<RodaTemaDTO> getChildren() {
+	public ArrayList<AlvoTemaDTO> getChildren() {
 		return children;
 	}
-	public void setChildren(ArrayList<RodaTemaDTO> children) {
+	public void setChildren(ArrayList<AlvoTemaDTO> children) {
 		this.children = children;
 	}
 	

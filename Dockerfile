@@ -1,4 +1,4 @@
 FROM openjdk:11
-ADD target/*.jar meta.agil-1.0.1.jar
+ADD target/*.jar meta.agil-1.0.2.jar
 EXPOSE 5000
-ENTRYPOINT ["java", "-jar", "meta.agil-1.0.1.jar"]
+ENTRYPOINT ["java", "-jar", "meta.agil-1.0.2.jar"]

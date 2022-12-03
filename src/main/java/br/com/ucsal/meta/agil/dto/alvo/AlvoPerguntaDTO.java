@@ -1,6 +1,6 @@
-package br.com.ucsal.meta.agil.dto;
+package br.com.ucsal.meta.agil.dto.alvo;
 
-public class RodaPerguntaDTO {
+public class AlvoPerguntaDTO {
 	
 	/** Nome da pergunta **/
 	private String label;
@@ -9,7 +9,7 @@ public class RodaPerguntaDTO {
 	/** Peso da Pergunta **/
 	private Double peso;
 	
-	public RodaPerguntaDTO() {}
+	public AlvoPerguntaDTO() {}
 	
 	public String getLabel() {
 		return label;
