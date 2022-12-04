@@ -43,6 +43,7 @@ public class TimeEntity {
 	@JoinTable(name = "timetecnologia", joinColumns = @JoinColumn(name = "cdTecnologia", referencedColumnName = "cdTime"), 
 				inverseJoinColumns = @JoinColumn(name = "cdTime", referencedColumnName = "cdTecnologia"))
 	private List<TecnologiaEntity> tecnologias;	
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@JsonManagedReference
 	@OneToMany(mappedBy = "time", fetch = FetchType.EAGER)
 	private List<ParticipanteEntity> participantes;

@@ -25,6 +25,7 @@ import br.com.ucsal.meta.agil.entity.CamadaEntity;
 import br.com.ucsal.meta.agil.entity.PerguntaEntity;
 import br.com.ucsal.meta.agil.entity.TemaEntity;
 import br.com.ucsal.meta.agil.entity.TimeEntity;
+import br.com.ucsal.meta.agil.service.AlvoService;
 import br.com.ucsal.meta.agil.service.AplicacaoService;
 import br.com.ucsal.meta.agil.service.AvaliacaoService;
 import br.com.ucsal.meta.agil.service.CamadaService;
@@ -33,7 +34,7 @@ import br.com.ucsal.meta.agil.service.TemaService;
 import br.com.ucsal.meta.agil.service.TimeService;
 
 @RestController
-@RequestMapping("/alvo")
+@RequestMapping("/agil")
 public class AlvoController {
 	
 	@Autowired
@@ -50,6 +51,8 @@ public class AlvoController {
 	private PerguntaService perguntaService;
 	@Autowired
 	private TimeService timeService;
+	@Autowired
+	private AlvoService alvoService;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/aplicacao/{id}", produces = "application/json")
 	public ResponseEntity<String> getAplicacaoById(@PathVariable(name = "id") Integer cdAplicacao) {	
@@ -107,7 +110,9 @@ public class AlvoController {
 			CamadaEntity camada = new CamadaEntity();
 			camada.setNmCamada(c.getLabel());
 			camada.setFlCamada("S");
-			camada.setAplicacao(aplicacaoSalva);
+			ArrayList<AplicacaoEntity> aplicacoes = new ArrayList<AplicacaoEntity>();
+			aplicacoes.add(aplicacaoSalva);
+			camada.setAplicacoes(aplicacoes);
 			CamadaEntity camadaSalva = camadaService.save(camada);
 			
 			List<TemaEntity> temas = new ArrayList<TemaEntity>();
@@ -147,24 +152,48 @@ public class AlvoController {
 	@RequestMapping(method = RequestMethod.POST, value = "/avaliacao/add", produces = "application/json")
 	public ResponseEntity<AvaliacaoEntity> addAvaliacao(@RequestBody AlvoAvaliacaoDTO dto) {	
 		
+		Integer notaAvaliacao = 0;
 		AvaliacaoEntity avaliacao = new AvaliacaoEntity();
-		
 		avaliacao.setNmAvaliacao(dto.getLabel());
 		avaliacao.setFlAvaliacao("S");
-		
-		AplicacaoEntity aplicacao = aplicacaoService.buscaAplicacaoPorId(dto.getCdAplicacao());		
-		avaliacao.setAplicacao(aplicacao);
-		
+	
+		/** Time em que a Avaliação foi realizada **/
 		TimeEntity time = timeService.buscaTimePorId(dto.getCdTime());
 		avaliacao.setTime(time);
-
-	
+		
+		/** Aplicacão que foi utilizada **/
+		AplicacaoEntity aplicacao = aplicacaoService.buscaAplicacaoPorId(dto.getCdAplicacao());
+		avaliacao.setAplicacao(aplicacao);
+		
+		List<CamadaEntity> camadas = new ArrayList<CamadaEntity>();	
+		for(AlvoCamadaDTO alvoDTO : dto.getChildren()) {
+			CamadaEntity camada = new CamadaEntity();
+			camada.setNmCamada(alvoDTO.getLabel());
+			
+			List<TemaEntity> temas = new ArrayList<TemaEntity>();
+			for(AlvoTemaDTO temaDTO : alvoDTO.getChildren()) {
+				TemaEntity tema = new TemaEntity();
+				tema.setNmTema(temaDTO.getLabel());
+				
+				List<PerguntaEntity> perguntas = new ArrayList<PerguntaEntity>();
+				for(AlvoPerguntaDTO perguntaDTO : temaDTO.getChildren()) {
+					PerguntaEntity perguntaEntity = new PerguntaEntity();
+					perguntaEntity.setDescPergunta(perguntaDTO.getLabel());
+					perguntaEntity.setPeso(perguntaDTO.getPeso());
+					perguntaEntity.setPontuacao(perguntaDTO.getScore());
+					notaAvaliacao += perguntaEntity.getPontuacao();
+					perguntas.add(perguntaEntity);
+				}
+				tema.setPerguntas(perguntas);
+				temas.add(tema);
+			}
+			camada.setTemas(temas);
+			camadas.add(camada);
+		}
+		avaliacao.setNotaAvaliacao(notaAvaliacao);
+		
 		return ResponseEntity.status(HttpStatus.OK).body(avaliacao);
 	}
-	
-	
-	
-	
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/avaliacao/{id}", produces = "application/json")
 	public ResponseEntity<String> getAvaliacaoById(@PathVariable(name = "id") Integer cdAvaliacao) {	
@@ -207,6 +236,14 @@ public class AlvoController {
 	
 		return ResponseEntity.status(HttpStatus.OK).body(json);
 	}
+		
+	@RequestMapping(method = RequestMethod.GET, value = "/aplicacao/todos", produces = "application/json")
+	public ResponseEntity<List<AlvoAplicacaoDTO>> getAplicacoes() {		
+		List<AplicacaoEntity> aplicacoes = aplicacaoService.getAllAplicacoes();	
+		List<AlvoAplicacaoDTO> alvoAplicacoes = alvoService.entityListToAplicacaoDTOList(aplicacoes);	
+		return ResponseEntity.status(HttpStatus.OK).body(alvoAplicacoes);
+	}
 
 
+	
 }

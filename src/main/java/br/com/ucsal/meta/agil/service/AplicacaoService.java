@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ucsal.meta.agil.entity.AplicacaoEntity;
-import br.com.ucsal.meta.agil.entity.AvaliacaoEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
 import br.com.ucsal.meta.agil.exception.NotFoundException;
 import br.com.ucsal.meta.agil.repository.AplicacaoRepository;
@@ -19,7 +18,7 @@ public class AplicacaoService {
 	@Autowired
 	private AplicacaoRepository aplicacaoRepository;
 	
-	public List<AplicacaoEntity> getAllAplicacao() {
+	public List<AplicacaoEntity> getAllAplicacoes() {
 		return aplicacaoRepository.findAll();
 	}
 	

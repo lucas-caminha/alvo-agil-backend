@@ -25,7 +25,7 @@ public class AplicacaoController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/todos", produces = "application/json")
 	public ResponseEntity<List<AplicacaoEntity>> getAllAplicacao() {
-		List<AplicacaoEntity> Aplicacao = aplicacaoService.getAllAplicacao();
+		List<AplicacaoEntity> Aplicacao = aplicacaoService.getAllAplicacoes();
 		if (Aplicacao.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}

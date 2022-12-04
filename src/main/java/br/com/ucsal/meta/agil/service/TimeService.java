@@ -64,7 +64,8 @@ public class TimeService {
 			find.get().setTecnologias(getTecnologias(time));
 			time.setCerimonias(find.get().getCerimonias());
 			time.setTecnologias(find.get().getTecnologias());
-			find.get().setParticipantes(getParticipantes(time));
+			removeParticipantesDoTime(find.get());
+			find.get().setParticipantes(getParticipantesEAtualiza(time));
 			TimeEntity updated = timeRepository.save(find.get());
 			
 			return updated;
@@ -86,8 +87,17 @@ public class TimeService {
 		throw new NotFoundException(MessageUtil.TIME_NAO_ENCONTRADO);
 	}
 	
+	/** Remove participantes existentes no time **/
+	private void removeParticipantesDoTime(TimeEntity time) {		
+		for(ParticipanteEntity p : time.getParticipantes()) {
+			ParticipanteEntity participante = participanteService.buscaParticipantePorId(p.getCdParticipante().intValue());
+			participante.setTime(null);
+			participanteService.atualiza(participante);
+		}	
+	}
+	
 	private List<ParticipanteEntity> removeTimeDeParticipante(TimeEntity time) {
-		List<ParticipanteEntity> participantes = getParticipantes(time);
+		List<ParticipanteEntity> participantes = getParticipantesEAtualiza(time);
 		for(ParticipanteEntity e : participantes) {
 			e.setTime(null);
 			participanteService.atualiza(e);
@@ -95,8 +105,17 @@ public class TimeService {
 		return participantes;
 	}
 	
-	
 	private List<ParticipanteEntity> getParticipantes(TimeEntity time) {
+		List<ParticipanteEntity> participantes = new ArrayList<>();
+		for(ParticipanteEntity pt : time.getParticipantes()) {
+			ParticipanteEntity participante = participanteService.buscaParticipantePorId(pt.getCdParticipante().intValue());
+			participante.setTime(time);
+			participantes.add(participante);
+		}
+		return participantes;
+	}
+	
+	private List<ParticipanteEntity> getParticipantesEAtualiza(TimeEntity time) {
 		List<ParticipanteEntity> participantes = new ArrayList<>();
 		for(ParticipanteEntity pt : time.getParticipantes()) {
 			ParticipanteEntity participante = participanteService.buscaParticipantePorId(pt.getCdParticipante().intValue());

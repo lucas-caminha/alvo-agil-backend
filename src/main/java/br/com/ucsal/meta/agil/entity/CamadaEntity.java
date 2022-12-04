@@ -1,16 +1,17 @@
 package br.com.ucsal.meta.agil.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity(name = "camada")
@@ -24,12 +25,12 @@ public class CamadaEntity {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "camada")
 	private List<TemaEntity> temas;
-	@ManyToOne
-	@JoinColumn(name = "cdAplicacao")
-	private AplicacaoEntity aplicacao;
+	@JsonIgnore
+	@ManyToMany(mappedBy = "camadas")
+	private List<AplicacaoEntity> aplicacoes;
 	
 	public CamadaEntity() {
-		aplicacao = new AplicacaoEntity();
+		aplicacoes = new ArrayList<AplicacaoEntity>();
 	}
 
 	public Long getCdCamada() {
@@ -57,11 +58,11 @@ public class CamadaEntity {
 		this.temas = temas;
 	}
 	@JsonBackReference
-	public AplicacaoEntity getAplicacao() {
-		return aplicacao;
+	public List<AplicacaoEntity> getAplicacoes() {
+		return aplicacoes;
 	}
-	public void setAplicacao(AplicacaoEntity aplicacao) {
-		this.aplicacao = aplicacao;
+	public void setAplicacoes(List<AplicacaoEntity> aplicacoes) {
+		this.aplicacoes = aplicacoes;
 	}
 	
 }

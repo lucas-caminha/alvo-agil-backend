@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class AlvoAplicacaoDTO {
 	
-	private String cdAplicacao;
+	private Integer cdAplicacao;
 	/** Nome da Avaliação **/
 	private String label;
-	/** Camada **/
 	private String dtAvaliacao;
+	/** Camada **/
 	private ArrayList <AlvoCamadaDTO> children;
 
 	
@@ -16,10 +16,10 @@ public class AlvoAplicacaoDTO {
 		this.children = new ArrayList<>();
 	}
 	
-	public String getCdAplicacao() {
+	public Integer getCdAplicacao() {
 		return cdAplicacao;
 	}
-	public void setCdAplicacao(String cdAplicacao) {
+	public void setCdAplicacao(Integer cdAplicacao) {
 		this.cdAplicacao = cdAplicacao;
 	}
 	public String getLabel() {
