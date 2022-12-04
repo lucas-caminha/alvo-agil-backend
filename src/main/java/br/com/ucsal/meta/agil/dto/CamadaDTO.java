@@ -3,6 +3,7 @@ package br.com.ucsal.meta.agil.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.ucsal.meta.agil.entity.AplicacaoEntity;
 import br.com.ucsal.meta.agil.entity.CamadaEntity;
 import br.com.ucsal.meta.agil.entity.TemaEntity;
 
@@ -11,7 +12,7 @@ public class CamadaDTO {
 	private Long cdCamada;
 	private String nmCamada;
 	private String flCamada;
-	private Integer cdAplicacao;
+	private List<Integer> aplicacoes;
 	private List<TemaDTO> temas;
 
 	
@@ -41,11 +42,11 @@ public class CamadaDTO {
 	public void setTemas(List<TemaDTO> perguntas) {
 		this.temas = perguntas;
 	}
-	public Integer getCdAplicacao() {
-		return cdAplicacao;
+	public List<Integer> getAplicacoes() {
+		return aplicacoes;
 	}
-	public void setCdAplicacao(Integer cdAplicacao) {
-		this.cdAplicacao = cdAplicacao;
+	public void setAplicacoes(List<Integer> aplicacoes) {
+		this.aplicacoes = aplicacoes;
 	}
 
 	public CamadaEntity toEntity() {
@@ -53,7 +54,7 @@ public class CamadaDTO {
 		entity.setCdCamada(this.cdCamada);
 		entity.setNmCamada(this.nmCamada);
 		entity.setFlCamada(this.flCamada);
-		entity.getAplicacao().setCdAplicacao(this.cdAplicacao.longValue());
+		entity.setAplicacoes(dtoToAplicacao());
 		entity.setTemas(dtoToTemas());
 		return entity;
 	}
@@ -64,6 +65,18 @@ public class CamadaDTO {
 			temas.add(dto.toEntity());
 		}
 		return temas;
+	}
+	
+	private List<AplicacaoEntity> dtoToAplicacao() {	
+		List<AplicacaoEntity> aps = new ArrayList<AplicacaoEntity>();
+		
+		for(Integer cdAplicacao : aplicacoes) {
+			AplicacaoEntity a = new AplicacaoEntity();
+			a.setCdAplicacao(cdAplicacao.longValue());
+			aps.add(a);
+		}
+		
+		return aps;
 	}
 
 }

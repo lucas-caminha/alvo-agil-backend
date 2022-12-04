@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ucsal.meta.agil.dto.CamadaDTO;
+import br.com.ucsal.meta.agil.entity.AplicacaoEntity;
 import br.com.ucsal.meta.agil.entity.CamadaEntity;
 import br.com.ucsal.meta.agil.service.CamadaService;
 
@@ -40,7 +41,11 @@ public class CamadaController {
 		if (saved.getCdCamada() == null) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
-		saved.getAplicacao().setCamadas(new ArrayList<>());
+		
+		for(AplicacaoEntity a : saved.getAplicacoes()) {
+			a.setCamadas(new ArrayList<>());
+		}
+		
 		return ResponseEntity.status(HttpStatus.CREATED).body(saved);
 	}
 
@@ -51,7 +56,11 @@ public class CamadaController {
 		if (updated == null) {
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
 		}
-		updated.getAplicacao().setCamadas(new ArrayList<>());
+		
+		for(AplicacaoEntity a : updated.getAplicacoes()) {
+			a.setCamadas(new ArrayList<>());
+		}
+		
 		return ResponseEntity.status(HttpStatus.OK).body(updated);
 	}
 

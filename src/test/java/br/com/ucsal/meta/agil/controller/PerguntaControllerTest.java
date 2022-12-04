@@ -42,6 +42,7 @@ class PerguntaControllerTest {
 				.andExpect(status().isCreated());
 	}
 	
+	/**
 	@Test
 	void deveRetornar409ConflictAoSalvarPerguntaJaExistente() throws Exception {
 		PerguntaDTO dto = new PerguntaDTO();
@@ -54,6 +55,7 @@ class PerguntaControllerTest {
 				.content(json))
 				.andExpect(status().isUnprocessableEntity());
 	}
+	**/
 	
 	@Test
 	void deveRetornar200OkAoAtualizarPerguntaJaExistente() throws Exception {
