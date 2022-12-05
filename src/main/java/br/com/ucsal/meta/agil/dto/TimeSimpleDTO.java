@@ -20,10 +20,10 @@ public class TimeSimpleDTO {
 	private String flTime;
 	private String dtInicioTime;	
 	private String dtFinalizacaoTime;
-	private List<String> cerimonias;
-	private String framework;
-	private List<String> tecnologias;
-	private List<String> participantes;
+	private List<Integer> cerimonias;
+	private Integer framework;
+	private List<Integer> tecnologias;
+	private List<Integer> participantes;
 	
 	public Long getCdTime() {
 		return cdTime;
@@ -55,28 +55,28 @@ public class TimeSimpleDTO {
 	public void setDtFinalizacaoTime(String dtFinalizacaoTime) {
 		this.dtFinalizacaoTime = dtFinalizacaoTime;
 	}
-	public List<String> getCerimonias() {
+	public List<Integer> getCerimonias() {
 		return cerimonias;
 	}
-	public void setCerimonias(List<String> cerimonias) {
+	public void setCerimonias(List<Integer> cerimonias) {
 		this.cerimonias = cerimonias;
 	}
-	public String getFramework() {
+	public Integer getFramework() {
 		return framework;
 	}
-	public void setFramework(String framework) {
+	public void setFramework(Integer framework) {
 		this.framework = framework;
 	}
-	public List<String> getTecnologias() {
+	public List<Integer> getTecnologias() {
 		return tecnologias;
 	}
-	public void setTecnologias(List<String> tecnologias) {
+	public void setTecnologias(List<Integer> tecnologias) {
 		this.tecnologias = tecnologias;
 	}
-	public List<String> getParticipantes() {
+	public List<Integer> getParticipantes() {
 		return participantes;
 	}
-	public void setParticipantes(List<String> participantes) {
+	public void setParticipantes(List<Integer> participantes) {
 		this.participantes = participantes;
 	}
 	public TimeEntity toEntity() {
@@ -89,15 +89,15 @@ public class TimeSimpleDTO {
 		time.setCerimonias(StringToCerimonias());
 		time.setTecnologias(StringToTecnologias());
 		time.setFramework(stringToFramework());	
-		time.setParticipantes(stringToParticipantes());
+		time.setParticipantes(getParticipantesList());
 		return time;
 	}	
 	
-	private List<ParticipanteEntity> stringToParticipantes() { 
+	private List<ParticipanteEntity> getParticipantesList() { 
 		List<ParticipanteEntity> participantes = new ArrayList<ParticipanteEntity>();
-		for(String cdParticipante : this.participantes) {
+		for(Integer cdParticipante : this.participantes) {
 			ParticipanteEntity entity = new ParticipanteEntity();
-			entity.setCdParticipante(converteStringParaLong(cdParticipante));
+			entity.setCdParticipante(cdParticipante.longValue());
 			participantes.add(entity);
 		}
 		return participantes;
@@ -105,15 +105,17 @@ public class TimeSimpleDTO {
 
 	private FrameworkEntity stringToFramework() {
 		FrameworkEntity entity = new FrameworkEntity();
-		entity.setCdFramework(converteStringParaLong(framework));
+		if(this.framework != null) {
+			entity.setCdFramework(this.framework.longValue());
+		}
 		return entity;
 	}
 	
 	private List<CerimoniaEntity> StringToCerimonias() { 
 		List<CerimoniaEntity> cerimonias = new ArrayList<CerimoniaEntity>();
-		for(String cdCerimonia : this.cerimonias) {
+		for(Integer cdCerimonia : this.cerimonias) {
 			CerimoniaEntity entity = new CerimoniaEntity();
-			entity.setCdCerimonia(converteStringParaLong(cdCerimonia));
+			entity.setCdCerimonia(cdCerimonia.longValue());
 			cerimonias.add(entity);
 		}
 		return cerimonias;
@@ -121,23 +123,14 @@ public class TimeSimpleDTO {
 	
 	private List<TecnologiaEntity> StringToTecnologias() { 
 		List<TecnologiaEntity> tecnologias = new ArrayList<TecnologiaEntity>();
-		for(String cdTecnologia : this.tecnologias) {
+		for(Integer cdTecnologia : this.tecnologias) {
 			TecnologiaEntity entity = new TecnologiaEntity();
-			entity.setCdTecnologia(converteStringParaLong(cdTecnologia));
+			entity.setCdTecnologia(cdTecnologia.longValue());
 			tecnologias.add(entity);
 		}
 		return tecnologias;
 	}
 	
-	private Long converteStringParaLong(String id) {
-		try {
-			if(id != null && !id.isEmpty()) {
-				return Long.parseLong(id);
-			}		
-		} catch (Exception e) {
-			e.printStackTrace();			
-		}
-		return null;
-	}
+
 	
 }

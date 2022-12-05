@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import br.com.ucsal.meta.agil.entity.CamadaEntity;
 import br.com.ucsal.meta.agil.entity.PerguntaEntity;
 import br.com.ucsal.meta.agil.entity.TemaEntity;
-import br.com.ucsal.meta.agil.exception.BusinessException;
 import br.com.ucsal.meta.agil.exception.NotFoundException;
 import br.com.ucsal.meta.agil.repository.TemaRepository;
 import br.com.ucsal.meta.agil.util.MessageUtil;
@@ -31,9 +30,11 @@ public class TemaService {
 	
 	public TemaEntity save (TemaEntity tema) {
 		Optional<TemaEntity> find = temaRepository.findByNmTema(tema.getNmTema());
+		/**
 		if(find.isPresent()) {
 			throw new BusinessException(MessageUtil.FAIL_SAVE + MessageUtil.TEMA_EXISTENTE);
 		}
+		**/
 		
 		CamadaEntity camada = camadaService.buscaCamadaPorId(tema.getCamada().getCdCamada().intValue());	
 		tema.setCamada(camada);

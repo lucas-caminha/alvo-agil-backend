@@ -23,7 +23,7 @@ public class ParticipanteEntity {
 	private LocalDate dtInicioParticipante;
 	private LocalDate dtFimParticipante;
 	private String emailParticipante;
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "cdTime")
 	private TimeEntity time;
 	@ManyToOne
