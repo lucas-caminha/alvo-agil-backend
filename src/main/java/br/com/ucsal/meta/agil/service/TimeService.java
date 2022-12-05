@@ -59,8 +59,8 @@ public class TimeService {
 			find.get().setFlTime(time.getFlTime());
 			find.get().setDtInicioTime(time.getDtInicioTime());
 			find.get().setDtFinalizacaoTime(time.getDtFinalizacaoTime());
-			find.get().setCerimonias(getCerimonias(time));
-			find.get().setFramework(getFramework(time));
+			find.get().setCerimonias(getCerimonias(time));			
+			find.get().setFramework(getFramework(time));			
 			find.get().setTecnologias(getTecnologias(time));
 			time.setCerimonias(find.get().getCerimonias());
 			time.setTecnologias(find.get().getTecnologias());
@@ -145,6 +145,9 @@ public class TimeService {
 	}
 	
 	private FrameworkEntity getFramework(TimeEntity time) {
+		if(time.getFramework() == null) {
+			return null;
+		}
 		if(time.getFramework().getCdFramework() != null) {
 			FrameworkEntity framework = frameworkService.getFramework(time.getFramework().getCdFramework());
 			return framework;

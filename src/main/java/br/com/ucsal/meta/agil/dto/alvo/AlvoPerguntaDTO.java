@@ -7,7 +7,7 @@ public class AlvoPerguntaDTO {
 	/** Valor da Resposta **/
 	private Integer score;
 	/** Peso da Pergunta **/
-	private Double peso;
+	private Integer peso;
 	
 	public AlvoPerguntaDTO() {}
 	
@@ -23,10 +23,10 @@ public class AlvoPerguntaDTO {
 	public void setScore(Integer score) {
 		this.score = score;
 	}
-	public Double getPeso() {
+	public Integer getPeso() {
 		return peso;
 	}
-	public void setPeso(Double peso) {
+	public void setPeso(Integer peso) {
 		this.peso = peso;
 	}
 

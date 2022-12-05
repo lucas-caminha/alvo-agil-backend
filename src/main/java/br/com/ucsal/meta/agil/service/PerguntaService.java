@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ucsal.meta.agil.entity.PerguntaEntity;
-import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
-import br.com.ucsal.meta.agil.exception.BusinessException;
 import br.com.ucsal.meta.agil.exception.NotFoundException;
 import br.com.ucsal.meta.agil.repository.PerguntaRepository;
 import br.com.ucsal.meta.agil.util.MessageUtil;
@@ -25,9 +23,11 @@ public class PerguntaService {
 
 	public PerguntaEntity save(PerguntaEntity pergunta) {
 		Optional<List<PerguntaEntity>> find = perguntaRepository.findByDescPergunta(pergunta.getDescPergunta());	
+		/**
 		if(!find.get().isEmpty()) {
 			throw new BusinessException(MessageUtil.FAIL_SAVE + MessageUtil.PERGUNTA_EXISTENTE);
 		}
+		**/
 		return perguntaRepository.save(pergunta);
 	}
 

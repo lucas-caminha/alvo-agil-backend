@@ -1,11 +1,14 @@
 package br.com.ucsal.meta.agil.entity;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity(name = "avaliacao")
@@ -23,6 +26,8 @@ public class AvaliacaoEntity {
 	@ManyToOne
 	@JoinColumn(name = "cdTime")
 	private TimeEntity time;
+	@OneToMany(mappedBy = "avaliacao")
+	private List<RespostaEntity> respostas;
 	
 	public AvaliacaoEntity() {}
 	
@@ -61,6 +66,12 @@ public class AvaliacaoEntity {
 	}
 	public void setTime(TimeEntity time) {
 		this.time = time;
+	}
+	public List<RespostaEntity> getRespostas() {
+		return respostas;
+	}
+	public void setRespostas(List<RespostaEntity> respostas) {
+		this.respostas = respostas;
 	}
 
 }

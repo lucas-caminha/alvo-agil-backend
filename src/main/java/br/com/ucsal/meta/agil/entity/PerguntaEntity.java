@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -18,12 +19,13 @@ public class PerguntaEntity {
 	private Long cdPergunta;
 	private String descPergunta;
 	private String flPergunta;
-	private Double peso;
+	private Integer peso;
 	private Integer pontuacao;
 	@ManyToMany(mappedBy = "perguntas")
 	private List<TemaEntity> temas;
+	@OneToMany(mappedBy="pergunta")
+	private List<RespostaEntity> respostas;
 
-	
 	public PerguntaEntity() {}
 	
 	public Long getCdPergunta() {
@@ -44,10 +46,10 @@ public class PerguntaEntity {
 	public void setFlPergunta(String flPergunta) {
 		this.flPergunta = flPergunta;
 	}
-	public Double getPeso() {
+	public Integer getPeso() {
 		return peso;
 	}
-	public void setPeso(Double peso) {
+	public void setPeso(Integer peso) {
 		this.peso = peso;
 	}
 	@JsonBackReference
@@ -62,6 +64,12 @@ public class PerguntaEntity {
 	}
 	public void setPontuacao(Integer pontuacao) {
 		this.pontuacao = pontuacao;
+	}
+	public List<RespostaEntity> getRespostas() {
+		return respostas;
+	}
+	public void setRespostas(List<RespostaEntity> respostas) {
+		this.respostas = respostas;
 	}
 	
 }
