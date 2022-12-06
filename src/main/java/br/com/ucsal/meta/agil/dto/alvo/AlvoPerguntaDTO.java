@@ -2,7 +2,9 @@ package br.com.ucsal.meta.agil.dto.alvo;
 
 public class AlvoPerguntaDTO {
 	
-	/** Nome da pergunta **/
+	/** Código da Pergunta **/
+	private Integer cdPergunta;
+	/** Nome da Pergunta **/
 	private String label;
 	/** Valor da Resposta **/
 	private Integer score;
@@ -28,6 +30,12 @@ public class AlvoPerguntaDTO {
 	}
 	public void setPeso(Integer peso) {
 		this.peso = peso;
+	}
+	public Integer getCdPergunta() {
+		return cdPergunta;
+	}
+	public void setCdPergunta(Integer cdPergunta) {
+		this.cdPergunta = cdPergunta;
 	}
 
 }

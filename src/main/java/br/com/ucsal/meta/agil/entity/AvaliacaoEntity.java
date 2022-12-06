@@ -1,5 +1,6 @@
 package br.com.ucsal.meta.agil.entity;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -11,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity(name = "avaliacao")
 public class AvaliacaoEntity {
 	
@@ -20,12 +23,14 @@ public class AvaliacaoEntity {
 	private String nmAvaliacao;
 	private String flAvaliacao;
 	private Integer notaAvaliacao;
+	private LocalDate dtAvaliacao;
 	@OneToOne
 	@JoinColumn(name = "cdAplicacao")
 	private AplicacaoEntity aplicacao;
 	@ManyToOne
 	@JoinColumn(name = "cdTime")
 	private TimeEntity time;
+	@JsonManagedReference
 	@OneToMany(mappedBy = "avaliacao")
 	private List<RespostaEntity> respostas;
 	
@@ -72,6 +77,12 @@ public class AvaliacaoEntity {
 	}
 	public void setRespostas(List<RespostaEntity> respostas) {
 		this.respostas = respostas;
+	}
+	public LocalDate getDtAvaliacao() {
+		return dtAvaliacao;
+	}
+	public void setDtAvaliacao(LocalDate dtAvaliacao) {
+		this.dtAvaliacao = dtAvaliacao;
 	}
 
 }

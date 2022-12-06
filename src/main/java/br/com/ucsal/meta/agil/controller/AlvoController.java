@@ -1,8 +1,10 @@
 package br.com.ucsal.meta.agil.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.google.gson.Gson;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import br.com.ucsal.meta.agil.entity.AplicacaoEntity;
 import br.com.ucsal.meta.agil.entity.AvaliacaoEntity;
 import br.com.ucsal.meta.agil.entity.CamadaEntity;
 import br.com.ucsal.meta.agil.entity.PerguntaEntity;
+import br.com.ucsal.meta.agil.entity.RespostaEntity;
 import br.com.ucsal.meta.agil.entity.TemaEntity;
 import br.com.ucsal.meta.agil.entity.TimeEntity;
 import br.com.ucsal.meta.agil.service.AlvoService;
@@ -30,6 +33,7 @@ import br.com.ucsal.meta.agil.service.AplicacaoService;
 import br.com.ucsal.meta.agil.service.AvaliacaoService;
 import br.com.ucsal.meta.agil.service.CamadaService;
 import br.com.ucsal.meta.agil.service.PerguntaService;
+import br.com.ucsal.meta.agil.service.RespostaService;
 import br.com.ucsal.meta.agil.service.TemaService;
 import br.com.ucsal.meta.agil.service.TimeService;
 
@@ -53,6 +57,8 @@ public class AlvoController {
 	private TimeService timeService;
 	@Autowired
 	private AlvoService alvoService;
+	@Autowired
+	private RespostaService respostaService;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/aplicacao/{id}", produces = "application/json")
 	public ResponseEntity<String> getAplicacaoById(@PathVariable(name = "id") Integer cdAplicacao) {	
@@ -76,7 +82,7 @@ public class AlvoController {
 				for(PerguntaEntity pergunta : tema.getPerguntas()) {
 					AlvoPerguntaDTO p = new AlvoPerguntaDTO();
 					p.setLabel(pergunta.getDescPergunta());
-					p.setScore(pergunta.getPontuacao());
+					//p.setScore(pergunta.getPontuacao());
 					p.setPeso(pergunta.getPeso());
 					perguntasRoda.add(p);
 				}
@@ -129,7 +135,7 @@ public class AlvoController {
 					pergunta.setDescPergunta(p.getLabel());
 					pergunta.setFlPergunta("S");
 					pergunta.setPeso(p.getPeso());
-					pergunta.setPontuacao(p.getScore());
+					//pergunta.setPontuacao(p.getScore());
 					ArrayList<TemaEntity> ts = new ArrayList<TemaEntity>();
 					ts.add(temaSalvo);			
 					pergunta.setTemas(ts);
@@ -150,12 +156,14 @@ public class AlvoController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/avaliacao/add", produces = "application/json")
-	public ResponseEntity<AvaliacaoEntity> addAvaliacao(@RequestBody AlvoAvaliacaoDTO dto) {	
+	public ResponseEntity<AlvoAvaliacaoDTO> addAvaliacao(@RequestBody AlvoAvaliacaoDTO dto) {	
 		
 		Integer notaAvaliacao = 0;
 		AvaliacaoEntity avaliacao = new AvaliacaoEntity();
 		avaliacao.setNmAvaliacao(dto.getLabel());
 		avaliacao.setFlAvaliacao("S");
+		LocalDate dtAvaliacao = LocalDate.parse(dto.getDtAvaliacao());
+		avaliacao.setDtAvaliacao(dtAvaliacao);
 	
 		/** Time em que a Avaliação foi realizada **/
 		TimeEntity time = timeService.buscaTimePorId(dto.getCdTime());
@@ -164,6 +172,8 @@ public class AlvoController {
 		/** Aplicacão que foi utilizada **/
 		AplicacaoEntity aplicacao = aplicacaoService.buscaAplicacaoPorId(dto.getCdAplicacao());
 		avaliacao.setAplicacao(aplicacao);
+		
+		AvaliacaoEntity avaliacaoSalva = avaliacaoService.save(avaliacao);
 		
 		List<CamadaEntity> camadas = new ArrayList<CamadaEntity>();	
 		for(AlvoCamadaDTO alvoDTO : dto.getChildren()) {
@@ -178,28 +188,51 @@ public class AlvoController {
 				List<PerguntaEntity> perguntas = new ArrayList<PerguntaEntity>();
 				for(AlvoPerguntaDTO perguntaDTO : temaDTO.getChildren()) {
 					PerguntaEntity perguntaEntity = new PerguntaEntity();
+					perguntaEntity.setCdPergunta(perguntaDTO.getCdPergunta().longValue());
 					perguntaEntity.setDescPergunta(perguntaDTO.getLabel());
 					perguntaEntity.setPeso(perguntaDTO.getPeso());
-					perguntaEntity.setPontuacao(perguntaDTO.getScore());
-					notaAvaliacao += perguntaEntity.getPontuacao();
 					perguntas.add(perguntaEntity);
+					
+					PerguntaEntity perguntaFind = perguntaService.buscaPerguntaPorId(perguntaEntity.getCdPergunta().intValue());
+					
+					/** Salva as respostas da Avaliação **/
+					RespostaEntity resposta = new RespostaEntity();					
+					resposta.setNota(perguntaDTO.getScore());
+					resposta.setAvaliacao(avaliacaoSalva);
+					resposta.setPergunta(perguntaFind);
+					resposta.setNota(perguntaDTO.getScore());
+					
+					notaAvaliacao += (resposta.getNota() != null) ? resposta.getNota() : 0;
+					
+					respostaService.save(resposta);
 				}
+				
 				tema.setPerguntas(perguntas);
 				temas.add(tema);
 			}
+			
 			camada.setTemas(temas);
 			camadas.add(camada);
 		}
-		avaliacao.setNotaAvaliacao(notaAvaliacao);
 		
-		return ResponseEntity.status(HttpStatus.OK).body(avaliacao);
+		avaliacao.setNotaAvaliacao(notaAvaliacao);
+		avaliacaoService.atualiza(avaliacaoSalva);
+		
+		AlvoAvaliacaoDTO alvo = avaliacaoService.avaliacaoEntityToAlvoAvaliacaoDTO(avaliacaoSalva);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(alvo);
 	}
 	
+
+
 	@RequestMapping(method = RequestMethod.GET, value = "/avaliacao/{id}", produces = "application/json")
-	public ResponseEntity<String> getAvaliacaoById(@PathVariable(name = "id") Integer cdAvaliacao) {	
+	public ResponseEntity<AlvoAvaliacaoDTO> getAvaliacaoById(@PathVariable(name = "id") Integer cdAvaliacao) {	
 		
 		AvaliacaoEntity avaliacao = avaliacaoService.buscaAvaliacaoPorId(cdAvaliacao);	
 		
+		AlvoAvaliacaoDTO alvo = avaliacaoService.avaliacaoEntityToAlvoAvaliacaoDTO(avaliacao);
+		
+		/**
 		AlvoAvaliacaoDTO roda = new AlvoAvaliacaoDTO();
 		roda.setLabel(avaliacao.getNmAvaliacao());
 		ArrayList<AlvoCamadaDTO> camadasRoda = new ArrayList<AlvoCamadaDTO>();
@@ -217,7 +250,7 @@ public class AlvoController {
 				for(PerguntaEntity pergunta : tema.getPerguntas()) {
 					AlvoPerguntaDTO p = new AlvoPerguntaDTO();
 					p.setLabel(pergunta.getDescPergunta());
-					p.setScore(pergunta.getPontuacao());
+					//p.setScore(pergunta.getPontuacao());
 					p.setPeso(pergunta.getPeso());
 					perguntasRoda.add(p);
 				}
@@ -233,8 +266,9 @@ public class AlvoController {
 		roda.setChildren(camadasRoda);
 		
 		String json = gson.toJson(roda);
+		**/
 	
-		return ResponseEntity.status(HttpStatus.OK).body(json);
+		return ResponseEntity.status(HttpStatus.OK).body(alvo);
 	}
 		
 	@RequestMapping(method = RequestMethod.GET, value = "/aplicacao/todos", produces = "application/json")

@@ -42,7 +42,7 @@ public class PerguntaDTO {
 		pergunta.setCdPergunta(this.cdPergunta);
 		pergunta.setDescPergunta(this.descPergunta);
 		pergunta.setFlPergunta(this.flPergunta);
-		pergunta.setPontuacao(this.pontuacao);
+		//pergunta.setPontuacao(this.pontuacao);
 		return pergunta;
 	}
 

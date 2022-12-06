@@ -32,16 +32,16 @@ public class TimeEntity {
 	private LocalDate dtFinalizacaoTime;
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "timecerimonia", joinColumns = @JoinColumn(name = "cdCerimonia", referencedColumnName = "cdTime"),
-			inverseJoinColumns = @JoinColumn(name = "cdTime", referencedColumnName = "cdCerimonia"))
+	@JoinTable(name = "timecerimonia", joinColumns = @JoinColumn(name = "cdTime"),
+			inverseJoinColumns = @JoinColumn(name = "cdCerimonia"))
 	private List<CerimoniaEntity> cerimonias;
 	@ManyToOne
 	@JoinColumn(name = "cdFramework")
 	private FrameworkEntity framework;
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@ManyToMany(cascade = CascadeType.MERGE)
-	@JoinTable(name = "timetecnologia", joinColumns = @JoinColumn(name = "cdTecnologia", referencedColumnName = "cdTime"), 
-				inverseJoinColumns = @JoinColumn(name = "cdTime", referencedColumnName = "cdTecnologia"))
+	@JoinTable(name = "timetecnologia", joinColumns = @JoinColumn(name = "cdTime"), 
+				inverseJoinColumns = @JoinColumn(name = "cdTecnologia"))
 	private List<TecnologiaEntity> tecnologias;	
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@JsonManagedReference
