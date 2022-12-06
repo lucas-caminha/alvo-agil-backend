@@ -10,6 +10,7 @@ public class AlvoAvaliacaoDTO {
 	private String dtAvaliacao;
 	private Integer cdTime;
 	private Integer cdAplicacao;
+	private Integer notaTotal;
 	/** Camada **/
 	private ArrayList <AlvoCamadaDTO> children;
 
@@ -63,6 +64,13 @@ public class AlvoAvaliacaoDTO {
 
 	public void setChildren(ArrayList<AlvoCamadaDTO> children) {
 		this.children = children;
+	}
+	public Integer getNotaTotal() {
+		return notaTotal;
+	}
+
+	public void setNotaTotal(Integer notaTotal) {
+		this.notaTotal = notaTotal;
 	}
 	
 }

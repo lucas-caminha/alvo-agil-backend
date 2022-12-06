@@ -67,6 +67,7 @@ public class AlvoService {
 		
 		for(PerguntaEntity p : perguntas) {
 			AlvoPerguntaDTO dto = new AlvoPerguntaDTO();
+			dto.setCdPergunta(p.getCdPergunta().intValue());
 			dto.setLabel(p.getDescPergunta());
 			dto.setPeso(p.getPeso());
 			alvoPerguntas.add(dto);

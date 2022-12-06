@@ -25,8 +25,8 @@ public class AplicacaoEntity {
 	private String flAplicacao;
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "aplicacaocamada", joinColumns = @JoinColumn(name = "cdCamada", referencedColumnName = "cdAplicacao"), 
-	inverseJoinColumns = @JoinColumn(name = "cdAplicacao", referencedColumnName = "cdCamada"))
+	@JoinTable(name = "aplicacaocamada", joinColumns = @JoinColumn(name = "cdAplicacao"), 
+	inverseJoinColumns = @JoinColumn(name = "cdCamada"))
 	private List<CamadaEntity> camadas;
 	
 	public Long getCdAplicacao() {

@@ -10,6 +10,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity(name = "pergunta")
 public class PerguntaEntity {
@@ -20,9 +21,9 @@ public class PerguntaEntity {
 	private String descPergunta;
 	private String flPergunta;
 	private Integer peso;
-	private Integer pontuacao;
 	@ManyToMany(mappedBy = "perguntas")
 	private List<TemaEntity> temas;
+	@JsonManagedReference
 	@OneToMany(mappedBy="pergunta")
 	private List<RespostaEntity> respostas;
 
@@ -58,12 +59,6 @@ public class PerguntaEntity {
 	}
 	public void setTemas(List<TemaEntity> temas) {
 		this.temas = temas;
-	}
-	public Integer getPontuacao() {
-		return pontuacao;
-	}
-	public void setPontuacao(Integer pontuacao) {
-		this.pontuacao = pontuacao;
 	}
 	public List<RespostaEntity> getRespostas() {
 		return respostas;

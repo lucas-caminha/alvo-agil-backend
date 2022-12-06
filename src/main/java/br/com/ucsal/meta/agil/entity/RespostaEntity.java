@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity(name = "resposta")
 public class RespostaEntity {
 
@@ -29,12 +31,14 @@ public class RespostaEntity {
 	public void setCdResposta(Long cdResposta) {
 		this.cdResposta = cdResposta;
 	}
+	@JsonBackReference
 	public PerguntaEntity getPergunta() {
 		return pergunta;
 	}
 	public void setPergunta(PerguntaEntity pergunta) {
 		this.pergunta = pergunta;
 	}
+	@JsonBackReference
 	public AvaliacaoEntity getAvaliacao() {
 		return avaliacao;
 	}

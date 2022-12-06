@@ -29,8 +29,9 @@ public class TemaEntity {
 	@JsonManagedReference
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@ManyToMany(cascade = CascadeType.MERGE)
-	@JoinTable(name = "temapergunta", joinColumns = @JoinColumn(name = "cdPergunta", referencedColumnName = "cdTema"), 
-	inverseJoinColumns = @JoinColumn(name = "cdTema", referencedColumnName = "cdPergunta"))
+	@JoinTable(name = "temapergunta", 
+				joinColumns = @JoinColumn(name = "cdTema"), 
+				inverseJoinColumns = @JoinColumn(name = "cdPergunta"))
 	private List<PerguntaEntity> perguntas;
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "cdCamada")
