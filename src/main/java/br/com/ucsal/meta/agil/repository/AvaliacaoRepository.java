@@ -17,4 +17,5 @@ public interface AvaliacaoRepository extends JpaRepository<AvaliacaoEntity, Long
 	Optional<AvaliacaoEntity> findById(Long id);
 
 	Optional<List<AvaliacaoEntity>> findByTime(TimeEntity time);
+	
 }

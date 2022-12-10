@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.google.gson.Gson;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,6 +158,7 @@ public class AlvoController {
 	public ResponseEntity<AlvoAvaliacaoDTO> addAvaliacao(@RequestBody AlvoAvaliacaoDTO dto) {	
 		
 		Integer notaAvaliacao = 0;
+		
 		AvaliacaoEntity avaliacao = new AvaliacaoEntity();
 		avaliacao.setNmAvaliacao(dto.getLabel());
 		avaliacao.setFlAvaliacao("S");
@@ -173,17 +173,26 @@ public class AlvoController {
 		AplicacaoEntity aplicacao = aplicacaoService.buscaAplicacaoPorId(dto.getCdAplicacao());
 		avaliacao.setAplicacao(aplicacao);
 		
+		/** Salva Avaliação **/
 		AvaliacaoEntity avaliacaoSalva = avaliacaoService.save(avaliacao);
+		
+		Integer notaCamada = 0;
+		Integer pesoCamadaTotal = 0;
 		
 		List<CamadaEntity> camadas = new ArrayList<CamadaEntity>();	
 		for(AlvoCamadaDTO alvoDTO : dto.getChildren()) {
 			CamadaEntity camada = new CamadaEntity();
 			camada.setNmCamada(alvoDTO.getLabel());
 			
+
+			
 			List<TemaEntity> temas = new ArrayList<TemaEntity>();
 			for(AlvoTemaDTO temaDTO : alvoDTO.getChildren()) {
 				TemaEntity tema = new TemaEntity();
 				tema.setNmTema(temaDTO.getLabel());
+				
+				Integer notaTema = 0;
+				Integer pesoTemaTotal = 0;
 				
 				List<PerguntaEntity> perguntas = new ArrayList<PerguntaEntity>();
 				for(AlvoPerguntaDTO perguntaDTO : temaDTO.getChildren()) {
@@ -192,7 +201,7 @@ public class AlvoController {
 					perguntaEntity.setDescPergunta(perguntaDTO.getLabel());
 					perguntaEntity.setPeso(perguntaDTO.getPeso());
 					perguntas.add(perguntaEntity);
-					
+								
 					PerguntaEntity perguntaFind = perguntaService.buscaPerguntaPorId(perguntaEntity.getCdPergunta().intValue());
 					
 					/** Salva as respostas da Avaliação **/
@@ -200,12 +209,19 @@ public class AlvoController {
 					resposta.setNota(perguntaDTO.getScore());
 					resposta.setAvaliacao(avaliacaoSalva);
 					resposta.setPergunta(perguntaFind);
-					resposta.setNota(perguntaDTO.getScore());
-					
-					notaAvaliacao += (resposta.getNota() != null) ? resposta.getNota() : 0;
-					
+					resposta.setNota(perguntaDTO.getScore());	
 					respostaService.save(resposta);
+					
+					/** Soma pesos **/
+					pesoTemaTotal += perguntaEntity.getPeso();
+					/** Soma notas do Tema **/
+					notaTema += (perguntaEntity.getPeso() * resposta.getNota());
 				}
+				
+				/** Nota final do Tema **/
+				notaTema = notaTema/pesoTemaTotal;		
+				
+				notaCamada += notaTema;
 				
 				tema.setPerguntas(perguntas);
 				temas.add(tema);
@@ -213,12 +229,23 @@ public class AlvoController {
 			
 			camada.setTemas(temas);
 			camadas.add(camada);
-		}
+		}		
 		
-		avaliacao.setNotaAvaliacao(notaAvaliacao);
-		avaliacaoService.atualiza(avaliacaoSalva);
+		pesoCamadaTotal = camadas.size();
+		notaCamada = notaCamada / pesoCamadaTotal;
 		
-		AlvoAvaliacaoDTO alvo = avaliacaoService.avaliacaoEntityToAlvoAvaliacaoDTO(avaliacaoSalva);
+		notaAvaliacao += notaCamada;
+		
+		//notaAvaliacao += notaCamada;
+
+		/** Calcula nota final da Avaliação **/
+		//Integer notaFinal = alvoService.calculaNotas(camadas);		
+		avaliacaoSalva.setNotaAvaliacao(notaAvaliacao);
+		
+		AvaliacaoEntity atualizado = avaliacaoService.atualiza(avaliacaoSalva);
+		
+		/** Transforma entidade no formato Alvo **/
+		AlvoAvaliacaoDTO alvo = avaliacaoService.avaliacaoEntityToAlvoAvaliacaoDTO(atualizado);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(alvo);
 	}
@@ -227,47 +254,8 @@ public class AlvoController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/avaliacao/{id}", produces = "application/json")
 	public ResponseEntity<AlvoAvaliacaoDTO> getAvaliacaoById(@PathVariable(name = "id") Integer cdAvaliacao) {	
-		
 		AvaliacaoEntity avaliacao = avaliacaoService.buscaAvaliacaoPorId(cdAvaliacao);	
-		
-		AlvoAvaliacaoDTO alvo = avaliacaoService.avaliacaoEntityToAlvoAvaliacaoDTO(avaliacao);
-		
-		/**
-		AlvoAvaliacaoDTO roda = new AlvoAvaliacaoDTO();
-		roda.setLabel(avaliacao.getNmAvaliacao());
-		ArrayList<AlvoCamadaDTO> camadasRoda = new ArrayList<AlvoCamadaDTO>();
-		
-		for(CamadaEntity camada : avaliacao.getAplicacao().getCamadas()) {
-			AlvoCamadaDTO c = new AlvoCamadaDTO();
-			c.setLabel(camada.getNmCamada());
-			ArrayList<AlvoTemaDTO> temasRoda = new ArrayList<AlvoTemaDTO>();
-			
-			for(TemaEntity tema : camada.getTemas()) {
-				AlvoTemaDTO t = new AlvoTemaDTO();
-				t.setLabel(tema.getNmTema());
-				ArrayList<AlvoPerguntaDTO> perguntasRoda = new ArrayList<AlvoPerguntaDTO>();
-				
-				for(PerguntaEntity pergunta : tema.getPerguntas()) {
-					AlvoPerguntaDTO p = new AlvoPerguntaDTO();
-					p.setLabel(pergunta.getDescPergunta());
-					//p.setScore(pergunta.getPontuacao());
-					p.setPeso(pergunta.getPeso());
-					perguntasRoda.add(p);
-				}
-				
-				t.setChildren(perguntasRoda);
-				temasRoda.add(t);
-			}
-			
-			c.setChildren(temasRoda);		
-			camadasRoda.add(c);
-		}
-		
-		roda.setChildren(camadasRoda);
-		
-		String json = gson.toJson(roda);
-		**/
-	
+		AlvoAvaliacaoDTO alvo = avaliacaoService.avaliacaoEntityToAlvoAvaliacaoDTO(avaliacao);		
 		return ResponseEntity.status(HttpStatus.OK).body(alvo);
 	}
 		
