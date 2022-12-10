@@ -151,7 +151,8 @@ public class AlvoController {
 			camadaSalva.setTemas(temas);
 			camadas.add(camadaSalva);
 		}
-		aplicacaoSalva.setCamadas(camadas);
+		aplicacaoSalva.setCamadas(camadas); 
+		
 		AplicacaoEntity atualizado = aplicacaoService.atualiza(aplicacaoSalva);
 	
 		return ResponseEntity.status(HttpStatus.OK).body(atualizado);
