@@ -25,5 +25,5 @@ public class RestServiceCorsApplication implements WebMvcConfigurer {
 		.allowedOrigins("http://localhost:3000", "https://main--alvo-agil.netlify.app/")
 		.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT");
 	} 
-	
+
 }
