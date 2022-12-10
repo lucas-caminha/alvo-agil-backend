@@ -7,7 +7,6 @@ public class AlvoAplicacaoDTO {
 	private Integer cdAplicacao;
 	/** Nome da Avaliação **/
 	private String label;
-	private String dtAvaliacao;
 	/** Camada **/
 	private ArrayList <AlvoCamadaDTO> children;
 
@@ -33,12 +32,5 @@ public class AlvoAplicacaoDTO {
 	}
 	public void setChildren(ArrayList<AlvoCamadaDTO> children) {
 		this.children = children;
-	}
-	public String getDtAvaliacao() {
-		return dtAvaliacao;
-	}
-	public void setDtAvaliacao(String dtAvaliacao) {
-		this.dtAvaliacao = dtAvaliacao;
-	}
-	
+	}	
 }
