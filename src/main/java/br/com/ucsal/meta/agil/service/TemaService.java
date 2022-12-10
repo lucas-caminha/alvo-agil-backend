@@ -29,7 +29,7 @@ public class TemaService {
 	}
 	
 	public TemaEntity save (TemaEntity tema) {
-		Optional<TemaEntity> find = temaRepository.findByNmTema(tema.getNmTema());
+		//Optional<TemaEntity> find = temaRepository.findByNmTema(tema.getNmTema());
 		/**
 		if(find.isPresent()) {
 			throw new BusinessException(MessageUtil.FAIL_SAVE + MessageUtil.TEMA_EXISTENTE);

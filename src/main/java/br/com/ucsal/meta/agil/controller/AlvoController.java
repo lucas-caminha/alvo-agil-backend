@@ -107,17 +107,19 @@ public class AlvoController {
 		AplicacaoEntity aplicacao = new AplicacaoEntity();
 		aplicacao.setNmAplicacao(dto.getLabel());
 		aplicacao.setFlAplicacao("S");
-		
 		AplicacaoEntity aplicacaoSalva = aplicacaoService.save(aplicacao);
+		
+		ArrayList<AplicacaoEntity> aplicacoes = new ArrayList<AplicacaoEntity>();
+		aplicacoes.add(aplicacaoSalva);
 		
 		List<CamadaEntity> camadas = new ArrayList<CamadaEntity>();
 		for(AlvoCamadaDTO c : dto.getChildren()) {
+			
 			CamadaEntity camada = new CamadaEntity();
 			camada.setNmCamada(c.getLabel());
 			camada.setFlCamada("S");
-			ArrayList<AplicacaoEntity> aplicacoes = new ArrayList<AplicacaoEntity>();
-			aplicacoes.add(aplicacaoSalva);
 			camada.setAplicacoes(aplicacoes);
+			
 			CamadaEntity camadaSalva = camadaService.save(camada);
 			
 			List<TemaEntity> temas = new ArrayList<TemaEntity>();
@@ -150,8 +152,9 @@ public class AlvoController {
 			camadas.add(camadaSalva);
 		}
 		aplicacaoSalva.setCamadas(camadas);
+		AplicacaoEntity atualizado = aplicacaoService.atualiza(aplicacaoSalva);
 	
-		return ResponseEntity.status(HttpStatus.OK).body(aplicacaoSalva);
+		return ResponseEntity.status(HttpStatus.OK).body(atualizado);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/avaliacao/add", produces = "application/json")

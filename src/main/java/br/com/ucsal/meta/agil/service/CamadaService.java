@@ -26,7 +26,7 @@ public class CamadaService {
 
 	public CamadaEntity save(CamadaEntity camada) {
 		
-		Optional<CamadaEntity> find = camadaRepository.findByNmCamada(camada.getNmCamada());
+		//Optional<CamadaEntity> find = camadaRepository.findByNmCamada(camada.getNmCamada());
 		/**
 		if (find.isPresent()) {
 			throw new BusinessException(MessageUtil.FAIL_SAVE + MessageUtil.CAMADA_EXISTENTE);
