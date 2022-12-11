@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ucsal.meta.agil.dto.alvo.AlvoAplicacaoDTO;
+import br.com.ucsal.meta.agil.dto.alvo.AlvoAvaliacaoDTO;
 import br.com.ucsal.meta.agil.dto.alvo.AlvoCamadaDTO;
 import br.com.ucsal.meta.agil.dto.alvo.AlvoPerguntaDTO;
 import br.com.ucsal.meta.agil.dto.alvo.AlvoTemaDTO;
 import br.com.ucsal.meta.agil.entity.AplicacaoEntity;
+import br.com.ucsal.meta.agil.entity.AvaliacaoEntity;
 import br.com.ucsal.meta.agil.entity.CamadaEntity;
 import br.com.ucsal.meta.agil.entity.PerguntaEntity;
 import br.com.ucsal.meta.agil.entity.RespostaEntity;
@@ -22,6 +24,8 @@ public class AlvoService {
 	
 	@Autowired
 	private AvaliacaoNotaViewRepository notaRepository;
+	@Autowired
+	private AvaliacaoService avaliacaoService;
 
 	
 	public List<AlvoAplicacaoDTO> entityListToAplicacaoDTOList(List<AplicacaoEntity> aplicacoes) {
@@ -107,6 +111,16 @@ public class AlvoService {
 		}
 		
 		return null;
+	}
+
+	public List<AlvoAvaliacaoDTO> entityListToAlvoAvaliacaoDTOList(List<AvaliacaoEntity> avaliacoes) {
+		
+		List<AlvoAvaliacaoDTO> alvoAvaliacoes = new ArrayList<AlvoAvaliacaoDTO>();
+		for(AvaliacaoEntity a : avaliacoes) {
+			AlvoAvaliacaoDTO dto = avaliacaoService.avaliacaoEntityToAlvoAvaliacaoDTO(a);
+			alvoAvaliacoes.add(dto);
+		}	
+		return alvoAvaliacoes;
 	}
 
 

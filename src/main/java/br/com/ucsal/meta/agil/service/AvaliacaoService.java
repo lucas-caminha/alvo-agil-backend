@@ -116,7 +116,6 @@ public class AvaliacaoService {
 	}
 
 	public AlvoAvaliacaoDTO avaliacaoEntityToAlvoAvaliacaoDTO(AvaliacaoEntity entity) {
-
 		AlvoAvaliacaoDTO alvo = new AlvoAvaliacaoDTO();
 		alvo.setCdAvaliacao(entity.getCdAvaliacao().intValue());
 		alvo.setCdAplicacao(entity.getAplicacao().getCdAplicacao().intValue());

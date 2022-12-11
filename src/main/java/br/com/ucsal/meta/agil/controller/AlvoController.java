@@ -269,6 +269,16 @@ public class AlvoController {
 		List<AlvoAplicacaoDTO> alvoAplicacoes = alvoService.entityListToAplicacaoDTOList(aplicacoes);	
 		return ResponseEntity.status(HttpStatus.OK).body(alvoAplicacoes);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "avaliacao/time/{id}", produces = "application/json")
+	public ResponseEntity<List<AlvoAvaliacaoDTO>> getAvaliacaoByTime(@PathVariable(name = "id") Integer cdTime) {	
+		List<AvaliacaoEntity> avaliacoes = avaliacaoService.buscaAvaliacaoPorTime(cdTime);
+		if(avaliacoes == null) {
+			return ResponseEntity.noContent().build();
+		}		
+		List<AlvoAvaliacaoDTO> alvoAvaliacoes = alvoService.entityListToAlvoAvaliacaoDTOList(avaliacoes);	
+		return ResponseEntity.status(HttpStatus.OK).body(alvoAvaliacoes);
+	}
 
 
 	
