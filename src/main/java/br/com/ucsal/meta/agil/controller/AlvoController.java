@@ -59,6 +59,31 @@ public class AlvoController {
 	@Autowired
 	private RespostaService respostaService;
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/avaliacao/{id}", produces = "application/json")
+	public ResponseEntity<AlvoAvaliacaoDTO> getAvaliacaoById(@PathVariable(name = "id") Integer cdAvaliacao) {	
+		AvaliacaoEntity avaliacao = avaliacaoService.buscaAvaliacaoPorId(cdAvaliacao);	
+		AlvoAvaliacaoDTO alvo = avaliacaoService.avaliacaoEntityToAlvoAvaliacaoDTO(avaliacao);		
+		return ResponseEntity.status(HttpStatus.OK).body(alvo);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "avaliacao/time/{id}", produces = "application/json")
+	public ResponseEntity<List<AlvoAvaliacaoDTO>> getAvaliacaoByTime(@PathVariable(name = "id") Integer cdTime) {	
+		List<AvaliacaoEntity> avaliacoes = avaliacaoService.buscaAvaliacaoPorTime(cdTime);
+		if(avaliacoes == null) {
+			return ResponseEntity.noContent().build();
+		}		
+		List<AlvoAvaliacaoDTO> alvoAvaliacoes = alvoService.entityListToAlvoAvaliacaoDTOList(avaliacoes);	
+		return ResponseEntity.status(HttpStatus.OK).body(alvoAvaliacoes);
+	}
+	
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/aplicacao/todos", produces = "application/json")
+	public ResponseEntity<List<AlvoAplicacaoDTO>> getAplicacoes() {		
+		List<AplicacaoEntity> aplicacoes = aplicacaoService.getAllAplicacoes();	
+		List<AlvoAplicacaoDTO> alvoAplicacoes = alvoService.entityListToAplicacaoDTOList(aplicacoes);	
+		return ResponseEntity.status(HttpStatus.OK).body(alvoAplicacoes);
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/aplicacao/{id}", produces = "application/json")
 	public ResponseEntity<String> getAplicacaoById(@PathVariable(name = "id") Integer cdAplicacao) {	
 		
@@ -160,9 +185,7 @@ public class AlvoController {
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/avaliacao/add", produces = "application/json")
 	public ResponseEntity<AlvoAvaliacaoDTO> addAvaliacao(@RequestBody AlvoAvaliacaoDTO dto) {	
-		
-		Integer notaAvaliacao = 0;
-		
+				
 		AvaliacaoEntity avaliacao = new AvaliacaoEntity();
 		avaliacao.setNmAvaliacao(dto.getLabel());
 		avaliacao.setFlAvaliacao("S");
@@ -180,23 +203,23 @@ public class AlvoController {
 		/** Salva Avaliação **/
 		AvaliacaoEntity avaliacaoSalva = avaliacaoService.save(avaliacao);
 		
-		Integer notaCamada = 0;
-		Integer pesoCamadaTotal = 0;
+		Integer notaAvaliacao = 0;
 		
 		List<CamadaEntity> camadas = new ArrayList<CamadaEntity>();	
+		
 		for(AlvoCamadaDTO alvoDTO : dto.getChildren()) {
 			CamadaEntity camada = new CamadaEntity();
 			camada.setNmCamada(alvoDTO.getLabel());
 			
-
-			
+			Integer notaCamada = 0;
+				
 			List<TemaEntity> temas = new ArrayList<TemaEntity>();
 			for(AlvoTemaDTO temaDTO : alvoDTO.getChildren()) {
 				TemaEntity tema = new TemaEntity();
 				tema.setNmTema(temaDTO.getLabel());
 				
 				Integer notaTema = 0;
-				Integer pesoTemaTotal = 0;
+				Integer pesoPerguntaTotal = 0;
 				
 				List<PerguntaEntity> perguntas = new ArrayList<PerguntaEntity>();
 				for(AlvoPerguntaDTO perguntaDTO : temaDTO.getChildren()) {
@@ -217,13 +240,13 @@ public class AlvoController {
 					respostaService.save(resposta);
 					
 					/** Soma pesos **/
-					pesoTemaTotal += perguntaEntity.getPeso();
+					pesoPerguntaTotal += perguntaEntity.getPeso();
 					/** Soma notas do Tema **/
 					notaTema += (perguntaEntity.getPeso() * resposta.getNota());
 				}
 				
 				/** Nota final do Tema **/
-				notaTema = notaTema/pesoTemaTotal;		
+				notaTema = notaTema/pesoPerguntaTotal;		
 				
 				notaCamada += notaTema;
 				
@@ -231,16 +254,14 @@ public class AlvoController {
 				temas.add(tema);
 			}
 			
+			notaCamada = notaCamada/temas.size();
+			notaAvaliacao += notaCamada;
+			
 			camada.setTemas(temas);
 			camadas.add(camada);
 		}		
 		
-		pesoCamadaTotal = camadas.size();
-		notaCamada = notaCamada / pesoCamadaTotal;
-		
-		notaAvaliacao += notaCamada;
-		
-		//notaAvaliacao += notaCamada;
+		notaAvaliacao = notaAvaliacao / camadas.size();
 
 		/** Calcula nota final da Avaliação **/
 		//Integer notaFinal = alvoService.calculaNotas(camadas);		
@@ -254,32 +275,5 @@ public class AlvoController {
 		return ResponseEntity.status(HttpStatus.OK).body(alvo);
 	}
 	
-
-
-	@RequestMapping(method = RequestMethod.GET, value = "/avaliacao/{id}", produces = "application/json")
-	public ResponseEntity<AlvoAvaliacaoDTO> getAvaliacaoById(@PathVariable(name = "id") Integer cdAvaliacao) {	
-		AvaliacaoEntity avaliacao = avaliacaoService.buscaAvaliacaoPorId(cdAvaliacao);	
-		AlvoAvaliacaoDTO alvo = avaliacaoService.avaliacaoEntityToAlvoAvaliacaoDTO(avaliacao);		
-		return ResponseEntity.status(HttpStatus.OK).body(alvo);
-	}
-		
-	@RequestMapping(method = RequestMethod.GET, value = "/aplicacao/todos", produces = "application/json")
-	public ResponseEntity<List<AlvoAplicacaoDTO>> getAplicacoes() {		
-		List<AplicacaoEntity> aplicacoes = aplicacaoService.getAllAplicacoes();	
-		List<AlvoAplicacaoDTO> alvoAplicacoes = alvoService.entityListToAplicacaoDTOList(aplicacoes);	
-		return ResponseEntity.status(HttpStatus.OK).body(alvoAplicacoes);
-	}
-	
-	@RequestMapping(method = RequestMethod.GET, value = "avaliacao/time/{id}", produces = "application/json")
-	public ResponseEntity<List<AlvoAvaliacaoDTO>> getAvaliacaoByTime(@PathVariable(name = "id") Integer cdTime) {	
-		List<AvaliacaoEntity> avaliacoes = avaliacaoService.buscaAvaliacaoPorTime(cdTime);
-		if(avaliacoes == null) {
-			return ResponseEntity.noContent().build();
-		}		
-		List<AlvoAvaliacaoDTO> alvoAvaliacoes = alvoService.entityListToAlvoAvaliacaoDTOList(avaliacoes);	
-		return ResponseEntity.status(HttpStatus.OK).body(alvoAvaliacoes);
-	}
-
-
 	
 }
