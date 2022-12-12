@@ -22,7 +22,7 @@ public class PerguntaService {
 	}
 
 	public PerguntaEntity save(PerguntaEntity pergunta) {
-		Optional<List<PerguntaEntity>> find = perguntaRepository.findByDescPergunta(pergunta.getDescPergunta());	
+		// Optional<List<PerguntaEntity>> find = perguntaRepository.findByDescPergunta(pergunta.getDescPergunta());	
 		/**
 		if(!find.get().isEmpty()) {
 			throw new BusinessException(MessageUtil.FAIL_SAVE + MessageUtil.PERGUNTA_EXISTENTE);

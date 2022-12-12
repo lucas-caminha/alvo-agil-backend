@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import br.com.ucsal.meta.agil.dto.CerimoniaDTO;
 import br.com.ucsal.meta.agil.entity.CerimoniaEntity;
-import br.com.ucsal.meta.agil.entity.FrameworkEntity;
 import br.com.ucsal.meta.agil.service.CerimoniaService;
 
 @RestController

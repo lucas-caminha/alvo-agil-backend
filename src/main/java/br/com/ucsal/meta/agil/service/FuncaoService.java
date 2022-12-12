@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ucsal.meta.agil.entity.FuncaoEntity;
-import br.com.ucsal.meta.agil.entity.ParticipanteEntity;
 import br.com.ucsal.meta.agil.exception.BusinessException;
 import br.com.ucsal.meta.agil.exception.NotFoundException;
 import br.com.ucsal.meta.agil.repository.FuncaoRepository;

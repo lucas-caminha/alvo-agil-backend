@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ucsal.meta.agil.dto.PerguntaDTO;
 import br.com.ucsal.meta.agil.entity.PerguntaEntity;
-import br.com.ucsal.meta.agil.entity.TecnologiaEntity;
 import br.com.ucsal.meta.agil.service.PerguntaService;
 
 @RestController
