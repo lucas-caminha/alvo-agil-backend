@@ -62,7 +62,7 @@ public class AlvoController {
 	@RequestMapping(method = RequestMethod.GET, value = "/avaliacao/{id}", produces = "application/json")
 	public ResponseEntity<AlvoAvaliacaoDTO> getAvaliacaoById(@PathVariable(name = "id") Integer cdAvaliacao) {	
 		AvaliacaoEntity avaliacao = avaliacaoService.buscaAvaliacaoPorId(cdAvaliacao);	
-		AlvoAvaliacaoDTO alvo = avaliacaoService.avaliacaoEntityToAlvoAvaliacaoDTO(avaliacao);		
+		AlvoAvaliacaoDTO alvo = avaliacaoService.avaliacaoEntityToAlvoAvaliacaoDTO(avaliacao, false);		
 		return ResponseEntity.status(HttpStatus.OK).body(alvo);
 	}
 	
@@ -203,7 +203,7 @@ public class AlvoController {
 		/** Salva Avaliação **/
 		AvaliacaoEntity avaliacaoSalva = avaliacaoService.save(avaliacao);
 		
-		Integer notaAvaliacao = 0;
+		Double notaAvaliacao = 0.0;
 		
 		List<CamadaEntity> camadas = new ArrayList<CamadaEntity>();	
 		
@@ -211,15 +211,15 @@ public class AlvoController {
 			CamadaEntity camada = new CamadaEntity();
 			camada.setNmCamada(alvoDTO.getLabel());
 			
-			Integer notaCamada = 0;
+			Double notaCamada = 0.0;
 				
 			List<TemaEntity> temas = new ArrayList<TemaEntity>();
 			for(AlvoTemaDTO temaDTO : alvoDTO.getChildren()) {
 				TemaEntity tema = new TemaEntity();
 				tema.setNmTema(temaDTO.getLabel());
 				
-				Integer notaTema = 0;
-				Integer pesoPerguntaTotal = 0;
+				Double notaTema = 0.0;
+				Double pesoPerguntaTotal = 0.0;
 				
 				List<PerguntaEntity> perguntas = new ArrayList<PerguntaEntity>();
 				for(AlvoPerguntaDTO perguntaDTO : temaDTO.getChildren()) {
@@ -247,6 +247,7 @@ public class AlvoController {
 				
 				/** Nota final do Tema **/
 				notaTema = notaTema/pesoPerguntaTotal;		
+				tema.setNotaTema(notaTema);
 				
 				notaCamada += notaTema;
 				
@@ -255,22 +256,26 @@ public class AlvoController {
 			}
 			
 			notaCamada = notaCamada/temas.size();
+			camada.setNotaCamada(notaCamada);
+			
 			notaAvaliacao += notaCamada;
 			
 			camada.setTemas(temas);
 			camadas.add(camada);
 		}		
 		
+
 		notaAvaliacao = notaAvaliacao / camadas.size();
 
-		/** Calcula nota final da Avaliação **/
-		//Integer notaFinal = alvoService.calculaNotas(camadas);		
+		/** Calcula nota final da Avaliação **/	
 		avaliacaoSalva.setNotaAvaliacao(notaAvaliacao);
 		
 		AvaliacaoEntity atualizado = avaliacaoService.atualiza(avaliacaoSalva);
 		
+		aplicacao.setCamadas(camadas);
 		/** Transforma entidade no formato Alvo **/
-		AlvoAvaliacaoDTO alvo = avaliacaoService.avaliacaoEntityToAlvoAvaliacaoDTO(atualizado);
+		boolean isNovo = true;
+		AlvoAvaliacaoDTO alvo = avaliacaoService.avaliacaoEntityToAlvoAvaliacaoDTO(atualizado, isNovo);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(alvo);
 	}

@@ -9,7 +9,7 @@ public class AvaliacaoDTO {
 	private Long cdAvaliacao;
 	private String nmAvaliacao;
 	private String flAvaliacao;
-	private Integer notaAvaliacao;
+	private Double notaAvaliacao;
 	private Integer cdAplicacao;
 	private Integer cdTime;
 	
@@ -33,10 +33,10 @@ public class AvaliacaoDTO {
 	public void setFlAvaliacao(String flAvaliacao) {
 		this.flAvaliacao = flAvaliacao;
 	}
-	public Integer getNotaAvaliacao() {
+	public Double getNotaAvaliacao() {
 		return notaAvaliacao;
 	}
-	public void setNotaAvaliacao(Integer notaAvaliacao) {
+	public void setNotaAvaliacao(Double notaAvaliacao) {
 		this.notaAvaliacao = notaAvaliacao;
 	}
 	public Integer getCdAplicacao() {

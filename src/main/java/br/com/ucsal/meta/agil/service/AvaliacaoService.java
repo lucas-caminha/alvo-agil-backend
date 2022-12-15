@@ -34,6 +34,7 @@ public class AvaliacaoService {
 	private AplicacaoService aplicacaoService;
 	@Autowired
 	private RespostaService respostaService;
+	private boolean isNovaAvaliacao = false;
 	
 	public List<AvaliacaoEntity> getAllAvaliacoes() {
 		return avaliacaoRepository.findAll();
@@ -114,8 +115,11 @@ public class AvaliacaoService {
 		
 		throw new NotFoundException(MessageUtil.AVALIACAO_NAO_ENCONTRADA);
 	}
-
-	public AlvoAvaliacaoDTO avaliacaoEntityToAlvoAvaliacaoDTO(AvaliacaoEntity entity) {
+	
+	public AlvoAvaliacaoDTO avaliacaoEntityToAlvoAvaliacaoDTO(AvaliacaoEntity entity, boolean isNovo) {		
+		if(isNovo) {
+			isNovaAvaliacao = isNovo;
+		}	
 		AlvoAvaliacaoDTO alvo = new AlvoAvaliacaoDTO();
 		alvo.setCdAvaliacao(entity.getCdAvaliacao().intValue());
 		alvo.setCdAplicacao(entity.getAplicacao().getCdAplicacao().intValue());
@@ -134,11 +138,25 @@ public class AvaliacaoService {
 		for(CamadaEntity c : camadas) {
 			AlvoCamadaDTO camadaDTO = new AlvoCamadaDTO();
 			camadaDTO.setLabel(c.getNmCamada());
-			camadaDTO.setChildren(temaEntityToAlvoTemaDTO(c.getTemas(), avaliacao));		
+			camadaDTO.setChildren(temaEntityToAlvoTemaDTO(c.getTemas(), avaliacao));	
+			if(isNovaAvaliacao) {
+				camadaDTO.setNota(c.getNotaCamada());
+			} else {
+				camadaDTO.setNota(getNotaCamada(camadaDTO.getChildren()));
+			}
 			camadasAlvo.add(camadaDTO);
 		}
 		
 		return camadasAlvo;
+	}
+
+	private Double getNotaCamada(ArrayList<AlvoTemaDTO> temas) {
+		Double notaCamada = 0.0;
+		for(AlvoTemaDTO t : temas) {
+			notaCamada += t.getNota();
+		}
+		
+		return notaCamada/temas.size();
 	}
 
 	private ArrayList<AlvoTemaDTO> temaEntityToAlvoTemaDTO(List<TemaEntity> temas, AvaliacaoEntity avaliacao) {
@@ -149,10 +167,32 @@ public class AvaliacaoService {
 			 AlvoTemaDTO temaDTO = new AlvoTemaDTO();
 			 temaDTO.setLabel(t.getNmTema());
 			 temaDTO.setChildren(perguntaEntityToAlvoPerguntaDTO(t.getPerguntas(), avaliacao));
+			 if(isNovaAvaliacao) {
+				 temaDTO.setNota(t.getNotaTema());
+			 } else {
+				 temaDTO.setNota(getNotaTema(t.getPerguntas(), avaliacao));
+			 }
 			 temasAlvo.add(temaDTO);
 		 }
 		
 		return temasAlvo;
+	}
+
+	private Double getNotaTema(List<PerguntaEntity> perguntas, AvaliacaoEntity avaliacao) {
+		
+		Double pesoTotal = 0.0;
+		Double perguntaNota = 0.0;
+		
+		for(PerguntaEntity p : perguntas) {
+			for(RespostaEntity r : p.getRespostas()) {
+				if(r.getAvaliacao().getCdAvaliacao().equals(avaliacao.getCdAvaliacao())) {
+					perguntaNota += r.getNota() * p.getPeso();				
+				}			
+			}
+			pesoTotal += p.getPeso();
+		}
+		
+		return perguntaNota/pesoTotal;
 	}
 
 	private ArrayList<AlvoPerguntaDTO> perguntaEntityToAlvoPerguntaDTO(List<PerguntaEntity> perguntas, AvaliacaoEntity avaliacao) {

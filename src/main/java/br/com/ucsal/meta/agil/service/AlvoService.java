@@ -86,7 +86,7 @@ public class AlvoService {
 		
 		List<AlvoAvaliacaoDTO> alvoAvaliacoes = new ArrayList<AlvoAvaliacaoDTO>();
 		for(AvaliacaoEntity a : avaliacoes) {
-			AlvoAvaliacaoDTO dto = avaliacaoService.avaliacaoEntityToAlvoAvaliacaoDTO(a);
+			AlvoAvaliacaoDTO dto = avaliacaoService.avaliacaoEntityToAlvoAvaliacaoDTO(a, false);
 			alvoAvaliacoes.add(dto);
 		}	
 		return alvoAvaliacoes;
