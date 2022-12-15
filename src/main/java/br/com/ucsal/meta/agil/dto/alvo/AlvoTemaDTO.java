@@ -6,6 +6,8 @@ public class AlvoTemaDTO {
 	
 	/** Nome do Tema **/
 	private String label;
+	/** Nota do Tema **/
+	private Double nota;
 	/** Perguntas **/ 
 	private ArrayList <AlvoPerguntaDTO> children;
 	
@@ -25,5 +27,11 @@ public class AlvoTemaDTO {
 	public void setChildren(ArrayList<AlvoPerguntaDTO> children) {
 		this.children = children;
 	}
+	public Double getNota() {
+		return nota;
+	}
+	public void setNota(Double nota) {
+		this.nota = nota;
+	}	
 
 }

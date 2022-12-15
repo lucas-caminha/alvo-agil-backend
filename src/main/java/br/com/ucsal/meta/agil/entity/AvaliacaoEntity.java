@@ -22,7 +22,7 @@ public class AvaliacaoEntity {
 	private Long cdAvaliacao;
 	private String nmAvaliacao;
 	private String flAvaliacao;
-	private Integer notaAvaliacao;
+	private Double notaAvaliacao;
 	private LocalDate dtAvaliacao;
 	@OneToOne
 	@JoinColumn(name = "cdAplicacao")
@@ -54,10 +54,10 @@ public class AvaliacaoEntity {
 	public void setFlAvaliacao(String flAvaliacao) {
 		this.flAvaliacao = flAvaliacao;
 	}
-	public Integer getNotaAvaliacao() {
+	public Double getNotaAvaliacao() {
 		return notaAvaliacao;
 	}
-	public void setNotaAvaliacao(Integer notaAvaliacao) {
+	public void setNotaAvaliacao(Double notaAvaliacao) {
 		this.notaAvaliacao = notaAvaliacao;
 	}
 	public AplicacaoEntity getAplicacao() {

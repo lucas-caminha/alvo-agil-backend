@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,7 +28,10 @@ public class CamadaEntity {
 	private List<TemaEntity> temas;
 	@JsonIgnore
 	@ManyToMany(mappedBy = "camadas")
-	private List<AplicacaoEntity> aplicacoes;
+	private List<AplicacaoEntity> aplicacoes;	
+	@JsonIgnore
+	@Transient
+	private Double notaCamada;
 	
 	public CamadaEntity() {
 		aplicacoes = new ArrayList<AplicacaoEntity>();
@@ -64,5 +68,11 @@ public class CamadaEntity {
 	public void setAplicacoes(List<AplicacaoEntity> aplicacoes) {
 		this.aplicacoes = aplicacoes;
 	}
-	
+	@JsonIgnore
+	public Double getNotaCamada() {
+		return notaCamada;
+	}
+	public void setNotaCamada(Double notaCamada) {
+		this.notaCamada = notaCamada;
+	}	
 }
