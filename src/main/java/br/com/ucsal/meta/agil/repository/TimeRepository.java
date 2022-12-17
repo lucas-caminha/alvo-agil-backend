@@ -13,3 +13,5 @@ public interface TimeRepository extends JpaRepository<TimeEntity, Long>{
 	Optional<TimeEntity> findById(Long id);
 
 }
+
+

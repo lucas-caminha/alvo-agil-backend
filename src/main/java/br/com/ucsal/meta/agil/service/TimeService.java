@@ -38,6 +38,7 @@ public class TimeService {
 	}
 
 	public TimeEntity save(TimeEntity time) {
+		
 		Optional<TimeEntity> find = timeRepository.findByNmTime(time.getNmTime());	
 		if(find.isPresent()) {
 			throw new BusinessException(MessageUtil.FAIL_SAVE + MessageUtil.TIME_EXISTENTE);
