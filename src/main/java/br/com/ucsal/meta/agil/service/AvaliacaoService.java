@@ -41,10 +41,12 @@ public class AvaliacaoService {
 	}
 	
 	public AvaliacaoEntity save(AvaliacaoEntity avaliacao) {
+		/**
 		Optional<AvaliacaoEntity> find = avaliacaoRepository.findByNmAvaliacao(avaliacao.getNmAvaliacao());
 		if (find.isPresent()) {
 			throw new BusinessException(MessageUtil.FAIL_SAVE + MessageUtil.AVALIACAO_EXISTENTE);
 		}
+		**/
 		
 		TimeEntity time = timeService.buscaTimePorId(avaliacao.getTime().getCdTime().intValue());
 		avaliacao.setTime(time);
@@ -117,9 +119,12 @@ public class AvaliacaoService {
 	}
 	
 	public AlvoAvaliacaoDTO avaliacaoEntityToAlvoAvaliacaoDTO(AvaliacaoEntity entity, boolean isNovo) {		
-		if(isNovo) {
-			isNovaAvaliacao = isNovo;
-		}	
+		if(isNovo == true) {
+			isNovaAvaliacao = true;
+		} else {
+			isNovaAvaliacao = false;
+		}
+		
 		AlvoAvaliacaoDTO alvo = new AlvoAvaliacaoDTO();
 		alvo.setCdAvaliacao(entity.getCdAvaliacao().intValue());
 		alvo.setCdAplicacao(entity.getAplicacao().getCdAplicacao().intValue());
@@ -155,7 +160,6 @@ public class AvaliacaoService {
 		for(AlvoTemaDTO t : temas) {
 			notaCamada += t.getNota();
 		}
-		
 		return notaCamada/temas.size();
 	}
 
