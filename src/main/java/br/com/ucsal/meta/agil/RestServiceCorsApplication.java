@@ -22,7 +22,7 @@ public class RestServiceCorsApplication implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-		.allowedOrigins("http://localhost:3000", "https://main--alvo-agil.netlify.app/")
+		.allowedOrigins("http://localhost:3000", "https://main--alvo-agil.netlify.app/", "https://alvo-agil.netlify.app/")
 		.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT");
 	} 
 
